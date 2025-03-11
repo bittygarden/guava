@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>贪吃蛇游戏</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #83a4d4, #b6fbff);
+        }
+
+        #gameCanvas {
+            width: 100%;
+            height: 100%;
+            border: 5px solid #333;
+            box-sizing: border-box;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        #modeSelector,
+        #startButton {
+            position: fixed;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1;
+            box-sizing: border-box;
+            width: 200px;
+            text-align: center;
+        }
+
+        #modeSelector {
+            bottom: 45vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 2px solid #007bff;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #modeSelector button {
+            padding: 10px 15px;
+            font-size: 24px;
+            width: 100%;
+            margin-bottom: 15px;
+            text-align: center;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        #easyButton {
+            background-color: #28a745;
+            color: white;
+        }
+
+        #easyButton:hover {
+            background-color: #218838;
+        }
+
+        #mediumButton {
+            background-color: #ffc107;
+            color: white;
+        }
+
+        #mediumButton:hover {
+            background-color: #e0a800;
+        }
+
+        #hardButton {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        #hardButton:hover {
+            background-color: #c82333;
+        }
+
+        #startButton {
+            bottom: 35vh;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+        }
+
+        #startButton:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="gameCanvas"></canvas>
+    <div id="modeSelector">
+        <button id="easyButton" data-mode="easy">简单</button>
+        <button id="mediumButton" data-mode="medium">中等</button>
+        <button id="hardButton" data-mode="hard">困难</button>
+    </div>
+    <button id="startButton">开始游戏</button>
+    <script>
+        // 获取画布和绘图上下文
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const startButton = document.getElementById('startButton');
+        const modeSelector = document.getElementById('modeSelector');
+        const easyButton = document.getElementById('easyButton');
+        const mediumButton = document.getElementById('mediumButton');
+        const hardButton = document.getElementById('hardButton');
+
+        // 动态设置画布大小
+        function setCanvasSize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            const minSize = Math.min(canvas.width, canvas.height);
+            const blockCount = 20;
+            return Math.floor(minSize / blockCount);
+        }
+
+        let blockSize = setCanvasSize();
+
+        // 窗口大小改变时重新设置画布大小
+        window.addEventListener('resize', () => {
+            blockSize = setCanvasSize();
+            if (gameInterval) {
+                clearInterval(gameInterval);
+                startGame();
+            }
+        });
+
+        // 定义蛇的初始位置和方向，初始长度为 2
+        let snake = [
+            { x: 10, y: 10 },
+            { x: 9, y: 10 }
+        ];
+        let direction = 'right';
+        // 定义食物的初始位置和颜色
+        let food = {
+            x: getRandomNonEdgePosition(canvas.width / blockSize),
+            y: getRandomNonEdgePosition(canvas.height / blockSize),
+            color: getRandomColor()
+        };
+        // 定义游戏循环的定时器
+        let gameInterval;
+
+        // 不同模式对应的游戏速度（毫秒）
+        const modeSpeeds = {
+            easy: 200,
+            medium: 100,
+            hard: 50
+        };
+        let currentSpeed = modeSpeeds.easy;
+        let selectedMode = 'easy';
+
+        // 获取非边缘随机位置的函数
+        function getRandomNonEdgePosition(max) {
+            // 留出边缘空间，这里设置边缘宽度为 1 个方块
+            const edgeWidth = 1;
+            return Math.floor(Math.random() * (max - 2 * edgeWidth)) + edgeWidth;
+        }
+
+        // 生成随机颜色的函数
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        // 绘制带圆角的方块
+        function drawRoundedBlock(x, y, color, radius) {
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.arcTo(x + blockSize, y, x + blockSize, y + radius, radius);
+            ctx.arcTo(x + blockSize, y + blockSize, x + blockSize - radius, y + blockSize, radius);
+            ctx.arcTo(x, y + blockSize, x, y + blockSize - radius, radius);
+            ctx.arcTo(x, y, x + radius, y, radius);
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        // 绘制蛇，区分头部和其余方块
+        function drawSnake() {
+            snake.forEach((segment, index) => {
+                if (index === 0) {
+                    // 绘制头部为圆形
+                    ctx.fillStyle = 'darkgreen';
+                    const centerX = segment.x * blockSize + blockSize / 2;
+                    const centerY = segment.y * blockSize + blockSize / 2;
+                    const radius = blockSize / 2;
+                    ctx.beginPath();
+                    ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+                    ctx.fill();
+                } else {
+                    drawRoundedBlock(segment.x * blockSize, segment.y * blockSize, segment.color || 'green', 5);
+                }
+            });
+        }
+
+        // 绘制食物
+        function drawFood() {
+            drawRoundedBlock(food.x * blockSize, food.y * blockSize, food.color, 5);
+        }
+
+        // 移动蛇
+        function moveSnake() {
+            // 先记录蛇头移动后的位置
+            let newHead = { ...snake[0] };
+            switch (direction) {
+                case 'right':
+                    newHead.x++;
+                    break;
+                case 'left':
+                    newHead.x--;
+                    break;
+                case 'up':
+                    newHead.y--;
+                    break;
+                case 'down':
+                    newHead.y++;
+                    break;
+            }
+
+            // 检查是否吃到食物
+            if (newHead.x === food.x && newHead.y === food.y) {
+                // 记录当前食物的颜色
+                const eatenFoodColor = food.color;
+
+                // 生成新的食物
+                food = {
+                    x: getRandomNonEdgePosition(canvas.width / blockSize),
+                    y: getRandomNonEdgePosition(canvas.height / blockSize),
+                    color: getRandomColor()
+                };
+
+                // 为新增加的身体部分赋予被吃食物的颜色
+                const newSegment = {
+                    x: snake[snake.length - 1].x,
+                    y: snake[snake.length - 1].y,
+                    color: eatenFoodColor
+                };
+                snake.push(newSegment);
+            }
+
+            // 更新蛇身体每个部位的位置
+            for (let i = snake.length - 1; i > 0; i--) {
+                snake[i].x = snake[i - 1].x;
+                snake[i].y = snake[i - 1].y;
+            }
+
+            // 更新蛇头位置
+            snake[0] = newHead;
+        }
+
+        // 检查碰撞
+        function checkCollision() {
+            let head = snake[0];
+            // 检查是否撞到上、下、左、右四个边界
+            if (head.x < 0 || head.x >= canvas.width / blockSize || head.y < 0 || head.y >= canvas.height / blockSize) {
+                return true;
+            }
+            // 检查是否撞到自己
+            for (let i = 1; i < snake.length; i++) {
+                if (head.x === snake[i].x && head.y === snake[i].y) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // 游戏循环
+        function gameLoop() {
+            // 清除画布
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // 移动蛇
+            moveSnake();
+            // 绘制蛇和食物
+            drawSnake();
+            drawFood();
+            // 检查碰撞
+            if (checkCollision()) {
+                clearInterval(gameInterval);
+                startButton.style.display = 'block';
+                modeSelector.style.display = 'block';
+            }
+        }
+
+        // 处理键盘事件
+        document.addEventListener('keydown', function (event) {
+            switch (event.key) {
+                case 'ArrowRight':
+                    if (direction !== 'left') direction = 'right';
+                    break;
+                case 'ArrowLeft':
+                    if (direction !== 'right') direction = 'left';
+                    break;
+                case 'ArrowUp':
+                    if (direction !== 'down') direction = 'up';
+                    break;
+                case 'ArrowDown':
+                    if (direction !== 'up') direction = 'down';
+                    break;
+            }
+        });
+
+        // 处理模式按钮点击事件
+        function handleModeButtonClick(event) {
+            selectedMode = event.target.dataset.mode;
+            currentSpeed = modeSpeeds[selectedMode];
+            // 模拟默认选中简单模式，点击时可以更改样式
+            easyButton.style.backgroundColor = '#28a745';
+            mediumButton.style.backgroundColor = '#ffc107';
+            hardButton.style.backgroundColor = '#dc3545';
+            event.target.style.backgroundColor = 'lightblue';
+        }
+
+        easyButton.addEventListener('click', handleModeButtonClick);
+        mediumButton.addEventListener('click', handleModeButtonClick);
+        hardButton.addEventListener('click', handleModeButtonClick);
+
+        // 模拟默认选中简单模式，设置背景颜色
+        easyButton.style.backgroundColor = 'lightblue';
+
+        // 开始游戏的函数
+        function startGame() {
+            // 初始化蛇和食物
+            snake = [
+                { x: 10, y: 10 },
+                { x: 9, y: 10 }
+            ];
+            direction = 'right';
+            food = {
+                x: getRandomNonEdgePosition(canvas.width / blockSize),
+                y: getRandomNonEdgePosition(canvas.height / blockSize),
+                color: getRandomColor()
+            };
+            // 隐藏开始按钮和模式选择框
+            startButton.style.display = 'none';
+            modeSelector.style.display = 'none';
+            // 启动游戏循环
+            gameInterval = setInterval(gameLoop, currentSpeed);
+        }
+
+        // 为开始按钮添加点击事件监听器
+        startButton.addEventListener('click', startGame);
+    </script>
+</body>
+
+</html>
