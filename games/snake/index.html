@@ -33,11 +33,13 @@
                 -webkit-box-shadow: 0 0 5px #d2625dcc;
                 box-shadow: 0 0 5px #d2625dcc;
             }
+
             50% {
                 border-color: #ff8c87;
                 -webkit-box-shadow: 0 0 20px #ff8c87;
                 box-shadow: 0 0 20px #ff8c87;
             }
+
             100% {
                 border-color: #d2625dcc;
                 -webkit-box-shadow: 0 0 5px #d2625dcc;
@@ -51,11 +53,13 @@
                 -webkit-box-shadow: 0 0 5px #d2625dcc;
                 box-shadow: 0 0 5px #d2625dcc;
             }
+
             50% {
                 border-color: #ff8c87;
                 -webkit-box-shadow: 0 0 20px #ff8c87;
                 box-shadow: 0 0 20px #ff8c87;
             }
+
             100% {
                 border-color: #d2625dcc;
                 -webkit-box-shadow: 0 0 5px #d2625dcc;
@@ -164,6 +168,50 @@
         #startButton:hover {
             background-color: #b1404c;
         }
+
+        /* 手机端方向键样式 */
+        #directionButtons {
+            display: none;
+            position: fixed;
+            bottom: 10px;
+            /* width: 100%; */
+            text-align: center;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 20px;
+            justify-items: center;
+            align-items: center;
+        }
+
+        #upButton {
+            grid-column: 2 / 3;
+            grid-row: 1 / 2;
+        }
+
+        #leftButton {
+            grid-column: 1 / 2;
+            grid-row: 2 / 3;
+        }
+
+        #rightButton {
+            grid-column: 3 / 4;
+            grid-row: 2 / 3;
+        }
+
+        #downButton {
+            grid-column: 2 / 3;
+            grid-row: 2 / 3;
+        }
+
+        #directionButtons button {
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            background-color: rgba(0, 0, 0, 0);
+            border: 0;
+        }
     </style>
 </head>
 
@@ -175,6 +223,12 @@
         <button id="hardButton" data-mode="hard">困难</button>
     </div>
     <button id="startButton">开始游戏</button>
+    <div id="directionButtons">
+        <button id="upButton">⬆️</button>
+        <button id="leftButton">⬅️</button>
+        <button id="rightButton">➡️</button>
+        <button id="downButton">⬇️</button>
+    </div>
     <script>
         // 获取画布和绘图上下文
         const canvas = document.getElementById('gameCanvas');
@@ -184,6 +238,14 @@
         const easyButton = document.getElementById('easyButton');
         const mediumButton = document.getElementById('mediumButton');
         const hardButton = document.getElementById('hardButton');
+        const directionButtons = document.getElementById('directionButtons');
+        const upButton = document.getElementById('upButton');
+        const leftButton = document.getElementById('leftButton');
+        const rightButton = document.getElementById('rightButton');
+        const downButton = document.getElementById('downButton');
+
+        // 检测是否为手机设备
+        const isMobile = /Mobi|Android|iPhone/i.test(navigator.userAgent);
 
         // 动态设置画布大小
         function setCanvasSize() {
@@ -200,23 +262,17 @@
         window.addEventListener('resize', () => {
             blockSize = setCanvasSize();
             if (gameInterval) {
-                clearInterval(gameInterval);
-                startGame();
+                // 只重新计算画布大小和方块尺寸，不重新开始游戏
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
             }
         });
 
         // 定义蛇的初始位置和方向，初始长度为 2
-        let snake = [
-            { x: 10, y: 10, color: getRandomColor() },
-            { x: 9, y: 10, color: getRandomColor() }
-        ];
-        let direction = 'right';
+        let snake;
+        let direction;
         // 定义食物的初始位置和颜色
-        let food = {
-            x: getRandomNonEdgePosition(canvas.width / blockSize),
-            y: getRandomNonEdgePosition(canvas.height / blockSize),
-            color: getRandomColor()
-        };
+        let food;
         // 定义游戏循环的定时器
         let gameInterval;
         // 新增变量，用于标记是否可以改变方向
@@ -310,6 +366,7 @@
                 clearInterval(gameInterval);
                 startButton.style.display = 'block';
                 modeSelector.style.display = 'block';
+                directionButtons.style.display = 'none';
                 return;
             }
 
@@ -360,6 +417,10 @@
             // 检查是否撞到自己
             for (let i = 1; i < snake.length; i++) {
                 if (head.x === snake[i].x && head.y === snake[i].y) {
+                    clearInterval(gameInterval);
+                    startButton.style.display = 'block';
+                    modeSelector.style.display = 'block';
+                    directionButtons.style.display = 'none';
                     return true;
                 }
             }
@@ -376,15 +437,11 @@
             drawSnake();
             drawFood();
             // 检查碰撞
-            if (checkCollision()) {
-                clearInterval(gameInterval);
-                startButton.style.display = 'block';
-                modeSelector.style.display = 'block';
-            }
+            checkCollision();
         }
 
         // 处理键盘事件
-        document.addEventListener('keydown', function (event) {
+        function handleKeyDown(event) {
             if (!canChangeDirection) return;
             switch (event.key) {
                 case 'ArrowRight':
@@ -412,7 +469,28 @@
                     }
                     break;
             }
-        });
+        }
+
+        document.addEventListener('keydown', handleKeyDown);
+
+        // 处理方向键点击事件
+        function handleDirectionButtonClick(newDirection) {
+            if (!canChangeDirection) return;
+            if (
+                (newDirection === 'right' && direction !== 'left') ||
+                (newDirection === 'left' && direction !== 'right') ||
+                (newDirection === 'up' && direction !== 'down') ||
+                (newDirection === 'down' && direction !== 'up')
+            ) {
+                direction = newDirection;
+                canChangeDirection = false;
+            }
+        }
+
+        upButton.addEventListener('click', () => handleDirectionButtonClick('up'));
+        leftButton.addEventListener('click', () => handleDirectionButtonClick('left'));
+        rightButton.addEventListener('click', () => handleDirectionButtonClick('right'));
+        downButton.addEventListener('click', () => handleDirectionButtonClick('down'));
 
         // 处理模式按钮点击事件
         function handleModeButtonClick(event) {
@@ -435,9 +513,8 @@
         // 模拟默认选中简单模式，设置背景颜色
         easyButton.classList.add('active');
 
-        // 开始游戏的函数
-        function startGame() {
-            // 初始化蛇和食物
+        // 初始化游戏状态
+        function initGameState() {
             snake = [
                 { x: 10, y: 10, color: getRandomColor() },
                 { x: 9, y: 10, color: getRandomColor() }
@@ -448,14 +525,26 @@
                 y: getRandomNonEdgePosition(canvas.height / blockSize),
                 color: getRandomColor()
             };
+        }
+
+        // 开始游戏的函数
+        function startGame() {
+            // 初始化游戏状态
+            initGameState();
             // 隐藏开始按钮和模式选择框
             startButton.style.display = 'none';
             modeSelector.style.display = 'none';
+            // 仅在手机设备上显示方向按钮
+            if (isMobile) {
+                directionButtons.style.display = 'grid';
+            }
             // 启动游戏循环
             gameInterval = setInterval(gameLoop, currentSpeed);
         }
 
         // 为开始按钮添加点击事件监听器
+        directionButtons.style.display = 'none';
+
         startButton.addEventListener('click', startGame);
     </script>
 </body>
