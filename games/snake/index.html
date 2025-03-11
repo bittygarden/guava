@@ -13,13 +13,14 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: linear-gradient(135deg, #83a4d4, #b6fbff);
+            background-color: #e6a2a2;
         }
 
         #gameCanvas {
             width: 100%;
             height: 100%;
-            border: 5px solid #333;
+            /* 修改边框颜色 */
+            border: 5px solid #d2625dcc;
             box-sizing: border-box;
             background-color: rgba(255, 255, 255, 0.8);
         }
@@ -43,7 +44,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            border: 2px solid #007bff;
+            border: 2px solid #dc7d7a;
             border-radius: 10px;
             background-color: rgba(255, 255, 255, 0.9);
             padding: 15px;
@@ -61,31 +62,49 @@
             transition: background-color 0.3s ease;
         }
 
+        /* 简单按钮正常状态颜色 */
         #easyButton {
-            background-color: #28a745;
+            background-color: #e6a2a2;
             color: white;
+        }
+
+        /* 简单按钮点击后颜色 */
+        #easyButton.active {
+            background-color: #dc3545;
         }
 
         #easyButton:hover {
-            background-color: #218838;
+            background-color: #dc3545;
         }
 
+        /* 中等按钮正常状态颜色 */
         #mediumButton {
-            background-color: #ffc107;
+            background-color: #e6a2a2;
             color: white;
+        }
+
+        /* 中等按钮点击后颜色 */
+        #mediumButton.active {
+            background-color: #dc3545;
         }
 
         #mediumButton:hover {
-            background-color: #e0a800;
+            background-color: #dc3545;
         }
 
+        /* 困难按钮正常状态颜色 */
         #hardButton {
-            background-color: #dc3545;
+            background-color: #e6a2a2;
             color: white;
         }
 
+        /* 困难按钮点击后颜色 */
+        #hardButton.active {
+            background-color: #dc3545;
+        }
+
         #hardButton:hover {
-            background-color: #c82333;
+            background-color: #dc3545;
         }
 
         #startButton {
@@ -93,14 +112,14 @@
             padding: 15px 20px;
             border: none;
             border-radius: 5px;
-            background-color: #007bff;
+            background-color: #dc3545;
             color: white;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             transition: background-color 0.3s ease;
         }
 
         #startButton:hover {
-            background-color: #0056b3;
+            background-color: #b1404c;
         }
     </style>
 </head>
@@ -202,7 +221,7 @@
             snake.forEach((segment, index) => {
                 if (index === 0) {
                     // 绘制头部为圆形
-                    ctx.fillStyle = 'darkgreen';
+                    ctx.fillStyle = segment.color || 'green';
                     const centerX = segment.x * blockSize + blockSize / 2;
                     const centerY = segment.y * blockSize + blockSize / 2;
                     const radius = blockSize / 2;
@@ -323,13 +342,16 @@
 
         // 处理模式按钮点击事件
         function handleModeButtonClick(event) {
+            // 移除所有按钮的 active 类
+            easyButton.classList.remove('active');
+            mediumButton.classList.remove('active');
+            hardButton.classList.remove('active');
+
+            // 给当前点击的按钮添加 active 类
+            event.target.classList.add('active');
+
             selectedMode = event.target.dataset.mode;
             currentSpeed = modeSpeeds[selectedMode];
-            // 模拟默认选中简单模式，点击时可以更改样式
-            easyButton.style.backgroundColor = '#28a745';
-            mediumButton.style.backgroundColor = '#ffc107';
-            hardButton.style.backgroundColor = '#dc3545';
-            event.target.style.backgroundColor = 'lightblue';
         }
 
         easyButton.addEventListener('click', handleModeButtonClick);
@@ -337,14 +359,14 @@
         hardButton.addEventListener('click', handleModeButtonClick);
 
         // 模拟默认选中简单模式，设置背景颜色
-        easyButton.style.backgroundColor = 'lightblue';
+        easyButton.classList.add('active');
 
         // 开始游戏的函数
         function startGame() {
             // 初始化蛇和食物
             snake = [
-                { x: 10, y: 10 },
-                { x: 9, y: 10 }
+                { x: 10, y: 10, color: getRandomColor()},
+                { x: 9, y: 10, color: getRandomColor()}
             ];
             direction = 'right';
             food = {
