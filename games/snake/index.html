@@ -20,9 +20,9 @@
             width: 100%;
             height: 100%;
             /* 修改边框颜色 */
-            border: 5px solid #d2625dcc;
+            border: 2px solid #d2625dcc;
             box-sizing: border-box;
-            background-color: rgba(255, 255, 255, 0.8);
+            background-color: rgb(255 255 255);
         }
 
         #modeSelector,
@@ -164,8 +164,8 @@
 
         // 定义蛇的初始位置和方向，初始长度为 2
         let snake = [
-            { x: 10, y: 10 },
-            { x: 9, y: 10 }
+            { x: 10, y: 10, color: getRandomColor() },
+            { x: 9, y: 10, color: getRandomColor() }
         ];
         let direction = 'right';
         // 定义食物的初始位置和颜色
@@ -258,6 +258,14 @@
                     break;
             }
 
+            // 检查是否撞到边界
+            if (newHead.x < 0 || newHead.x >= canvas.width / blockSize || newHead.y < 0 || newHead.y >= canvas.height / blockSize) {
+                clearInterval(gameInterval);
+                startButton.style.display = 'block';
+                modeSelector.style.display = 'block';
+                return;
+            }
+
             // 检查是否吃到食物
             if (newHead.x === food.x && newHead.y === food.y) {
                 // 记录当前食物的颜色
@@ -292,10 +300,6 @@
         // 检查碰撞
         function checkCollision() {
             let head = snake[0];
-            // 检查是否撞到上、下、左、右四个边界
-            if (head.x < 0 || head.x >= canvas.width / blockSize || head.y < 0 || head.y >= canvas.height / blockSize) {
-                return true;
-            }
             // 检查是否撞到自己
             for (let i = 1; i < snake.length; i++) {
                 if (head.x === snake[i].x && head.y === snake[i].y) {
@@ -365,8 +369,8 @@
         function startGame() {
             // 初始化蛇和食物
             snake = [
-                { x: 10, y: 10, color: getRandomColor()},
-                { x: 9, y: 10, color: getRandomColor()}
+                { x: 10, y: 10, color: getRandomColor() },
+                { x: 9, y: 10, color: getRandomColor() }
             ];
             direction = 'right';
             food = {
