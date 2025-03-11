@@ -20,9 +20,52 @@
             width: 100%;
             height: 100%;
             /* 修改边框颜色 */
-            border: 2px solid #d2625dcc;
+            border: 8px solid #ffcacacc;
             box-sizing: border-box;
             background-color: rgb(255 255 255);
+            transition: border-color 0.3s ease;
+        }
+
+        /* 定义边框发光闪烁的动画，添加浏览器前缀 */
+        @-webkit-keyframes borderFlash {
+            0% {
+                border-color: #d2625dcc;
+                -webkit-box-shadow: 0 0 5px #d2625dcc;
+                box-shadow: 0 0 5px #d2625dcc;
+            }
+            50% {
+                border-color: #ff8c87;
+                -webkit-box-shadow: 0 0 20px #ff8c87;
+                box-shadow: 0 0 20px #ff8c87;
+            }
+            100% {
+                border-color: #d2625dcc;
+                -webkit-box-shadow: 0 0 5px #d2625dcc;
+                box-shadow: 0 0 5px #d2625dcc;
+            }
+        }
+
+        @keyframes borderFlash {
+            0% {
+                border-color: #d2625dcc;
+                -webkit-box-shadow: 0 0 5px #d2625dcc;
+                box-shadow: 0 0 5px #d2625dcc;
+            }
+            50% {
+                border-color: #ff8c87;
+                -webkit-box-shadow: 0 0 20px #ff8c87;
+                box-shadow: 0 0 20px #ff8c87;
+            }
+            100% {
+                border-color: #d2625dcc;
+                -webkit-box-shadow: 0 0 5px #d2625dcc;
+                box-shadow: 0 0 5px #d2625dcc;
+            }
+        }
+
+        #gameCanvas.flash {
+            -webkit-animation: borderFlash 0.3s ease;
+            animation: borderFlash 0.3s ease;
         }
 
         #modeSelector,
@@ -111,7 +154,7 @@
             bottom: 35vh;
             padding: 15px 20px;
             border: none;
-            border-radius: 5px;
+            border-radius: 20px;
             background-color: #dc3545;
             color: white;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -176,6 +219,8 @@
         };
         // 定义游戏循环的定时器
         let gameInterval;
+        // 新增变量，用于标记是否可以改变方向
+        let canChangeDirection = true;
 
         // 不同模式对应的游戏速度（毫秒）
         const modeSpeeds = {
@@ -241,6 +286,8 @@
 
         // 移动蛇
         function moveSnake() {
+            // 允许改变方向
+            canChangeDirection = true;
             // 先记录蛇头移动后的位置
             let newHead = { ...snake[0] };
             switch (direction) {
@@ -270,6 +317,16 @@
             if (newHead.x === food.x && newHead.y === food.y) {
                 // 记录当前食物的颜色
                 const eatenFoodColor = food.color;
+
+                // 触发边框发光闪烁效果
+                canvas.classList.add('flash');
+
+                // 监听动画结束事件，动画结束后移除类
+                const onAnimationEnd = () => {
+                    canvas.classList.remove('flash');
+                    canvas.removeEventListener('animationend', onAnimationEnd);
+                };
+                canvas.addEventListener('animationend', onAnimationEnd);
 
                 // 生成新的食物
                 food = {
@@ -328,18 +385,31 @@
 
         // 处理键盘事件
         document.addEventListener('keydown', function (event) {
+            if (!canChangeDirection) return;
             switch (event.key) {
                 case 'ArrowRight':
-                    if (direction !== 'left') direction = 'right';
+                    if (direction !== 'left') {
+                        direction = 'right';
+                        canChangeDirection = false;
+                    }
                     break;
                 case 'ArrowLeft':
-                    if (direction !== 'right') direction = 'left';
+                    if (direction !== 'right') {
+                        direction = 'left';
+                        canChangeDirection = false;
+                    }
                     break;
                 case 'ArrowUp':
-                    if (direction !== 'down') direction = 'up';
+                    if (direction !== 'down') {
+                        direction = 'up';
+                        canChangeDirection = false;
+                    }
                     break;
                 case 'ArrowDown':
-                    if (direction !== 'up') direction = 'down';
+                    if (direction !== 'up') {
+                        direction = 'down';
+                        canChangeDirection = false;
+                    }
                     break;
             }
         });
