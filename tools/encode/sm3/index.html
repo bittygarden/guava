@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍉</text></svg>">
+    <title>SM3 在线</title>
+    <link rel="stylesheet" href="../base.css">
+</head>
+
+<body>
+    <div class="inputDiv">
+        <label>输入：</label>
+        <textarea class="inputText" id="inputText" placeholder="请输入文本"></textarea>
+    </div>
+
+    <div class="outputDiv">
+        <label>SM3：</label>
+        <textarea class="outputText" id="outputText" readonly placeholder="SM3 编码将显示在这里"></textarea>
+    </div>
+
+    <div>
+        <button id="generateButton">生成</button>
+    </div>
+
+    <!-- 引入 sm-crypto 库 -->
+    <script src="https://cdn.jsdelivr.net/npm/sm-crypto@0.3.13/dist/sm3.min.js"></script>
+    <script>
+        // 获取 DOM 元素
+        const inputText = document.getElementById('inputText');
+        const generateButton = document.getElementById('generateButton');
+        const outputText = document.getElementById('outputText');
+
+        // 监听按钮点击事件
+        generateButton.addEventListener('click', function () {
+            if (inputText.value === "") {
+                outputText.value = "请输入文本";
+                return;
+            }
+            // 获取输入框的内容
+            const text = inputText.value;
+            // 计算 SM3 编码
+            const sm3Hash = sm3(text);
+            // 将 SM3 编码显示在输出框中
+            outputText.value = sm3Hash;
+        });
+    </script>
+</body>
+
+</html>
