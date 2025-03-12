@@ -101,9 +101,15 @@
     </div>
 
     <script>
-        // 手动实现 Base32 编码函数
+        // 获取 DOM 元素
+        const inputText = document.getElementById('inputText');
+        const generateButton = document.getElementById('generateButton');
+        const outputText = document.getElementById('outputText');
+
+        // Base32 编码表
+        const base32Alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+
         function base32Encode(input) {
-            const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
             let output = '';
             let bits = 0;
             let value = 0;
@@ -111,23 +117,19 @@
                 value = (value << 8) | input.charCodeAt(i);
                 bits += 8;
                 while (bits >= 5) {
-                    output += alphabet[(value >>> (bits - 5)) & 31];
+                    output += base32Alphabet[(value >>> (bits - 5)) & 31];
                     bits -= 5;
                 }
             }
             if (bits > 0) {
-                output += alphabet[(value << (5 - bits)) & 31];
+                output += base32Alphabet[(value << (5 - bits)) & 31];
             }
+            // 添加填充
             while (output.length % 8 !== 0) {
                 output += '=';
             }
             return output;
         }
-
-        // 获取 DOM 元素
-        const inputText = document.getElementById('inputText');
-        const generateButton = document.getElementById('generateButton');
-        const outputText = document.getElementById('outputText');
 
         // 监听按钮点击事件
         generateButton.addEventListener('click', function () {
@@ -138,8 +140,12 @@
             try {
                 // 获取输入框的内容
                 const text = inputText.value;
+                // 处理包含非 ASCII 字符的情况
+                const utf8Encoded = encodeURIComponent(text).replace(/%([0-9A-F]{2})/g, (match, p1) => {
+                    return String.fromCharCode(parseInt(p1, 16));
+                });
                 // 进行 Base32 编码
-                const base32Encoded = base32Encode(text);
+                const base32Encoded = base32Encode(utf8Encoded);
                 // 将 Base32 编码显示在输出框中
                 outputText.value = base32Encoded;
             } catch (error) {
