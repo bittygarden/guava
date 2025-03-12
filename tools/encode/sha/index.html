@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍉</text></svg>">
+    <title>SHA 在线</title>
+    <link rel="stylesheet" href="../base.css">
+    <script src="../components/core-min.js"></script>
+    <script src="../components/sha1-min.js"></script>
+</head>
+
+<body>
+    <div class="inputDiv">
+        <label>输入：</label>
+        <textarea class="inputText" id="inputText" placeholder="请输入文本"></textarea>
+    </div>
+
+    <div class="outputDiv">
+        <label>SHA：</label>
+        <textarea class="outputText" id="outputText" readonly placeholder="编码结果将显示在这里"></textarea>
+    </div>
+
+    <div>
+        <button id="generateButton">生成</button>
+    </div>
+
+    <script>
+        // 获取 DOM 元素
+        const inputText = document.getElementById('inputText');
+        const generateButton = document.getElementById('generateButton');
+        const outputText = document.getElementById('outputText');
+
+        // 监听按钮点击事件
+        generateButton.addEventListener('click', async function () {
+            if (inputText.value === "") {
+                outputText.value = "请输入文本";
+                return;
+            }
+            // 获取输入框的内容
+            const text = inputText.value;
+            // 将文本编码为 UTF - 8 字节数组
+            const encoder = new TextEncoder();
+            const data = encoder.encode(text);
+            try {
+                // 计算 SHA - 1 哈希值
+                const hashHex = CryptoJS.SHA1(text);
+                outputText.value = hashHex;
+            } catch (error) {
+                console.error('计算 SHA 哈希值时出错:', error);
+                outputText.value = '计算哈希值时出错，请重试';
+            }
+        });
+    </script>
+</body>
+
+</html>
