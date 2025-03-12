@@ -173,16 +173,17 @@
         #directionButtons {
             display: none;
             position: fixed;
-            bottom: 10px;
+            bottom: 40px;
+            right: 40px;
             /* width: 100%; */
             text-align: center;
             z-index: 1;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             grid-template-rows: repeat(2, 1fr);
-            gap: 20px;
             justify-items: center;
             align-items: center;
+            gap: 20px;
         }
 
         #upButton {
@@ -208,9 +209,10 @@
         #directionButtons button {
             width: 50px;
             height: 50px;
-            font-size: 20px;
-            background-color: rgba(0, 0, 0, 0);
+            font-size: 30px;
+            background-color: rgba(220, 53, 69, 0.5);
             border: 0;
+            color: white;
         }
     </style>
 </head>
@@ -224,10 +226,10 @@
     </div>
     <button id="startButton">开始游戏</button>
     <div id="directionButtons">
-        <button id="upButton">⬆️</button>
-        <button id="leftButton">⬅️</button>
-        <button id="rightButton">➡️</button>
-        <button id="downButton">⬇️</button>
+        <button id="upButton">↑</button>
+        <button id="leftButton">←</button>
+        <button id="rightButton">→</button>
+        <button id="downButton">↓</button>
     </div>
     <script>
         // 获取画布和绘图上下文
