@@ -17,6 +17,13 @@ body {
     margin: 10px 0;
 }
 
+.selectDiv {
+    display: flex;
+    align-items: center;
+    width: 90%;
+    margin: 10px 0;
+}
+
 .outputDiv {
     display: flex;
     align-items: center;
@@ -56,6 +63,20 @@ label {
 .outputText:focus,
 .outputText:hover,
 .outputText:active {
+    border: 1px solid #57aa7f;
+    outline: 2px solid #57aa7f;
+}
+
+.selectInput {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #94b76c;
+    border-radius: 4px;
+}
+
+.selectInput:focus,
+.selectInput:hover,
+.selectInput:active {
     border: 1px solid #57aa7f;
     outline: 2px solid #57aa7f;
 }

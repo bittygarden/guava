@@ -9,13 +9,32 @@
     <title>SHA 在线</title>
     <link rel="stylesheet" href="../base.css">
     <script src="../components/core-min.js"></script>
+    <script src="../components/x64-core-min.js"></script>
     <script src="../components/sha1-min.js"></script>
+    <script src="../components/sha256-min.js"></script>
+    <script src="../components/sha224-min.js"></script>
+    <script src="../components/sha512-min.js"></script>
+    <script src="../components/sha384-min.js"></script>
+    <script src="../components/sha3-min.js"></script>
 </head>
 
 <body>
     <div class="inputDiv">
         <label>输入：</label>
         <textarea class="inputText" id="inputText" placeholder="请输入文本"></textarea>
+    </div>
+
+    <div class="selectDiv">
+        <label for="algorithmSelect">选择算法：</label>
+        <select class="selectInput" id="algorithmSelect">
+            <option value="SHA1">SHA-1</option>
+            <option value="SHA224">SHA2-224</option>
+            <option value="SHA256">SHA2-256</option>
+            <option value="SHA384">SHA2-384</option>
+            <option value="SHA512">SHA2-512</option>
+            <option value="SHA3-224">SHA3-224</option>
+            <option value="SHA3-256">SHA3-256</option>
+        </select>
     </div>
 
     <div class="outputDiv">
@@ -32,6 +51,7 @@
         const inputText = document.getElementById('inputText');
         const generateButton = document.getElementById('generateButton');
         const outputText = document.getElementById('outputText');
+        const algorithmSelect = document.getElementById('algorithmSelect');
 
         // 监听按钮点击事件
         generateButton.addEventListener('click', async function () {
@@ -41,13 +61,36 @@
             }
             // 获取输入框的内容
             const text = inputText.value;
-            // 将文本编码为 UTF - 8 字节数组
-            const encoder = new TextEncoder();
-            const data = encoder.encode(text);
+            // 获取用户选择的算法
+            const selectedAlgorithm = algorithmSelect.value;
             try {
-                // 计算 SHA - 1 哈希值
-                const hashHex = CryptoJS.SHA1(text);
-                outputText.value = hashHex;
+                let hashHex;
+                switch (selectedAlgorithm) {
+                    case 'SHA1':
+                        hashHex = CryptoJS.SHA1(text);
+                        break;
+                    case 'SHA224':
+                        hashHex = CryptoJS.SHA224(text);
+                        break;
+                    case 'SHA256':
+                        hashHex = CryptoJS.SHA256(text);
+                        break;
+                    case 'SHA384':
+                        hashHex = CryptoJS.SHA384(text);
+                        break;
+                    case 'SHA512':
+                        hashHex = CryptoJS.SHA512(text);
+                        break;
+                    case 'SHA3-224':
+                        hashHex = CryptoJS.SHA3(text, { outputLength: 224 });
+                        break;
+                    case 'SHA3-256':
+                        hashHex = CryptoJS.SHA3(text, { outputLength: 256 });
+                        break;
+                    default:
+                        throw new Error('不支持的算法');
+                }
+                outputText.value = hashHex.toString();
             } catch (error) {
                 console.error('计算 SHA 哈希值时出错:', error);
                 outputText.value = '计算哈希值时出错，请重试';
