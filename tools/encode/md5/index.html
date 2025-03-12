@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍉</text></svg>">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍉</text></svg>">
     <title>MD5 在线</title>
     <style>
         body {
@@ -18,7 +19,7 @@
             background-color: #ecdede;
         }
 
-       .inputDiv{
+        .inputDiv {
             display: flex;
             align-items: center;
             width: 90%;
@@ -26,7 +27,7 @@
             margin: 10px 0;
         }
 
-       .outputDiv {
+        .outputDiv {
             display: flex;
             align-items: center;
             width: 90%;
@@ -48,11 +49,25 @@
             height: 100%;
         }
 
+        input:focus,
+        input:hover,
+        textarea:active {
+            border: 1px solid #57aa7f;
+            outline: 2px solid #57aa7f;
+        }
+
         textarea {
             flex: 1;
             padding: 10px;
-            border: 1px solid #ccc;
+            border: 1px solid #94b76c;
             border-radius: 4px;
+        }
+
+        textarea:focus,
+        textarea:hover,
+        textarea:active {
+            border: 1px solid #57aa7f;
+            outline: 2px solid #57aa7f;
         }
 
         button {
