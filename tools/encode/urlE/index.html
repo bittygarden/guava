@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍉</text></svg>">
+    <title>URL编码-在线</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #ecdede;
+        }
+
+        .inputDiv {
+            display: flex;
+            align-items: center;
+            width: 90%;
+            height: 50%;
+            margin: 10px 0;
+        }
+
+        .outputDiv {
+            display: flex;
+            align-items: center;
+            width: 90%;
+            margin: 10px 0;
+        }
+
+        label {
+            min-width: 80px;
+            margin-right: 10px;
+            height: 100%;
+            align-content: center;
+        }
+
+        input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #94b76c;
+            border-radius: 4px;
+            height: 100%;
+        }
+
+        input:focus,
+        input:hover,
+        textarea:active {
+            border: 1px solid #57aa7f;
+            outline: 2px solid #57aa7f;
+        }
+
+        textarea {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #94b76c;
+            border-radius: 4px;
+        }
+
+        textarea:focus,
+        textarea:hover,
+        textarea:active {
+            border: 1px solid #57aa7f;
+            outline: 2px solid #57aa7f;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #94b76c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #57aa7f;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="inputDiv">
+        <label>输入：</label>
+        <input type="text" id="inputText" placeholder="请输入原始URL">
+    </div>
+
+    <div class="outputDiv">
+        <label>URL编码：</label>
+        <textarea id="outputText" readonly placeholder="URL 编码将显示在这里"></textarea>
+    </div>
+
+    <div>
+        <button id="generateButton">生成</button>
+    </div>
+
+    <script>
+        // 获取 DOM 元素
+        const inputText = document.getElementById('inputText');
+        const generateButton = document.getElementById('generateButton');
+        const outputText = document.getElementById('outputText');
+
+        // 监听按钮点击事件
+        generateButton.addEventListener('click', function () {
+            if (inputText.value === "") {
+                outputText.value = "请输入文本";
+                return;
+            }
+            try {
+                // 获取输入框的内容
+                const text = inputText.value;
+                // 进行 URL 编码
+                const urlEncoded = encodeURIComponent(text);
+                // 将 URL 编码显示在输出框中
+                outputText.value = urlEncoded;
+            } catch (error) {
+                outputText.value = "编码出错：" + error.message;
+            }
+        });
+    </script>
+</body>
+
+</html>
