@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍉</text></svg>">
-    <title>Base64编码-在线</title>
+    <title>Base32编码-在线</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -92,8 +92,8 @@
     </div>
 
     <div class="outputDiv">
-        <label>Base64：</label>
-        <textarea id="outputText" readonly placeholder="Base64 编码将显示在这里"></textarea>
+        <label>Base32：</label>
+        <textarea id="outputText" readonly placeholder="Base32 编码将显示在这里"></textarea>
     </div>
 
     <div>
@@ -101,6 +101,29 @@
     </div>
 
     <script>
+        // 手动实现 Base32 编码函数
+        function base32Encode(input) {
+            const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+            let output = '';
+            let bits = 0;
+            let value = 0;
+            for (let i = 0; i < input.length; i++) {
+                value = (value << 8) | input.charCodeAt(i);
+                bits += 8;
+                while (bits >= 5) {
+                    output += alphabet[(value >>> (bits - 5)) & 31];
+                    bits -= 5;
+                }
+            }
+            if (bits > 0) {
+                output += alphabet[(value << (5 - bits)) & 31];
+            }
+            while (output.length % 8 !== 0) {
+                output += '=';
+            }
+            return output;
+        }
+
         // 获取 DOM 元素
         const inputText = document.getElementById('inputText');
         const generateButton = document.getElementById('generateButton');
@@ -115,14 +138,10 @@
             try {
                 // 获取输入框的内容
                 const text = inputText.value;
-                // 处理包含非 ASCII 字符的情况
-                const utf8Encoded = encodeURIComponent(text).replace(/%([0-9A-F]{2})/g, (match, p1) => {
-                    return String.fromCharCode(parseInt(p1, 16));
-                });
-                // 进行 Base64 编码
-                const base64Encoded = btoa(utf8Encoded);
-                // 将 Base64 编码显示在输出框中
-                outputText.value = base64Encoded;
+                // 进行 Base32 编码
+                const base32Encoded = base32Encode(text);
+                // 将 Base32 编码显示在输出框中
+                outputText.value = base32Encoded;
             } catch (error) {
                 outputText.value = "编码出错：" + error.message;
             }

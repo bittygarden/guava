@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍉</text></svg>">
-    <title>Base64编码-在线</title>
+    <title>Base32解码-在线</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -87,20 +87,44 @@
 
 <body>
     <div class="inputDiv">
-        <label>输入：</label>
-        <input type="text" id="inputText" placeholder="请输入文本">
+        <label>Base32：</label>
+        <input type="text" id="inputText" placeholder="请输入 Base32 编码的文本">
     </div>
 
     <div class="outputDiv">
-        <label>Base64：</label>
-        <textarea id="outputText" readonly placeholder="Base64 编码将显示在这里"></textarea>
+        <label>结果：</label>
+        <textarea id="outputText" readonly placeholder="解码后的文本将显示在这里"></textarea>
     </div>
 
     <div>
-        <button id="generateButton">生成</button>
+        <button id="generateButton">解码</button>
     </div>
 
     <script>
+        // Base32 解码函数
+        function base32Decode(input) {
+            const base32Chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+            input = input.replace(/=+$/, '');
+            let bits = 0;
+            let value = 0;
+            let output = [];
+
+            for (let i = 0; i < input.length; i++) {
+                const index = base32Chars.indexOf(input[i].toUpperCase());
+                if (index === -1) {
+                    throw new Error('输入包含无效的 Base32 字符');
+                }
+                value = (value << 5) | index;
+                bits += 5;
+                while (bits >= 8) {
+                    output.push((value >>> (bits - 8)) & 0xff);
+                    bits -= 8;
+                }
+            }
+
+            return new Uint8Array(output);
+        }
+
         // 获取 DOM 元素
         const inputText = document.getElementById('inputText');
         const generateButton = document.getElementById('generateButton');
@@ -109,22 +133,19 @@
         // 监听按钮点击事件
         generateButton.addEventListener('click', function () {
             if (inputText.value === "") {
-                outputText.value = "请输入文本";
+                outputText.value = "请输入 Base32 编码的文本";
                 return;
             }
             try {
                 // 获取输入框的内容
-                const text = inputText.value;
-                // 处理包含非 ASCII 字符的情况
-                const utf8Encoded = encodeURIComponent(text).replace(/%([0-9A-F]{2})/g, (match, p1) => {
-                    return String.fromCharCode(parseInt(p1, 16));
-                });
-                // 进行 Base64 编码
-                const base64Encoded = btoa(utf8Encoded);
-                // 将 Base64 编码显示在输出框中
-                outputText.value = base64Encoded;
+                const base32Text = inputText.value;
+                // 进行 Base32 解码
+                const decodedBytes = base32Decode(base32Text);
+                const decodedText = new TextDecoder('utf-8').decode(decodedBytes);
+                // 将解码结果显示在输出框中
+                outputText.value = decodedText;
             } catch (error) {
-                outputText.value = "编码出错：" + error.message;
+                outputText.value = "解码出错：" + error.message;
             }
         });
     </script>
