@@ -114,8 +114,12 @@
             }
             // 获取输入框的内容
             const text = inputText.value;
+            // 处理包含非 ASCII 字符的情况
+            const utf8Encoded = encodeURIComponent(text).replace(/%([0-9A-F]{2})/g, (match, p1) => {
+                return String.fromCharCode(parseInt(p1, 16));
+            });
             // 进行 Base64 编码
-            const base64Encoded = btoa(text);
+            const base64Encoded = btoa(utf8Encoded);
             // 将 Base64 编码显示在输出框中
             outputText.value = base64Encoded;
         });

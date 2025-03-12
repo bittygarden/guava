@@ -116,7 +116,13 @@
                 // 获取输入框的内容
                 const base64Text = inputText.value;
                 // 进行 Base64 解码
-                const decodedText = atob(base64Text);
+                const binaryString = atob(base64Text);
+                const len = binaryString.length;
+                const bytes = new Uint8Array(len);
+                for (let i = 0; i < len; i++) {
+                    bytes[i] = binaryString.charCodeAt(i);
+                }
+                const decodedText = new TextDecoder('utf-8').decode(bytes);
                 // 将解码结果显示在输出框中
                 outputText.value = decodedText;
             } catch (error) {
