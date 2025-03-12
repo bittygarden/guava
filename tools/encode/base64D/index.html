@@ -41,7 +41,7 @@
             align-content: center;
         }
 
-        input {
+        .inputText {
             flex: 1;
             padding: 10px;
             border: 1px solid #94b76c;
@@ -49,23 +49,23 @@
             height: 100%;
         }
 
-        input:focus,
-        input:hover,
-        textarea:active {
+        .inputText:focus,
+        .inputText:hover,
+        .inputText:active {
             border: 1px solid #57aa7f;
             outline: 2px solid #57aa7f;
         }
 
-        textarea {
+        .outputText {
             flex: 1;
             padding: 10px;
             border: 1px solid #94b76c;
             border-radius: 4px;
         }
 
-        textarea:focus,
-        textarea:hover,
-        textarea:active {
+        .outputText:focus,
+        .outputText:hover,
+        .outputText:active {
             border: 1px solid #57aa7f;
             outline: 2px solid #57aa7f;
         }
@@ -88,12 +88,12 @@
 <body>
     <div class="inputDiv">
         <label>Base64：</label>
-        <input type="text" id="inputText" placeholder="请输入 Base64 编码的文本">
+        <textarea class="inputText" id="inputText" placeholder="请输入 Base64 编码的文本"></textarea>
     </div>
 
     <div class="outputDiv">
         <label>结果：</label>
-        <textarea id="outputText" readonly placeholder="解码后的文本将显示在这里"></textarea>
+        <textarea class="outputText" id="outputText" readonly placeholder="解码后的文本将显示在这里"></textarea>
     </div>
 
     <div>
