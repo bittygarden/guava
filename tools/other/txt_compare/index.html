@@ -83,6 +83,18 @@
         .deleteWord {
             color: #d93c0c;
         }
+
+        .lineNumbers {
+            width: 30px;
+            height: 100%;
+            padding: 10px;
+            text-align: right;
+            overflow: hidden;
+            color: #777;
+            background-color: #f0f0f0;
+            border-right: 1px solid #ccc;
+            user-select: none;
+        }
     </style>
     <!-- 引入 jsdiff 库 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsdiff/5.1.0/diff.min.js"></script>
@@ -90,8 +102,11 @@
 
 <body>
     <div class="inputDiv">
+        <div class="lineNumbers" id="lineNumbers1"></div>
         <textarea class="inputText" id="text1" placeholder="请输入文本1"></textarea>
+        <div class="lineNumbers" id="lineNumbers2"></div>
         <textarea class="inputText" id="text2" placeholder="请输入文本2"></textarea>
+        <div class="lineNumbers" id="lineNumbers3"></div>
         <div class="outputText" id="text3" readonly placeholder="对比结果将显示在这里"></div>
     </div>
 
@@ -107,6 +122,9 @@
         const text3 = document.getElementById('text3');
         const compareButton = document.getElementById('compareButton');
         const copyButton = document.getElementById('copyButton');
+        const lineNumbers1 = document.getElementById('lineNumbers1');
+        const lineNumbers2 = document.getElementById('lineNumbers2');
+        const lineNumbers3 = document.getElementById('lineNumbers3');
 
         // 滚动联动函数
         function syncScroll(target) {
@@ -124,6 +142,13 @@
                 text3.scrollTop = scrollTop;
                 text3.scrollLeft = scrollLeft;
             }
+            if (target === text1) {
+                lineNumbers1.scrollTop = scrollTop;
+            } else if (target === text2) {
+                lineNumbers2.scrollTop = scrollTop;
+            } else if (target === text3) {
+                lineNumbers3.scrollTop = scrollTop;
+            }
         }
 
         // 监听滚动事件
@@ -135,6 +160,31 @@
         });
         text3.addEventListener('scroll', function () {
             syncScroll(this);
+        });
+
+        // 更新行号函数
+        function updateLineNumbers(element, lineNumbers) {
+            let content = '';
+            if (element.tagName === 'TEXTAREA') {
+                content = element.value;
+            } else {
+                // 处理 div 元素，先把 <br> 替换为换行符
+                content = element.innerHTML.replace(/<br\s*\/?>/gi, '\n');
+            }
+            const lines = content.split('\n').length;
+            let lineNumberHTML = '';
+            for (let i = 1; i <= lines; i++) {
+                lineNumberHTML += i + '<br>';
+            }
+            lineNumbers.innerHTML = lineNumberHTML;
+        }
+
+        // 监听文本输入框内容变化事件
+        text1.addEventListener('input', function () {
+            updateLineNumbers(this, lineNumbers1);
+        });
+        text2.addEventListener('input', function () {
+            updateLineNumbers(this, lineNumbers2);
         });
 
         // 对比按钮点击事件
@@ -174,6 +224,7 @@
                     text3.innerHTML = result.join('');
                 }
                 copyButton.textContent = '复制';
+                updateLineNumbers(text3, lineNumbers3);
             } catch (error) {
                 text3.innerHTML = "对比失败，错误信息: " + error.message;
                 copyButton.textContent = '复制';
@@ -194,6 +245,11 @@
                 // 可根据需要添加失败处理逻辑
             }
         });
+
+        // 初始化行号
+        updateLineNumbers(text1, lineNumbers1);
+        updateLineNumbers(text2, lineNumbers2);
+        updateLineNumbers(text3, lineNumbers3);
     </script>
 </body>
 
