@@ -242,10 +242,16 @@
 
         // 复制按钮点击事件
         copyButton.addEventListener('click', async function () {
-            const output = text3.textContent;
+            output = text3.innerHTML;
             if (output === "") {
                 return;
             }
+
+            output = output.replace(/&gt;/g, '>');
+            output = output.replace(/&lt;/g, '<');
+            output = output.replace(/<span>&nbsp;<\/span>/g, ' ');
+            output = output.replace(/<br>/g, '\n');
+
             try {
                 await navigator.clipboard.writeText(output);
                 copyButton.textContent = '已复制';
