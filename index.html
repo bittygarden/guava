@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>在线工具</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍉</text></svg>">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍉</text></svg>">
     <style>
         * {
             box-sizing: border-box;
@@ -28,7 +29,7 @@
             min-height: 100vh;
             background-color: #ecdede;
             padding: 20px;
-            border-radius: 20px;
+            padding-top: 0px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
@@ -41,17 +42,13 @@
             text-align: center;
             width: calc(100% + 40px);
             margin-left: -20px;
-            border-radius: 0;
+            border-radius: 6px;
         }
 
         /* 选中第一个 h2 元素 */
         .container h2:first-of-type {
-            position: absolute;
-            top: 0;
-            left: 0;
-            margin-top: 0;
-            border-top-left-radius: 0;
-            border-top-right-radius: 0;
+            margin-top: 0px;
+            margin-bottom: -20px;
         }
 
         ul {
@@ -62,9 +59,10 @@
             flex-direction: row;
             gap: 10px;
             align-items: flex-start;
-            margin-top: 10px; /* 设置统一的顶部外边距 */
+            margin-top: 10px;
+            /* 设置统一的顶部外边距 */
             /* 新增属性，让 li 元素自动换行 */
-            flex-wrap: wrap; 
+            flex-wrap: wrap;
         }
 
         /* 第一个 ul 元素的顶部外边距需要特殊处理 */
