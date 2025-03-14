@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>年假计算器-在线</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍉</text></svg>">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍉</text></svg>">
     <style>
         /* 全局样式 */
         body {
@@ -27,8 +28,8 @@
             padding: 20px;
             border-radius: 15px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            width: 96%;
-            max-width: 450px;
+            width: 100%;
+            height: 100%;
             box-sizing: border-box;
             animation: fadeIn 0.5s ease-out;
         }
@@ -55,7 +56,7 @@
             width: 100%;
             padding: 12px;
             margin-bottom: 20px;
-            border: 1px solid #cccccc;
+            border: 1px solid #94b76c;
             border-radius: 8px;
             box-sizing: border-box;
             font-size: 16px;
@@ -64,16 +65,16 @@
 
         input[type="number"]:focus,
         select:focus {
-            border-color: #007BFF;
-            outline: none;
+            border: 1px solid #57aa7f;
+            outline: 2px solid #57aa7f;
         }
 
         /* 按钮样式 */
         button {
             width: 100%;
             padding: 12px;
-            background-color: #007BFF;
-            color: #ffffff;
+            background-color: #94b76c;
+            color: white;
             border: none;
             border-radius: 8px;
             cursor: pointer;
@@ -82,7 +83,7 @@
         }
 
         button:hover {
-            background-color: #0056b3;
+            background-color: #57aa7f;
         }
 
         /* 表格样式 */
@@ -110,6 +111,7 @@
 
         /* 小屏幕设备样式 */
         @media (max-width: 480px) {
+
             th,
             td {
                 padding: 10px;
@@ -147,76 +149,76 @@
 </head>
 
 <body>
-<div class="container">
-    <h1>年假计算器</h1>
-    <label for="annualLeaveDays">年假天数:</label>
-    <input type="number" id="annualLeaveDays" min="0.5" step="0.5" value="5" placeholder="请输入年假天数">
-    <label for="releaseUnit">最小年假释放单位:</label>
-    <select id="releaseUnit">
-        <option value="0.5">0.5 天</option>
-        <option value="1">1 天</option>
-        <option value="1.5">1.5 天</option>
-        <option value="2">2 天</option>
-        <option value="5">5 天</option>
-    </select>
-    <button onclick="calculateAnnualLeave()">计算</button>
-    <table id="resultTable">
-        <thead>
-        <tr>
-            <th>释放日期</th>
-            <th>累计年假天数</th>
-        </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
-</div>
+    <div class="container">
+        <h1>年假计算器</h1>
+        <label for="annualLeaveDays">年假天数:</label>
+        <input type="number" id="annualLeaveDays" min="0.5" step="0.5" value="5" placeholder="请输入年假天数">
+        <label for="releaseUnit">最小年假释放单位:</label>
+        <select id="releaseUnit">
+            <option value="0.5">0.5 天</option>
+            <option value="1">1 天</option>
+            <option value="1.5">1.5 天</option>
+            <option value="2">2 天</option>
+            <option value="5">5 天</option>
+        </select>
+        <button onclick="calculateAnnualLeave()">计算</button>
+        <table id="resultTable">
+            <thead>
+                <tr>
+                    <th>释放日期</th>
+                    <th>累计年假天数</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
 
-<script>
-    function calculateAnnualLeave() {
-        const annualLeaveDays = parseFloat(document.getElementById('annualLeaveDays').value);
-        const releaseUnit = parseFloat(document.getElementById('releaseUnit').value);
+    <script>
+        function calculateAnnualLeave() {
+            const annualLeaveDays = parseFloat(document.getElementById('annualLeaveDays').value);
+            const releaseUnit = parseFloat(document.getElementById('releaseUnit').value);
 
-        if (isNaN(annualLeaveDays) || annualLeaveDays < 0.5) {
-            alert('请输入有效的年假天数，最小值为 0.5 天');
-            return;
-        }
-
-        const tableBody = document.querySelector('#resultTable tbody');
-        tableBody.innerHTML = '';
-
-        const totalReleases = Math.ceil(annualLeaveDays / releaseUnit);
-        const currentYear = new Date().getFullYear();
-        const startDate = new Date(currentYear, 0, 1);
-        const endDate = new Date(currentYear, 11, 31);
-        const totalDaysInYear = (endDate - startDate) / (1000 * 60 * 60 * 24);
-
-        const interval = totalDaysInYear / totalReleases;
-
-        let currentDate = startDate;
-        let cumulativeDays = 0;
-        for (let i = 0; i < totalReleases; i++) {
-            const row = tableBody.insertRow();
-            const dateCell = row.insertCell(0);
-            const daysCell = row.insertCell(1);
-
-            const year = currentDate.getFullYear();
-            const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-            const day = String(currentDate.getDate()).padStart(2, '0');
-            const formattedDate = `${year}-${month}-${day}`;
-            dateCell.textContent = formattedDate;
-
-            if (cumulativeDays + releaseUnit > annualLeaveDays) {
-                cumulativeDays = annualLeaveDays;
-            } else {
-                cumulativeDays += releaseUnit;
+            if (isNaN(annualLeaveDays) || annualLeaveDays < 0.5) {
+                alert('请输入有效的年假天数，最小值为 0.5 天');
+                return;
             }
-            daysCell.textContent = cumulativeDays.toFixed(1);
 
-            currentDate = new Date(currentDate.getTime() + interval * 1000 * 60 * 60 * 24);
+            const tableBody = document.querySelector('#resultTable tbody');
+            tableBody.innerHTML = '';
+
+            const totalReleases = Math.ceil(annualLeaveDays / releaseUnit);
+            const currentYear = new Date().getFullYear();
+            const startDate = new Date(currentYear, 0, 1);
+            const endDate = new Date(currentYear, 11, 31);
+            const totalDaysInYear = (endDate - startDate) / (1000 * 60 * 60 * 24);
+
+            const interval = totalDaysInYear / totalReleases;
+
+            let currentDate = startDate;
+            let cumulativeDays = 0;
+            for (let i = 0; i < totalReleases; i++) {
+                const row = tableBody.insertRow();
+                const dateCell = row.insertCell(0);
+                const daysCell = row.insertCell(1);
+
+                const year = currentDate.getFullYear();
+                const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+                const day = String(currentDate.getDate()).padStart(2, '0');
+                const formattedDate = `${year}-${month}-${day}`;
+                dateCell.textContent = formattedDate;
+
+                if (cumulativeDays + releaseUnit > annualLeaveDays) {
+                    cumulativeDays = annualLeaveDays;
+                } else {
+                    cumulativeDays += releaseUnit;
+                }
+                daysCell.textContent = cumulativeDays.toFixed(1);
+
+                currentDate = new Date(currentDate.getTime() + interval * 1000 * 60 * 60 * 24);
+            }
         }
-    }
-</script>
+    </script>
 </body>
 
 </html>
