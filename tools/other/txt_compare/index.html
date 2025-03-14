@@ -213,6 +213,9 @@
                 diff.forEach((part) => {
                     let value = part.value;
                     // 处理换行符
+                    value = value.replace(/>/g, '&gt;');
+                    value = value.replace(/</g, '&lt;');
+                    value = value.replace(/ /g, '<span>&nbsp;</span>');
                     value = value.replace(/\n/g, '<br>');
                     if (part.added) {
                         result.push(`<span class="addWord">${value}</span>`);
