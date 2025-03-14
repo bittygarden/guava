@@ -38,6 +38,9 @@
             border: 1px solid #94b76c;
             border-radius: 4px;
             height: 100%;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            overflow: auto;
         }
 
         .inputText:focus,
@@ -53,7 +56,10 @@
             border: 2px solid #57aa7f;
             border-radius: 4px;
             height: 100%;
-            white-space: pre-wrap; /* 保持换行 */
+            white-space: pre-wrap;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            overflow: auto;
         }
 
         button {
@@ -70,12 +76,12 @@
             background-color: #57aa7f;
         }
 
-        .deleteWord {
-            color: #d2625dcc;
+        .addWord {
+            color: #0cb751;
         }
 
-        .addWord {
-            color: #57aa7f;
+        .deleteWord {
+            color: #d93c0c;
         }
     </style>
     <!-- 引入 jsdiff 库 -->
@@ -102,10 +108,41 @@
         const compareButton = document.getElementById('compareButton');
         const copyButton = document.getElementById('copyButton');
 
+        // 滚动联动函数
+        function syncScroll(target) {
+            const scrollTop = target.scrollTop;
+            const scrollLeft = target.scrollLeft;
+            if (target !== text1) {
+                text1.scrollTop = scrollTop;
+                text1.scrollLeft = scrollLeft;
+            }
+            if (target !== text2) {
+                text2.scrollTop = scrollTop;
+                text2.scrollLeft = scrollLeft;
+            }
+            if (target !== text3) {
+                text3.scrollTop = scrollTop;
+                text3.scrollLeft = scrollLeft;
+            }
+        }
+
+        // 监听滚动事件
+        text1.addEventListener('scroll', function () {
+            syncScroll(this);
+        });
+        text2.addEventListener('scroll', function () {
+            syncScroll(this);
+        });
+        text3.addEventListener('scroll', function () {
+            syncScroll(this);
+        });
+
         // 对比按钮点击事件
         compareButton.addEventListener('click', function () {
-            const input1 = text1.value;
-            const input2 = text2.value;
+            // 去除末尾换行符
+            let input1 = text1.value;
+            let input2 = text2.value;
+
             if (input1 === "" || input2 === "") {
                 text3.innerHTML = "请输入需要对比的文本";
                 copyButton.textContent = '复制';
@@ -121,7 +158,7 @@
                 diff.forEach((part) => {
                     let value = part.value;
                     // 处理换行符
-                    value = value.replace(/\n/g, '<br>'); 
+                    value = value.replace(/\n/g, '<br>');
                     if (part.added) {
                         result.push(`<span class="addWord">${value}</span>`);
                     } else if (part.removed) {
