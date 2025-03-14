@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍉</text></svg>">
+    <title>文本对比工具 在线</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #ecdede;
+        }
+
+        .inputDiv {
+            display: flex;
+            align-items: center;
+            width: 95%;
+            margin: 10px 0;
+            height: 85%;
+        }
+
+        .buttonDiv {
+            margin-top: 20px;
+        }
+
+        .inputText {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #94b76c;
+            border-radius: 4px;
+            height: 100%;
+        }
+
+        .inputText:focus,
+        .inputText:hover,
+        .inputText:active {
+            border: 1px solid #57aa7f;
+            outline: 2px solid #57aa7f;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #94b76c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+
+        button:hover {
+            background-color: #57aa7f;
+        }
+    </style>
+    <!-- 引入 jsdiff 库 -->
+    <script src="./diff.min.js"></script>
+</head>
+
+<body>
+    <div class="inputDiv">
+        <textarea class="inputText" id="text1" placeholder="请输入文本1"></textarea>
+        <textarea class="inputText" id="text2" placeholder="请输入文本2"></textarea>
+        <textarea class="inputText" id="text3" readonly placeholder="对比结果将显示在这里"></textarea>
+    </div>
+
+    <div class="buttonDiv">
+        <button id="compareButton">对比</button>
+        <button id="copyButton">复制</button>
+    </div>
+
+    <script>
+        // 获取 DOM 元素
+        const text1 = document.getElementById('text1');
+        const text2 = document.getElementById('text2');
+        const text3 = document.getElementById('text3');
+        const compareButton = document.getElementById('compareButton');
+        const copyButton = document.getElementById('copyButton');
+
+        // 对比按钮点击事件
+        compareButton.addEventListener('click', function () {
+            const input1 = text1.value;
+            const input2 = text2.value;
+            if (input1 === "" || input2 === "") {
+                text3.value = "请输入需要对比的文本";
+                copyButton.textContent = '复制';
+                return;
+            }
+
+            try {
+                // 使用 jsdiff 对比文本
+                const diff = Diff.diffChars(input1, input2);
+                console.log(diff);
+                const result = [];
+
+                diff.forEach((part) => {
+                    const value = part.value;
+                    if (part.added) {
+                        result.push(`+${value}`);
+                    } else if (part.removed) {
+                        result.push(`-${value}`);
+                    }
+                });
+
+                if (result.length === 0) {
+                    text3.value = "两个文本内容相同";
+                } else {
+                    text3.value = result.join('\n');
+                }
+                copyButton.textContent = '复制';
+            } catch (error) {
+                text3.value = "对比失败，错误信息: " + error.message;
+                copyButton.textContent = '复制';
+            }
+
+        });
+
+        // 复制按钮点击事件
+        copyButton.addEventListener('click', async function () {
+            const output = text3.value;
+            if (output === "") {
+                return;
+            }
+            try {
+                await navigator.clipboard.writeText(output);
+                copyButton.textContent = '已复制';
+            } catch (error) {
+                // 可根据需要添加失败处理逻辑
+            }
+        });
+    </script>
+</body>
+
+</html>
