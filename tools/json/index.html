@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍉</text></svg>">
+    <title>JSON处理-在线</title>
+    <link rel="stylesheet" href="../css/base.css">
+</head>
+
+<body>
+    <div class="inputDiv">
+        <label>输入：</label>
+        <textarea class="inputText" id="inputText" placeholder="请输入 JSON 文本"></textarea>
+    </div>
+
+    <div class="outputDiv">
+        <label>输出：</label>
+        <textarea class="outputText" id="outputText" readonly placeholder="处理结果将显示在这里"></textarea>
+    </div>
+
+    <div>
+        <button id="compressButton">压缩</button>
+        <button id="formatButton">格式化</button>
+        <button id="generateButton">转义</button>
+    </div>
+
+    <script>
+        // 获取 DOM 元素
+        const inputText = document.getElementById('inputText');
+        const generateButton = document.getElementById('generateButton');
+        const compressButton = document.getElementById('compressButton');
+        const formatButton = document.getElementById('formatButton');
+        const outputText = document.getElementById('outputText');
+
+        // 检查 JSON 格式是否正确的函数
+        function isValidJSON(str) {
+            try {
+                JSON.parse(str);
+                return true;
+            } catch (error) {
+                return error;
+            }
+        }
+
+        // 生成（JSON 转义）按钮点击事件
+        generateButton.addEventListener('click', function () {
+            const input = inputText.value;
+            if (input === "") {
+                outputText.value = "请输入 JSON 文本";
+                return;
+            }
+            const validation = isValidJSON(input);
+            if (validation !== true) {
+                outputText.value = `请输入正确格式的 JSON，错误位置：${validation.message}`;
+                return;
+            }
+            try {
+                const jsonEscaped = JSON.stringify(input).slice(1, -1);
+                outputText.value = jsonEscaped;
+            } catch (error) {
+                outputText.value = "转义出错：" + error.message;
+            }
+        });
+
+        // 压缩按钮点击事件
+        compressButton.addEventListener('click', function () {
+            const input = inputText.value;
+            if (input === "") {
+                outputText.value = "请输入 JSON 文本";
+                return;
+            }
+            const validation = isValidJSON(input);
+            if (validation !== true) {
+                outputText.value = `请输入正确格式的 JSON，错误位置：${validation.message}`;
+                return;
+            }
+            try {
+                const compressed = JSON.stringify(JSON.parse(input));
+                // 将压缩结果赋值给输入框
+                inputText.value = compressed;
+                outputText.value = "输入框内容已更新为压缩后的 JSON";
+            } catch (error) {
+                outputText.value = "压缩出错：" + error.message;
+            }
+        });
+
+        // 格式化按钮点击事件
+        formatButton.addEventListener('click', function () {
+            const input = inputText.value;
+            if (input === "") {
+                outputText.value = "请输入 JSON 文本";
+                return;
+            }
+            const validation = isValidJSON(input);
+            if (validation !== true) {
+                outputText.value = `请输入正确格式的 JSON，错误信息：${validation.message}`;
+                return;
+            }
+            try {
+                const formatted = JSON.stringify(JSON.parse(input), null, 2);
+                // 将格式化结果赋值给输入框
+                inputText.value = formatted;
+                outputText.value = "输入框内容已更新为格式化后的 JSON";
+            } catch (error) {
+                outputText.value = "格式化出错：" + error.message;
+            }
+        });
+    </script>
+</body>
+
+</html>
