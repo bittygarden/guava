@@ -23,6 +23,7 @@
 
     <div>
         <button id="generateButton">生成</button>
+        <button id="copyButton">复制</button>
     </div>
 
     <script>
@@ -35,6 +36,7 @@
         generateButton.addEventListener('click', function () {
             if (inputText.value === "") {
                 outputText.value = "请输入文本";
+                copyButton.textContent = "复制";
                 return;
             }
             try {
@@ -54,8 +56,24 @@
                 }
                 // 将 Unicode 编码显示在输出框中
                 outputText.value = unicodeEncoded;
+                copyButton.textContent = "复制";
             } catch (error) {
                 outputText.value = "编码出错：" + error.message;
+                copyButton.textContent = "复制";
+            }
+        });
+
+        // 监听复制按钮点击事件
+        copyButton.addEventListener('click', function () {
+            const textToCopy = outputText.value;
+            if (textToCopy) {
+                navigator.clipboard.writeText(textToCopy)
+                   .then(() => {
+                        copyButton.textContent = "已复制";
+                    })
+                   .catch((error) => {
+                        console.error('复制失败:', error);
+                    });
             }
         });
     </script>

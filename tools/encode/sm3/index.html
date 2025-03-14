@@ -23,6 +23,7 @@
 
     <div>
         <button id="generateButton">生成</button>
+        <button id="copyButton">复制</button>
     </div>
 
     <!-- 引入 sm-crypto 库 -->
@@ -37,14 +38,36 @@
         generateButton.addEventListener('click', function () {
             if (inputText.value === "") {
                 outputText.value = "请输入文本";
+                copyButton.textContent = "复制";
                 return;
             }
-            // 获取输入框的内容
-            const text = inputText.value;
-            // 计算 SM3 编码
-            const sm3Hash = sm3(text);
-            // 将 SM3 编码显示在输出框中
-            outputText.value = sm3Hash;
+
+            try {
+                // 获取输入框的内容
+                const text = inputText.value;
+                // 计算 SM3 编码
+                const sm3Hash = sm3(text);
+                // 将 SM3 编码显示在输出框中
+                outputText.value = sm3Hash;
+                copyButton.textContent = "复制";
+            } catch (error) {
+                outputText.value = "编码出错：" + error.message;
+                copyButton.textContent = "复制";
+            }
+        });
+
+        // 监听复制按钮点击事件
+        copyButton.addEventListener('click', function () {
+            const textToCopy = outputText.value;
+            if (textToCopy) {
+                navigator.clipboard.writeText(textToCopy)
+                    .then(() => {
+                        copyButton.textContent = "已复制";
+                    })
+                    .catch((error) => {
+                        console.error('复制失败:', error);
+                    });
+            }
         });
     </script>
 </body>
