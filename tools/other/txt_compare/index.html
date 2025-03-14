@@ -46,13 +46,14 @@
             border: 1px solid #57aa7f;
             outline: 2px solid #57aa7f;
         }
-      
+
         .outputText {
             flex: 1;
             padding: 10px;
             border: 2px solid #57aa7f;
             border-radius: 4px;
             height: 100%;
+            white-space: pre-wrap; /* 保持换行 */
         }
 
         button {
@@ -78,7 +79,7 @@
         }
     </style>
     <!-- 引入 jsdiff 库 -->
-    <script src="./diff.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsdiff/5.1.0/diff.min.js"></script>
 </head>
 
 <body>
@@ -118,7 +119,9 @@
                 const result = [];
 
                 diff.forEach((part) => {
-                    const value = part.value;
+                    let value = part.value;
+                    // 处理换行符
+                    value = value.replace(/\n/g, '<br>'); 
                     if (part.added) {
                         result.push(`<span class="addWord">${value}</span>`);
                     } else if (part.removed) {
