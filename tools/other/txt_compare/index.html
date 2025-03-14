@@ -46,6 +46,14 @@
             border: 1px solid #57aa7f;
             outline: 2px solid #57aa7f;
         }
+      
+        .outputText {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #57aa7f;
+            border-radius: 4px;
+            height: 100%;
+        }
 
         button {
             padding: 10px 20px;
@@ -60,6 +68,14 @@
         button:hover {
             background-color: #57aa7f;
         }
+
+        .deleteWord {
+            color: #d2625dcc;
+        }
+
+        .addWord {
+            color: #57aa7f;
+        }
     </style>
     <!-- 引入 jsdiff 库 -->
     <script src="./diff.min.js"></script>
@@ -69,7 +85,7 @@
     <div class="inputDiv">
         <textarea class="inputText" id="text1" placeholder="请输入文本1"></textarea>
         <textarea class="inputText" id="text2" placeholder="请输入文本2"></textarea>
-        <textarea class="inputText" id="text3" readonly placeholder="对比结果将显示在这里"></textarea>
+        <div class="outputText" id="text3" readonly placeholder="对比结果将显示在这里"></div>
     </div>
 
     <div class="buttonDiv">
@@ -90,7 +106,7 @@
             const input1 = text1.value;
             const input2 = text2.value;
             if (input1 === "" || input2 === "") {
-                text3.value = "请输入需要对比的文本";
+                text3.innerHTML = "请输入需要对比的文本";
                 copyButton.textContent = '复制';
                 return;
             }
@@ -104,20 +120,22 @@
                 diff.forEach((part) => {
                     const value = part.value;
                     if (part.added) {
-                        result.push(`+${value}`);
+                        result.push(`<span class="addWord">${value}</span>`);
                     } else if (part.removed) {
-                        result.push(`-${value}`);
+                        result.push(`<span class="deleteWord">${value}</span>`);
+                    } else {
+                        result.push(value);
                     }
                 });
 
                 if (result.length === 0) {
-                    text3.value = "两个文本内容相同";
+                    text3.innerHTML = "两个文本内容相同";
                 } else {
-                    text3.value = result.join('\n');
+                    text3.innerHTML = result.join('');
                 }
                 copyButton.textContent = '复制';
             } catch (error) {
-                text3.value = "对比失败，错误信息: " + error.message;
+                text3.innerHTML = "对比失败，错误信息: " + error.message;
                 copyButton.textContent = '复制';
             }
 
@@ -125,7 +143,7 @@
 
         // 复制按钮点击事件
         copyButton.addEventListener('click', async function () {
-            const output = text3.value;
+            const output = text3.textContent;
             if (output === "") {
                 return;
             }
