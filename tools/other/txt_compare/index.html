@@ -117,7 +117,6 @@
 
     <div class="buttonDiv">
         <button id="compareButton">对比</button>
-        <button id="copyButton">复制</button>
     </div>
 
     <script>
@@ -238,26 +237,6 @@
                 copyButton.textContent = '复制';
             }
 
-        });
-
-        // 复制按钮点击事件
-        copyButton.addEventListener('click', async function () {
-            output = text3.innerHTML;
-            if (output === "") {
-                return;
-            }
-
-            output = output.replace(/&gt;/g, '>');
-            output = output.replace(/&lt;/g, '<');
-            output = output.replace(/<span>&nbsp;<\/span>/g, ' ');
-            output = output.replace(/<br>/g, '\n');
-
-            try {
-                await navigator.clipboard.writeText(output);
-                copyButton.textContent = '已复制';
-            } catch (error) {
-                // 可根据需要添加失败处理逻辑
-            }
         });
 
         // 初始化行号
