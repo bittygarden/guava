@@ -148,10 +148,11 @@
 
         // 生成（JSON 转义）按钮点击事件
         generateButton.addEventListener('click', function () {
-            const input = inputText.value;
+            let input = inputText.value;
             if (input === "") {
                 outputText.value = "请输入 JSON 文本";
             } else {
+                input = input.replace(/\n/g, '');
                 const validation = isValidJSON(input);
                 if (validation !== true) {
                     outputText.value = `请输入正确格式的 JSON，错误位置：${validation.message}`;
@@ -169,10 +170,11 @@
 
         // 压缩按钮点击事件
         compressButton.addEventListener('click', function () {
-            const input = inputText.value;
+            let input = inputText.value;
             if (input === "") {
                 outputText.value = "请输入 JSON 文本";
             } else {
+                input = input.replace(/\n/g, '');
                 const validation = isValidJSON(input);
                 if (validation !== true) {
                     outputText.value = `请输入正确格式的 JSON，错误位置：${validation.message}`;
@@ -192,10 +194,11 @@
 
         // 格式化按钮点击事件
         formatButton.addEventListener('click', function () {
-            const input = inputText.value;
+            let input = inputText.value;
             if (input === "") {
                 outputText.value = "请输入 JSON 文本";
             } else {
+                input = input.replace(/\n/g, '');
                 const validation = isValidJSON(input);
                 if (validation !== true) {
                     outputText.value = `请输入正确格式的 JSON，错误信息：${validation.message}`;
