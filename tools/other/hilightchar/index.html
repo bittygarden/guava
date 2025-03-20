@@ -195,6 +195,7 @@
             29: 'GS',
             30: 'RS',
             31: 'US',
+            32: '<span>&nbsp;</span>',
             127: 'DEL'
         };
 
@@ -231,8 +232,6 @@
                     } else {
                         result += `<span class="invisibleChar">${controlCharAbbreviations[charCode]}</span>`;
                     }
-                } else if (charCode === 32) {
-                    result += `<span class="invisibleChar">${controlCharAbbreviations[32] || 'SP'}</span>`;
                 } else {
                     result += input[i];
                 }
@@ -250,7 +249,8 @@
             for (const [charCode, abbr] of Object.entries(controlCharAbbreviations)) {
                 const replacement = String.fromCharCode(charCode);
                 if (charCode === 10) {
-                    output = output.replace(new RegExp(`<span class="invisibleChar">${abbr}</span><br>`, 'g'), replacement);
+                    output = output.replace(new RegExp(`<span class="invisibleChar">${abbr}</span>`, 'g'), '');
+                    console.log(output);
                 } else {
                     output = output.replace(new RegExp(`<span class="invisibleChar">${abbr}</span>`, 'g'), replacement);
                 }
@@ -274,4 +274,4 @@
     </script>
 </body>
 
-</html>    
+</html>
