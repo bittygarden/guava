@@ -125,7 +125,6 @@
         const text2 = document.getElementById('text2');
         const text3 = document.getElementById('text3');
         const compareButton = document.getElementById('compareButton');
-        const copyButton = document.getElementById('copyButton');
         const lineNumbers1 = document.getElementById('lineNumbers1');
         const lineNumbers2 = document.getElementById('lineNumbers2');
         const lineNumbers3 = document.getElementById('lineNumbers3');
@@ -199,7 +198,6 @@
 
             if (input1 === "" || input2 === "") {
                 text3.innerHTML = "请输入需要对比的文本";
-                copyButton.textContent = '复制';
                 return;
             }
 
@@ -230,11 +228,9 @@
                 } else {
                     text3.innerHTML = result.join('');
                 }
-                copyButton.textContent = '复制';
                 updateLineNumbers(text3, lineNumbers3);
             } catch (error) {
                 text3.innerHTML = "对比失败，错误信息: " + error.message;
-                copyButton.textContent = '复制';
             }
 
         });

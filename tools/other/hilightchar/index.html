@@ -113,7 +113,6 @@
         const text1 = document.getElementById('text1');
         const text2 = document.getElementById('text2');
         const highlightButton = document.getElementById('highlightButton');
-        const copyButton = document.getElementById('copyButton');
         const lineNumbers1 = document.getElementById('lineNumbers1');
         const lineNumbers2 = document.getElementById('lineNumbers2');
 
@@ -219,7 +218,6 @@
             const input = htmlEncode(text1.value);
             if (input === "") {
                 text2.innerHTML = "请输入需要处理的文本";
-                copyButton.textContent = '复制';
                 return;
             }
             let result = '';
@@ -236,7 +234,6 @@
                 }
             }
             text2.innerHTML = result;
-            copyButton.textContent = '复制';
             updateLineNumbers(text2, lineNumbers2);
         });
         updateLineNumbers(text1, lineNumbers1);
