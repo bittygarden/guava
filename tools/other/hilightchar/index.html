@@ -107,7 +107,6 @@
 
     <div class="buttonDiv">
         <button id="highlightButton">高亮显示</button>
-        <button id="copyButton">复制</button>
     </div>
 
     <script>
@@ -240,35 +239,6 @@
             copyButton.textContent = '复制';
             updateLineNumbers(text2, lineNumbers2);
         });
-
-        copyButton.addEventListener('click', async function () {
-            let output = text2.innerHTML;
-            if (output === "") {
-                return;
-            }
-            for (const [charCode, abbr] of Object.entries(controlCharAbbreviations)) {
-                const replacement = String.fromCharCode(charCode);
-                if (charCode === 10) {
-                    output = output.replace(new RegExp(`<span class="invisibleChar">${abbr}</span>`, 'g'), '');
-                    console.log(output);
-                } else {
-                    output = output.replace(new RegExp(`<span class="invisibleChar">${abbr}</span>`, 'g'), replacement);
-                }
-            }
-            output = output.replace(/&amp;/g, '&');
-            output = output.replace(/&lt;/g, '<');
-            output = output.replace(/&gt;/g, '>');
-            output = output.replace(/&quot;/g, '"');
-            output = output.replace(/&#039;/g, "'");
-            output = output.replace(/<br>/g, '\n');
-            try {
-                await navigator.clipboard.writeText(output);
-                copyButton.textContent = '已复制';
-            } catch (error) {
-                // 可根据需要添加失败处理逻辑
-            }
-        });
-
         updateLineNumbers(text1, lineNumbers1);
         updateLineNumbers(text2, lineNumbers2);
     </script>
