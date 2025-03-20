@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍉</text></svg>">
+    <title>ASCII 码 在线</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <table>
+            <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>二进制</th>
+                    <th>八进制</th>
+                    <th>十进制</th>
+                    <th>十六进制</th>
+                    <th>ASCII 码</th>
+                    <th>别名</th>
+                    <th>描述</th>
+                </tr>
+            </thead>
+            <tbody>
+                <script>
+                    const aliases = {
+                        0: 'NUL',
+                        1: 'SOH',
+                        2: 'STX',
+                        3: 'ETX',
+                        4: 'EOT',
+                        5: 'ENQ',
+                        6: 'ACK',
+                        7: 'BEL',
+                        8: 'BS',
+                        9: 'HT',
+                        10: 'LF',
+                        11: 'VT',
+                        12: 'FF',
+                        13: 'CR',
+                        14: 'SO',
+                        15: 'SI',
+                        16: 'DLE',
+                        17: 'DC1',
+                        18: 'DC2',
+                        19: 'DC3',
+                        20: 'DC4',
+                        21: 'NAK',
+                        22: 'SYN',
+                        23: 'ETB',
+                        24: 'CAN',
+                        25: 'EM',
+                        26: 'SUB',
+                        27: 'ESC',
+                        28: 'FS',
+                        29: 'GS',
+                        30: 'RS',
+                        31: 'US',
+                        32: 'Space',
+                        127: 'DEL'
+                    };
+
+                    const descriptions = {
+                        0: '空字符',
+                        1: '标题开始',
+                        2: '文本开始',
+                        3: '文本结束',
+                        4: '传输结束',
+                        5: '询问字符',
+                        6: '确认回应',
+                        7: '响铃',
+                        8: '退格',
+                        9: '水平定位符号',
+                        10: '换行键',
+                        11: '垂直定位符号',
+                        12: '换页键',
+                        13: '回车键',
+                        14: '取消切换',
+                        15: '启用切换',
+                        16: '数据链路转义',
+                        17: '设备控制一（XON 启用软件速度控制）',
+                        18: '设备控制二',
+                        19: '设备控制三（XOFF 停用软件速度控制）',
+                        20: '设备控制四',
+                        21: '否定确认',
+                        22: '同步空闲',
+                        23: '传输块结束',
+                        24: '取消',
+                        25: '介质中断',
+                        26: '替换',
+                        27: '退出键',
+                        28: '文件分隔符',
+                        29: '组分隔符',
+                        30: '记录分隔符',
+                        31: '单元分隔符',
+                        32: '空格',
+                        127: '删除'
+                    };
+
+                    for (let i = 0; i < 128; i++) {
+                        document.write('<tr>');
+                        document.write('<td>' + i + '</td>');
+                        document.write('<td>' + i.toString(2).padStart(8, '0') + '</td>');
+                        document.write('<td>' + i.toString(8) + '</td>');
+                        document.write('<td>' + i + '</td>');
+                        document.write('<td>' + i.toString(16).toUpperCase() + '</td>');
+                        document.write('<td>' + String.fromCharCode(i) + '</td>');
+                        document.write('<td>' + (aliases[i] || '') + '</td>');
+                        document.write('<td>' + (descriptions[i] || '') + '</td>');
+                        document.write('</tr>');
+                    }
+                </script>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
