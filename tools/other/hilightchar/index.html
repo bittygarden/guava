@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍉</text></svg>">
+    <title>不可见字符高亮 在线</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #ecdede;
+        }
+
+        .inputDiv {
+            display: flex;
+            align-items: center;
+            width: 95%;
+            margin: 10px 0;
+            height: 85%;
+        }
+
+        .buttonDiv {
+            margin-top: 20px;
+        }
+
+        .inputText {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #94b76c;
+            border-radius: 4px;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            overflow: auto;
+            white-space: nowrap;
+        }
+
+        .inputText:focus,
+        .inputText:hover,
+        .inputText:active {
+            border: 1px solid #57aa7f;
+            outline: 2px solid #57aa7f;
+        }
+
+        .outputText {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #57aa7f;
+            border-radius: 4px;
+            height: 100%;
+            white-space: pre-wrap;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            overflow: auto;
+            white-space: nowrap;
+            background-color: #ffffff;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #94b76c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+
+        button:hover {
+            background-color: #57aa7f;
+        }
+
+        .invisibleChar {
+            color: red;
+        }
+
+        .lineNumbers {
+            width: 30px;
+            height: 100%;
+            padding: 10px;
+            text-align: right;
+            overflow: hidden;
+            color: #777;
+            background-color: #f0f0f0;
+            border-right: 1px solid #ccc;
+            user-select: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="inputDiv">
+        <div class="lineNumbers" id="lineNumbers1"></div>
+        <textarea class="inputText" id="text1" placeholder="请输入文本"></textarea>
+        <div class="lineNumbers" id="lineNumbers2"></div>
+        <div class="outputText" id="text2" readonly placeholder="高亮结果将显示在这里"></div>
+    </div>
+
+    <div class="buttonDiv">
+        <button id="highlightButton">高亮显示</button>
+        <button id="copyButton">复制</button>
+    </div>
+
+    <script>
+        const text1 = document.getElementById('text1');
+        const text2 = document.getElementById('text2');
+        const highlightButton = document.getElementById('highlightButton');
+        const copyButton = document.getElementById('copyButton');
+        const lineNumbers1 = document.getElementById('lineNumbers1');
+        const lineNumbers2 = document.getElementById('lineNumbers2');
+
+        function syncScroll(target) {
+            const scrollTop = target.scrollTop;
+            const scrollLeft = target.scrollLeft;
+            if (target !== text1) {
+                text1.scrollTop = scrollTop;
+                text1.scrollLeft = scrollLeft;
+            }
+            if (target !== text2) {
+                text2.scrollTop = scrollTop;
+                text2.scrollLeft = scrollLeft;
+            }
+            if (target === text1) {
+                lineNumbers1.scrollTop = scrollTop;
+            } else if (target === text2) {
+                lineNumbers2.scrollTop = scrollTop;
+            }
+        }
+
+        text1.addEventListener('scroll', function () {
+            syncScroll(this);
+        });
+        text2.addEventListener('scroll', function () {
+            syncScroll(this);
+        });
+
+        function updateLineNumbers(element, lineNumbers) {
+            let content = '';
+            if (element.tagName === 'TEXTAREA') {
+                content = element.value;
+            } else {
+                content = element.innerHTML.replace(/<br\s*\/?>/gi, '\n');
+            }
+            const lines = content.split('\n').length;
+            let lineNumberHTML = '';
+            for (let i = 1; i <= lines; i++) {
+                lineNumberHTML += i + '<br>';
+            }
+            lineNumbers.innerHTML = lineNumberHTML;
+        }
+
+        text1.addEventListener('input', function () {
+            updateLineNumbers(this, lineNumbers1);
+        });
+
+        const controlCharAbbreviations = {
+            0: 'NUL',
+            1: 'SOH',
+            2: 'STX',
+            3: 'ETX',
+            4: 'EOT',
+            5: 'ENQ',
+            6: 'ACK',
+            7: 'BEL',
+            8: 'BS',
+            9: 'HT',
+            10: 'LF',
+            11: 'VT',
+            12: 'FF',
+            13: 'CR',
+            14: 'SO',
+            15: 'SI',
+            16: 'DLE',
+            17: 'DC1',
+            18: 'DC2',
+            19: 'DC3',
+            20: 'DC4',
+            21: 'NAK',
+            22: 'SYN',
+            23: 'ETB',
+            24: 'CAN',
+            25: 'EM',
+            26: 'SUB',
+            27: 'ESC',
+            28: 'FS',
+            29: 'GS',
+            30: 'RS',
+            31: 'US',
+            127: 'DEL'
+        };
+
+        function htmlEncode(str) {
+            return str.replace(/[&<>"']/g, function (match) {
+                switch (match) {
+                    case '&':
+                        return '&amp;';
+                    case '<':
+                        return '&lt;';
+                    case '>':
+                        return '&gt;';
+                    case '"':
+                        return '&quot;';
+                    case "'":
+                        return '&#039;';
+                }
+            });
+        }
+
+        highlightButton.addEventListener('click', function () {
+            const input = htmlEncode(text1.value);
+            if (input === "") {
+                text2.innerHTML = "请输入需要处理的文本";
+                copyButton.textContent = '复制';
+                return;
+            }
+            let result = '';
+            for (let i = 0; i < input.length; i++) {
+                const charCode = input.charCodeAt(i);
+                if (controlCharAbbreviations[charCode]) {
+                    if (charCode === 10) {
+                        result += `<span class="invisibleChar">${controlCharAbbreviations[charCode]}</span><br>`;
+                    } else {
+                        result += `<span class="invisibleChar">${controlCharAbbreviations[charCode]}</span>`;
+                    }
+                } else if (charCode === 32) {
+                    result += `<span class="invisibleChar">${controlCharAbbreviations[32] || 'SP'}</span>`;
+                } else {
+                    result += input[i];
+                }
+            }
+            text2.innerHTML = result;
+            copyButton.textContent = '复制';
+            updateLineNumbers(text2, lineNumbers2);
+        });
+
+        copyButton.addEventListener('click', async function () {
+            let output = text2.innerHTML;
+            if (output === "") {
+                return;
+            }
+            for (const [charCode, abbr] of Object.entries(controlCharAbbreviations)) {
+                const replacement = String.fromCharCode(charCode);
+                if (charCode === 10) {
+                    output = output.replace(new RegExp(`<span class="invisibleChar">${abbr}</span><br>`, 'g'), replacement);
+                } else {
+                    output = output.replace(new RegExp(`<span class="invisibleChar">${abbr}</span>`, 'g'), replacement);
+                }
+            }
+            output = output.replace(/&amp;/g, '&');
+            output = output.replace(/&lt;/g, '<');
+            output = output.replace(/&gt;/g, '>');
+            output = output.replace(/&quot;/g, '"');
+            output = output.replace(/&#039;/g, "'");
+            output = output.replace(/<br>/g, '\n');
+            try {
+                await navigator.clipboard.writeText(output);
+                copyButton.textContent = '已复制';
+            } catch (error) {
+                // 可根据需要添加失败处理逻辑
+            }
+        });
+
+        updateLineNumbers(text1, lineNumbers1);
+        updateLineNumbers(text2, lineNumbers2);
+    </script>
+</body>
+
+</html>    
