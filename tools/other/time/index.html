@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⏰</text></svg>">
+    <title>世界时间-在线</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #ecdede;
+        }
+
+        /* 新增容器样式 */
+        .container {
+            max-height: 100vh; /* 设置最大高度 */
+            width: 90%;
+            overflow-y: auto; /* 增加垂直滚动条 */
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+
+        .outputDiv {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        label {
+            min-width: 120px;
+            margin-right: 10px;
+            text-align: right;
+        }
+
+        .outputText {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #94b76c;
+            border-radius: 4px;
+        }
+
+        .outputText:focus,
+        .outputText:hover,
+        .outputText:active {
+            border: 1px solid #57aa7f;
+            outline: 2px solid #57aa7f;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #94b76c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        button:hover {
+            background-color: #57aa7f;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 新增容器 -->
+    <div class="container">
+        <div class="outputDiv">
+            <label id="currentTimezoneLabel">当前时区</label>
+            <input class="outputText" id="currentTimezoneOutput" readonly placeholder="时间将显示在这里">
+            <button id="copyCurrentTimezone">复制</button>
+        </div>
+        <div class="outputDiv">
+            <label>0 时区</label>
+            <input class="outputText" id="timezone0Output" readonly placeholder="时间将显示在这里">
+            <button id="copyTimezone0">复制</button>
+        </div>
+        <div class="outputDiv">
+            <label>+1 / -1 时区</label>
+            <input class="outputText" id="timezone1Output" readonly placeholder="东一区时间将显示在这里">
+            <button id="copyTimezone1">复制</button>
+            <input class="outputText" id="timezoneMinus1Output" readonly placeholder="西一区时间将显示在这里">
+            <button id="copyTimezoneMinus1">复制</button>
+        </div>
+        <div class="outputDiv">
+            <label>+2 / -2 时区</label>
+            <input class="outputText" id="timezone2Output" readonly placeholder="东二区时间将显示在这里">
+            <button id="copyTimezone2">复制</button>
+            <input class="outputText" id="timezoneMinus2Output" readonly placeholder="西二区时间将显示在这里">
+            <button id="copyTimezoneMinus2">复制</button>
+        </div>
+        <div class="outputDiv">
+            <label>+3 / -3 时区</label>
+            <input class="outputText" id="timezone3Output" readonly placeholder="东三区时间将显示在这里">
+            <button id="copyTimezone3">复制</button>
+            <input class="outputText" id="timezoneMinus3Output" readonly placeholder="西三区时间将显示在这里">
+            <button id="copyTimezoneMinus3">复制</button>
+        </div>
+        <div class="outputDiv">
+            <label>+4 / -4 时区</label>
+            <input class="outputText" id="timezone4Output" readonly placeholder="东四区时间将显示在这里">
+            <button id="copyTimezone4">复制</button>
+            <input class="outputText" id="timezoneMinus4Output" readonly placeholder="西四区时间将显示在这里">
+            <button id="copyTimezoneMinus4">复制</button>
+        </div>
+        <div class="outputDiv">
+            <label>+5 / -5 时区</label>
+            <input class="outputText" id="timezone5Output" readonly placeholder="东五区时间将显示在这里">
+            <button id="copyTimezone5">复制</button>
+            <input class="outputText" id="timezoneMinus5Output" readonly placeholder="西五区时间将显示在这里">
+            <button id="copyTimezoneMinus5">复制</button>
+        </div>
+        <div class="outputDiv">
+            <label>+6 / -6 时区</label>
+            <input class="outputText" id="timezone6Output" readonly placeholder="东六区时间将显示在这里">
+            <button id="copyTimezone6">复制</button>
+            <input class="outputText" id="timezoneMinus6Output" readonly placeholder="西六区时间将显示在这里">
+            <button id="copyTimezoneMinus6">复制</button>
+        </div>
+        <div class="outputDiv">
+            <label>+7 / -7 时区</label>
+            <input class="outputText" id="timezone7Output" readonly placeholder="东七区时间将显示在这里">
+            <button id="copyTimezone7">复制</button>
+            <input class="outputText" id="timezoneMinus7Output" readonly placeholder="西七区时间将显示在这里">
+            <button id="copyTimezoneMinus7">复制</button>
+        </div>
+        <div class="outputDiv">
+            <label>+8 / -8 时区</label>
+            <input class="outputText" id="timezone8Output" readonly placeholder="东八区时间将显示在这里">
+            <button id="copyTimezone8">复制</button>
+            <input class="outputText" id="timezoneMinus8Output" readonly placeholder="西八区时间将显示在这里">
+            <button id="copyTimezoneMinus8">复制</button>
+        </div>
+        <div class="outputDiv">
+            <label>+9 / -9 时区</label>
+            <input class="outputText" id="timezone9Output" readonly placeholder="东九区时间将显示在这里">
+            <button id="copyTimezone9">复制</button>
+            <input class="outputText" id="timezoneMinus9Output" readonly placeholder="西九区时间将显示在这里">
+            <button id="copyTimezoneMinus9">复制</button>
+        </div>
+        <div class="outputDiv">
+            <label>+10 / -10 时区</label>
+            <input class="outputText" id="timezone10Output" readonly placeholder="东十区时间将显示在这里">
+            <button id="copyTimezone10">复制</button>
+            <input class="outputText" id="timezoneMinus10Output" readonly placeholder="西十区时间将显示在这里">
+            <button id="copyTimezoneMinus10">复制</button>
+        </div>
+        <div class="outputDiv">
+            <label>+11 / -11 时区</label>
+            <input class="outputText" id="timezone11Output" readonly placeholder="东十一区时间将显示在这里">
+            <button id="copyTimezone11">复制</button>
+            <input class="outputText" id="timezoneMinus11Output" readonly placeholder="西十一区时间将显示在这里">
+            <button id="copyTimezoneMinus11">复制</button>
+        </div>
+        <div class="outputDiv">
+            <label>+12 / -12 时区</label>
+            <input class="outputText" id="timezone12Output" readonly placeholder="东十二区时间将显示在这里">
+            <button id="copyTimezone12">复制</button>
+            <input class="outputText" id="timezoneMinus12Output" readonly placeholder="西十二区时间将显示在这里">
+            <button id="copyTimezoneMinus12">复制</button>
+        </div>
+    </div>
+
+    <script>
+        function formatTime(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const seconds = String(date.getSeconds()).padStart(2, '0');
+            return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        }
+
+        function getTimeInTimezone(offset) {
+            const now = new Date();
+            const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+            const targetTime = new Date(utc + (3600000 * offset));
+            return formatTime(targetTime);
+        }
+
+        function updateTimes() {
+            const currentTimezoneOutput = document.getElementById('currentTimezoneOutput');
+            const timezone0Output = document.getElementById('timezone0Output');
+            const timezone1Output = document.getElementById('timezone1Output');
+            const timezoneMinus1Output = document.getElementById('timezoneMinus1Output');
+            const timezone2Output = document.getElementById('timezone2Output');
+            const timezoneMinus2Output = document.getElementById('timezoneMinus2Output');
+            const timezone3Output = document.getElementById('timezone3Output');
+            const timezoneMinus3Output = document.getElementById('timezoneMinus3Output');
+            const timezone4Output = document.getElementById('timezone4Output');
+            const timezoneMinus4Output = document.getElementById('timezoneMinus4Output');
+            const timezone5Output = document.getElementById('timezone5Output');
+            const timezoneMinus5Output = document.getElementById('timezoneMinus5Output');
+            const timezone6Output = document.getElementById('timezone6Output');
+            const timezoneMinus6Output = document.getElementById('timezoneMinus6Output');
+            const timezone7Output = document.getElementById('timezone7Output');
+            const timezoneMinus7Output = document.getElementById('timezoneMinus7Output');
+            const timezone8Output = document.getElementById('timezone8Output');
+            const timezoneMinus8Output = document.getElementById('timezoneMinus8Output');
+            const timezone9Output = document.getElementById('timezone9Output');
+            const timezoneMinus9Output = document.getElementById('timezoneMinus9Output');
+            const timezone10Output = document.getElementById('timezone10Output');
+            const timezoneMinus10Output = document.getElementById('timezoneMinus10Output');
+            const timezone11Output = document.getElementById('timezone11Output');
+            const timezoneMinus11Output = document.getElementById('timezoneMinus11Output');
+            const timezone12Output = document.getElementById('timezone12Output');
+            const timezoneMinus12Output = document.getElementById('timezoneMinus12Output');
+
+            currentTimezoneOutput.value = formatTime(new Date());
+            timezone0Output.value = getTimeInTimezone(0);
+            timezone1Output.value = getTimeInTimezone(1);
+            timezoneMinus1Output.value = getTimeInTimezone(-1);
+            timezone2Output.value = getTimeInTimezone(2);
+            timezoneMinus2Output.value = getTimeInTimezone(-2);
+            timezone3Output.value = getTimeInTimezone(3);
+            timezoneMinus3Output.value = getTimeInTimezone(-3);
+            timezone4Output.value = getTimeInTimezone(4);
+            timezoneMinus4Output.value = getTimeInTimezone(-4);
+            timezone5Output.value = getTimeInTimezone(5);
+            timezoneMinus5Output.value = getTimeInTimezone(-5);
+            timezone6Output.value = getTimeInTimezone(6);
+            timezoneMinus6Output.value = getTimeInTimezone(-6);
+            timezone7Output.value = getTimeInTimezone(7);
+            timezoneMinus7Output.value = getTimeInTimezone(-7);
+            timezone8Output.value = getTimeInTimezone(8);
+            timezoneMinus8Output.value = getTimeInTimezone(-8);
+            timezone9Output.value = getTimeInTimezone(9);
+            timezoneMinus9Output.value = getTimeInTimezone(-9);
+            timezone10Output.value = getTimeInTimezone(10);
+            timezoneMinus10Output.value = getTimeInTimezone(-10);
+            timezone11Output.value = getTimeInTimezone(11);
+            timezoneMinus11Output.value = getTimeInTimezone(-11);
+            timezone12Output.value = getTimeInTimezone(12);
+            timezoneMinus12Output.value = getTimeInTimezone(-12);
+        }
+
+        function copyText(outputElement, button) {
+            const textToCopy = outputElement.value;
+            if (textToCopy) {
+                navigator.clipboard.writeText(textToCopy)
+                   .then(() => {
+                        button.textContent = "已复制";
+                        setTimeout(() => {
+                            button.textContent = "复制";
+                        }, 2000);
+                    })
+                   .catch((error) => {
+                        console.error('复制失败:', error);
+                    });
+            }
+        }
+
+        const currentTimezoneLabel = document.getElementById('currentTimezoneLabel');
+        const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        currentTimezoneLabel.textContent = `当前时区（${userTimeZone}）`;
+
+        const copyCurrentTimezone = document.getElementById('copyCurrentTimezone');
+        const copyTimezone0 = document.getElementById('copyTimezone0');
+        const copyTimezone1 = document.getElementById('copyTimezone1');
+        const copyTimezoneMinus1 = document.getElementById('copyTimezoneMinus1');
+        const copyTimezone2 = document.getElementById('copyTimezone2');
+        const copyTimezoneMinus2 = document.getElementById('copyTimezoneMinus2');
+        const copyTimezone3 = document.getElementById('copyTimezone3');
+        const copyTimezoneMinus3 = document.getElementById('copyTimezoneMinus3');
+        const copyTimezone4 = document.getElementById('copyTimezone4');
+        const copyTimezoneMinus4 = document.getElementById('copyTimezoneMinus4');
+        const copyTimezone5 = document.getElementById('copyTimezone5');
+        const copyTimezoneMinus5 = document.getElementById('copyTimezoneMinus5');
+        const copyTimezone6 = document.getElementById('copyTimezone6');
+        const copyTimezoneMinus6 = document.getElementById('copyTimezoneMinus6');
+        const copyTimezone7 = document.getElementById('copyTimezone7');
+        const copyTimezoneMinus7 = document.getElementById('copyTimezoneMinus7');
+        const copyTimezone8 = document.getElementById('copyTimezone8');
+        const copyTimezoneMinus8 = document.getElementById('copyTimezoneMinus8');
+        const copyTimezone9 = document.getElementById('copyTimezone9');
+        const copyTimezoneMinus9 = document.getElementById('copyTimezoneMinus9');
+        const copyTimezone10 = document.getElementById('copyTimezone10');
+        const copyTimezoneMinus10 = document.getElementById('copyTimezoneMinus10');
+        const copyTimezone11 = document.getElementById('copyTimezone11');
+        const copyTimezoneMinus11 = document.getElementById('copyTimezoneMinus11');
+        const copyTimezone12 = document.getElementById('copyTimezone12');
+        const copyTimezoneMinus12 = document.getElementById('copyTimezoneMinus12');
+
+        copyCurrentTimezone.addEventListener('click', () => copyText(currentTimezoneOutput, copyCurrentTimezone));
+        copyTimezone0.addEventListener('click', () => copyText(timezone0Output, copyTimezone0));
+        copyTimezone1.addEventListener('click', () => copyText(timezone1Output, copyTimezone1));
+        copyTimezoneMinus1.addEventListener('click', () => copyText(timezoneMinus1Output, copyTimezoneMinus1));
+        copyTimezone2.addEventListener('click', () => copyText(timezone2Output, copyTimezone2));
+        copyTimezoneMinus2.addEventListener('click', () => copyText(timezoneMinus2Output, copyTimezoneMinus2));
+        copyTimezone3.addEventListener('click', () => copyText(timezone3Output, copyTimezone3));
+        copyTimezoneMinus3.addEventListener('click', () => copyText(timezoneMinus3Output, copyTimezoneMinus3));
+        copyTimezone4.addEventListener('click', () => copyText(timezone4Output, copyTimezone4));
+        copyTimezoneMinus4.addEventListener('click', () => copyText(timezoneMinus4Output, copyTimezoneMinus4));
+        copyTimezone5.addEventListener('click', () => copyText(timezone5Output, copyTimezone5));
+        copyTimezoneMinus5.addEventListener('click', () => copyText(timezoneMinus5Output, copyTimezoneMinus5));
+        copyTimezone6.addEventListener('click', () => copyText(timezone6Output, copyTimezone6));
+        copyTimezoneMinus6.addEventListener('click', () => copyText(timezoneMinus6Output, copyTimezoneMinus6));
+        copyTimezone7.addEventListener('click', () => copyText(timezone7Output, copyTimezone7));
+        copyTimezoneMinus7.addEventListener('click', () => copyText(timezoneMinus7Output, copyTimezoneMinus7));
+        copyTimezone8.addEventListener('click', () => copyText(timezone8Output, copyTimezone8));
+        copyTimezoneMinus8.addEventListener('click', () => copyText(timezoneMinus8Output, copyTimezoneMinus8));
+        copyTimezone9.addEventListener('click', () => copyText(timezone9Output, copyTimezone9));
+        copyTimezoneMinus9.addEventListener('click', () => copyText(timezoneMinus9Output, copyTimezoneMinus9));
+        copyTimezone10.addEventListener('click', () => copyText(timezone10Output, copyTimezone10));
+        copyTimezoneMinus10.addEventListener('click', () => copyText(timezoneMinus10Output, copyTimezoneMinus10));
+        copyTimezone11.addEventListener('click', () => copyText(timezone11Output, copyTimezone11));
+        copyTimezoneMinus11.addEventListener('click', () => copyText(timezoneMinus11Output, copyTimezoneMinus11));
+        copyTimezone12.addEventListener('click', () => copyText(timezone12Output, copyTimezone12));
+        copyTimezoneMinus12.addEventListener('click', () => copyText(timezoneMinus12Output, copyTimezoneMinus12));
+
+        updateTimes();
+        setInterval(updateTimes, 1000);
+    </script>
+</body>
+
+</html>
