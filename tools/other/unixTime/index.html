@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon"
-        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍉</text></svg>">
-    <title>Unix 时间戳转换-在线</title>
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎲</text></svg>">
+    <title>掷骰子</title>
 
     <style>
         body {
@@ -20,50 +20,11 @@
             background-color: #ecdede;
         }
 
-        .inputDiv,
-        .outputDiv {
-            display: flex;
-            align-items: center;
-            width: 90%;
-            margin: 10px 0;
-        }
-
-        label {
-            width: 200px;
-            margin-right: 10px;
-            text-align: right;
-            white-space: nowrap; /* 使 label 内容一行展示 */
-        }
-
-        label span {
-            font-size: 0.2em; /* 调整括号内文字大小 */
-        }
-
-        label span::before,
-        label span::after {
-            font-size: 0.2em; /* 调整括号大小 */
-        }
-
-        .inputText,
-        .outputText,
-        .selectInput {
-            flex: 1;
-            padding: 10px;
-            border: 1px solid #94b76c;
-            border-radius: 4px;
-        }
-
-        .inputText:focus,
-        .inputText:hover,
-        .inputText:active,
-        .outputText:focus,
-        .outputText:hover,
-        .outputText:active,
-        .selectInput:focus,
-        .selectInput:hover,
-        .selectInput:active {
-            border: 1px solid #57aa7f;
-            outline: 2px solid #57aa7f;
+        #dice {
+            font-size: 200px;
+            margin-bottom: 20px;
+            animation-duration: 1s;
+            animation-timing-function: linear;
         }
 
         button {
@@ -73,148 +34,50 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            margin-left: 10px;
         }
 
         button:hover {
             background-color: #57aa7f;
         }
+
+        @keyframes roll {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 </head>
 
 <body>
-    <div class="inputDiv">
-        <label>输入：</label>
-        <input class="inputText" id="inputText" placeholder="请输入时间戳">
-        <select class="selectInput" id="inputUnitSelect">
-            <option value="s" selected>秒</option>
-            <option value="ms">毫秒</option>
-        </select>
-    </div>
-
-    <div class="outputDiv">
-        <label>本地时间（<span id="localTimezone"></span>）：</label>
-        <input class="outputText" id="localOutput" readonly placeholder="当前时区时间结果将显示在这里">
-        <button id="copyLocal">复制</button>
-    </div>
-
-    <div class="outputDiv">
-        <label>UTC时间：</label>
-        <input class="outputText" id="utcOutput" readonly placeholder="UTC时间结果将显示在这里">
-        <button id="copyUtc">复制</button>
-    </div>
-
-    <div class="outputDiv">
-        <label>当前时间戳（<span>秒</span>）：</label>
-        <input class="outputText" id="currentTimestampSeconds" readonly placeholder="当前时间戳（秒）将显示在这里">
-        <button id="copySeconds">复制</button>
-    </div>
-
-    <div class="outputDiv">
-        <label>当前时间戳（<span>毫秒</span>）：</label>
-        <input class="outputText" id="currentTimestampMilliseconds" readonly placeholder="当前时间戳（毫秒）将显示在这里">
-        <button id="copyMilliseconds">复制</button>
-    </div>
+    <div id="dice">🎲</div>
+    <button id="startButton">开始</button>
 
     <script>
-        const inputText = document.getElementById('inputText');
-        const inputUnitSelect = document.getElementById('inputUnitSelect');
-        const localOutput = document.getElementById('localOutput');
-        const utcOutput = document.getElementById('utcOutput');
-        const localTimezone = document.getElementById('localTimezone');
+        const dice = document.getElementById('dice');
+        const startButton = document.getElementById('startButton');
 
-        const copyLocal = document.getElementById('copyLocal');
-        const copyUtc = document.getElementById('copyUtc');
-        const currentTimestampSeconds = document.getElementById('currentTimestampSeconds');
-        const currentTimestampMilliseconds = document.getElementById('currentTimestampMilliseconds');
-        const copySeconds = document.getElementById('copySeconds');
-        const copyMilliseconds = document.getElementById('copyMilliseconds');
+        const diceFaces = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
 
-        localTimezone.textContent = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        function rollDice() {
+            // 移除动画，确保每次点击都能重新触发动画
+            dice.style.animation = 'none';
+            void dice.offsetWidth; 
+            dice.style.animation = 'roll 1s linear';
+            startButton.disabled = true;
 
-        function convertTimestamp() {
-            if (inputText.value === "") {
-                localOutput.value = "请输入时间戳";
-                utcOutput.value = "请输入时间戳";
-                return;
-            }
-            const timestamp = parseFloat(inputText.value);
-            if (isNaN(timestamp)) {
-                localOutput.value = "请输入正确的时间戳";
-                utcOutput.value = "请输入正确的时间戳";
-                return;
-            }
-            const unit = inputUnitSelect.value;
-            let msTimestamp;
-            if (unit === 's') {
-                msTimestamp = timestamp * 1000;
-            } else if (unit === 'ms') {
-                msTimestamp = timestamp;
-            }
-            try {
-                const localDate = new Date(msTimestamp);
-                const utcDate = new Date(msTimestamp);
-                const timezoneOffset = localDate.getTimezoneOffset();
-                utcDate.setMinutes(utcDate.getMinutes() + timezoneOffset);
-
-                localOutput.value = formatDate(localDate, unit);
-                utcOutput.value = formatDate(utcDate, unit);
-            } catch (error) {
-                console.error('时间戳转换时出错:', error);
-                localOutput.value = '转换出错，请重试';
-                utcOutput.value = '转换出错，请重试';
-            }
+            setTimeout(() => {
+                const randomIndex = Math.floor(Math.random() * diceFaces.length);
+                dice.textContent = diceFaces[randomIndex];
+                dice.style.animation = '';
+                startButton.disabled = false;
+            }, 1000);
         }
 
-        function formatDate(date, unit) {
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const day = String(date.getDate()).padStart(2, '0');
-            const hours = String(date.getHours()).padStart(2, '0');
-            const minutes = String(date.getMinutes()).padStart(2, '0');
-            const seconds = String(date.getSeconds()).padStart(2, '0');
-            if (unit === 's') {
-                return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-            }
-            const milliseconds = String(date.getMilliseconds()).padStart(3, '0');
-            return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}-${milliseconds}`;
-        }
-
-        function copyText(outputElement, button) {
-            const textToCopy = outputElement.value;
-            if (textToCopy) {
-                navigator.clipboard.writeText(textToCopy)
-                   .then(() => {
-                        button.textContent = "已复制";
-                        setTimeout(() => {
-                            button.textContent = "复制";
-                        }, 2000);
-                    })
-                   .catch((error) => {
-                        console.error('复制失败:', error);
-                    });
-            }
-        }
-
-        copyLocal.addEventListener('click', () => copyText(localOutput, copyLocal));
-        copyUtc.addEventListener('click', () => copyText(utcOutput, copyUtc));
-        copySeconds.addEventListener('click', () => copyText(currentTimestampSeconds, copySeconds));
-        copyMilliseconds.addEventListener('click', () => copyText(currentTimestampMilliseconds, copyMilliseconds));
-
-        inputText.addEventListener('input', convertTimestamp);
-        inputUnitSelect.addEventListener('change', convertTimestamp);
-
-        function updateCurrentTimestamp() {
-            const now = new Date();
-            currentTimestampSeconds.value = Math.floor(now.getTime() / 1000);
-            currentTimestampMilliseconds.value = now.getTime();
-        }
-
-        // 每秒更新一次时间戳
-        setInterval(updateCurrentTimestamp, 1000);
-        // 页面加载时立即更新一次
-        updateCurrentTimestamp();
+        startButton.addEventListener('click', rollDice);
     </script>
 </body>
 
-</html>    
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎲</text></svg>">
+    <title>掷骰子</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #ecdede;
+            perspective: 1000px;
+        }
+
+        .dice-container {
+            width: 200px;
+            height: 200px;
+            position: relative;
+            transform-style: preserve-3d;
+            margin-bottom: 20px;
+        }
+
+        .dice-face {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: white;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            backface-visibility: visible;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .dice-face::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(255,255,255,0.2), rgba(255,255,255,0.4));
+            border-radius: 20px;
+        }
+
+        .front { 
+            transform: translateZ(100px);
+            background: linear-gradient(45deg, #FF6B6B, #FF8E8E);
+        }
+        .back { 
+            transform: translateZ(-100px) rotateY(180deg);
+            background: linear-gradient(45deg, #4ECDC4, #45B7D1);
+        }
+        .right { 
+            transform: translateX(100px) rotateY(90deg);
+            background: linear-gradient(45deg, #96E6A1, #7ED56F);
+        }
+        .left { 
+            transform: translateX(-100px) rotateY(-90deg);
+            background: linear-gradient(45deg, #FFD93D, #FFA41B);
+        }
+        .top { 
+            transform: translateY(-100px) rotateX(90deg);
+            background: linear-gradient(45deg, #A8E6CF, #1DE9B6);
+        }
+        .bottom { 
+            transform: translateY(100px) rotateX(-90deg);
+            background: linear-gradient(45deg, #FF9F9F, #FF6B6B);
+        }
+
+        button {
+            padding: 12px 25px;
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4, #45B7D1, #96E6A1);
+            background-size: 300% 300%;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            animation: gradientBG 5s ease infinite;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            animation: none;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes roll {
+            0% {
+                transform: rotateX(0) rotateY(0) rotateZ(0);
+            }
+            100% {
+                transform: rotateX(720deg) rotateY(720deg) rotateZ(720deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dice-container" id="dice">
+        <div class="dice-face front">⚀</div>
+        <div class="dice-face back">⚁</div>
+        <div class="dice-face right">⚂</div>
+        <div class="dice-face left">⚃</div>
+        <div class="dice-face top">⚄</div>
+        <div class="dice-face bottom">⚅</div>
+    </div>
+    <button id="startButton">开始</button>
+
+    <script>
+        const dice = document.getElementById('dice');
+        const startButton = document.getElementById('startButton');
+
+        function rollDice() {
+            dice.style.animation = 'roll 1s linear';
+            startButton.disabled = true;
+
+            setTimeout(() => {
+                dice.style.animation = '';
+                startButton.disabled = false;
+            }, 1000);
+        }
+
+        startButton.addEventListener('click', rollDice);
+    </script>
+</body>
+
+</html>
+    
