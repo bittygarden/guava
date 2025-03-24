@@ -29,9 +29,19 @@
         }
 
         label {
-            width: 120px;
+            width: 200px;
             margin-right: 10px;
             text-align: right;
+            white-space: nowrap; /* 使 label 内容一行展示 */
+        }
+
+        label span {
+            font-size: 0.2em; /* 调整括号内文字大小 */
+        }
+
+        label span::before,
+        label span::after {
+            font-size: 0.2em; /* 调整括号大小 */
         }
 
         .inputText,
@@ -94,6 +104,18 @@
         <button id="copyUtc">复制</button>
     </div>
 
+    <div class="outputDiv">
+        <label>当前时间戳（<span>秒</span>）：</label>
+        <input class="outputText" id="currentTimestampSeconds" readonly placeholder="当前时间戳（秒）将显示在这里">
+        <button id="copySeconds">复制</button>
+    </div>
+
+    <div class="outputDiv">
+        <label>当前时间戳（<span>毫秒</span>）：</label>
+        <input class="outputText" id="currentTimestampMilliseconds" readonly placeholder="当前时间戳（毫秒）将显示在这里">
+        <button id="copyMilliseconds">复制</button>
+    </div>
+
     <script>
         const inputText = document.getElementById('inputText');
         const inputUnitSelect = document.getElementById('inputUnitSelect');
@@ -103,6 +125,10 @@
 
         const copyLocal = document.getElementById('copyLocal');
         const copyUtc = document.getElementById('copyUtc');
+        const currentTimestampSeconds = document.getElementById('currentTimestampSeconds');
+        const currentTimestampMilliseconds = document.getElementById('currentTimestampMilliseconds');
+        const copySeconds = document.getElementById('copySeconds');
+        const copyMilliseconds = document.getElementById('copyMilliseconds');
 
         localTimezone.textContent = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
@@ -172,11 +198,23 @@
 
         copyLocal.addEventListener('click', () => copyText(localOutput, copyLocal));
         copyUtc.addEventListener('click', () => copyText(utcOutput, copyUtc));
+        copySeconds.addEventListener('click', () => copyText(currentTimestampSeconds, copySeconds));
+        copyMilliseconds.addEventListener('click', () => copyText(currentTimestampMilliseconds, copyMilliseconds));
 
         inputText.addEventListener('input', convertTimestamp);
         inputUnitSelect.addEventListener('change', convertTimestamp);
+
+        function updateCurrentTimestamp() {
+            const now = new Date();
+            currentTimestampSeconds.value = Math.floor(now.getTime() / 1000);
+            currentTimestampMilliseconds.value = now.getTime();
+        }
+
+        // 每秒更新一次时间戳
+        setInterval(updateCurrentTimestamp, 1000);
+        // 页面加载时立即更新一次
+        updateCurrentTimestamp();
     </script>
 </body>
 
-</html>
-    
+</html>    
