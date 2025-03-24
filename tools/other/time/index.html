@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon"
-        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⏰</text></svg>">
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍉</text></svg>">
     <title>世界时间-在线</title>
 
     <style>
@@ -17,36 +17,41 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
-            background-color: #ecdede;
+            background-color: #ffffff;
+            font-size: 14px; /* 调整基础字体大小 */
         }
 
         /* 新增容器样式 */
         .container {
-            max-height: 100vh; /* 设置最大高度 */
-            width: 90%;
+            max-height: 80vh; /* 设置最大高度 */
+            width: 95%; /* 增加容器宽度，适应移动设备 */
             overflow-y: auto; /* 增加垂直滚动条 */
             border: 1px solid #ccc;
-            padding: 10px;
+            padding: 5px; /* 减少内边距 */
+            background-color: #ecdede;
         }
 
         .outputDiv {
             display: flex;
             align-items: center;
             width: 100%;
-            margin: 10px 0;
+            margin: 5px 0; /* 减少外边距 */
         }
 
         label {
-            min-width: 120px;
-            margin-right: 10px;
+            min-width: 100px; /* 减少 label 最小宽度 */
+            margin-right: 5px; /* 减少右边距 */
             text-align: right;
+            font-size: 12px; /* 调整 label 字体大小 */
         }
 
         .outputText {
             flex: 1;
-            padding: 10px;
+            padding: 8px; /* 减少内边距 */
             border: 1px solid #94b76c;
             border-radius: 4px;
+            font-size: 12px; /* 调整输入框字体大小 */
+            min-width: 120px; /* 设置输入框最小宽度 */
         }
 
         .outputText:focus,
@@ -57,17 +62,40 @@
         }
 
         button {
-            padding: 10px 20px;
+            padding: 8px 16px; /* 减少按钮内边距 */
             background-color: #94b76c;
             color: white;
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            margin-left: 10px;
+            margin-left: 5px; /* 减少左边距 */
+            font-size: 12px; /* 调整按钮字体大小 */
+            margin-top: 5px; /* 增加顶部外边距，避免换行时重叠 */
         }
 
         button:hover {
             background-color: #57aa7f;
+        }
+
+        @media (max-width: 480px) {
+            /* 针对小屏幕设备的额外调整 */
+            .outputDiv {
+                flex-wrap: wrap;
+            }
+
+            label {
+                text-align: left;
+                margin-bottom: 0; /* 移除底部边距 */
+            }
+
+            .outputText {
+                width: auto; /* 恢复自动宽度 */
+                margin-bottom: 0; /* 移除底部边距 */
+            }
+
+            button {
+                margin-left: 5px; /* 保持左边距 */
+            }
         }
     </style>
 </head>
@@ -325,3 +353,4 @@
 </body>
 
 </html>
+    
