@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍉</text></svg>">
+    <title>进制转换在线</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #ecdede;
+        }
+
+        .inputDiv {
+            display: flex;
+            align-items: center;
+            width: 90%;
+            margin: 10px 0;
+        }
+
+        .outputDiv {
+            display: flex;
+            align-items: center;
+            width: 90%;
+            margin: 10px 0;
+        }
+
+        label {
+            min-width: 80px;
+            margin-right: 10px;
+        }
+
+        .inputText {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #94b76c;
+            border-radius: 4px;
+        }
+
+        .inputText:focus,
+        .inputText:hover,
+        .inputText:active {
+            border: 1px solid #57aa7f;
+            outline: 2px solid #57aa7f;
+        }
+
+        .outputText {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #94b76c;
+            border-radius: 4px;
+        }
+
+        .outputText:focus,
+        .outputText:hover,
+        .outputText:active {
+            border: 1px solid #57aa7f;
+            outline: 2px solid #57aa7f;
+        }
+
+        .selectInput {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #94b76c;
+            border-radius: 4px;
+        }
+
+        .selectInput:focus,
+        .selectInput:hover,
+        .selectInput:active {
+            border: 1px solid #57aa7f;
+            outline: 2px solid #57aa7f;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #94b76c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        button:hover {
+            background-color: #57aa7f;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="inputDiv">
+        <label>输入：</label>
+        <input class="inputText" id="inputText" placeholder="请输入数字">
+        <select class="selectInput" id="inputBaseSelect">
+            <option value="2">2 进制</option>
+            <option value="3">3 进制</option>
+            <option value="8">8 进制</option>
+            <option value="10" selected>10 进制</option>
+            <option value="16">16 进制</option>
+        </select>
+    </div>
+
+    <div class="outputDiv">
+        <label>二进制：</label>
+        <input class="outputText" id="binaryOutput" readonly placeholder="二进制结果将显示在这里">
+        <button id="copyBinary">复制</button>
+    </div>
+
+    <div class="outputDiv">
+        <label>三进制：</label>
+        <input class="outputText" id="ternaryOutput" readonly placeholder="三进制结果将显示在这里">
+        <button id="copyTernary">复制</button>
+    </div>
+
+    <div class="outputDiv">
+        <label>八进制：</label>
+        <input class="outputText" id="octalOutput" readonly placeholder="八进制结果将显示在这里">
+        <button id="copyOctal">复制</button>
+    </div>
+
+    <div class="outputDiv">
+        <label>十进制：</label>
+        <input class="outputText" id="decimalOutput" readonly placeholder="十进制结果将显示在这里">
+        <button id="copyDecimal">复制</button>
+    </div>
+
+    <div class="outputDiv">
+        <label>十六进制：</label>
+        <input class="outputText" id="hexadecimalOutput" readonly placeholder="十六进制结果将显示在这里">
+        <button id="copyHexadecimal">复制</button>
+    </div>
+
+    <script>
+        const inputText = document.getElementById('inputText');
+        const inputBaseSelect = document.getElementById('inputBaseSelect');
+        const binaryOutput = document.getElementById('binaryOutput');
+        const ternaryOutput = document.getElementById('ternaryOutput');
+        const octalOutput = document.getElementById('octalOutput');
+        const decimalOutput = document.getElementById('decimalOutput');
+        const hexadecimalOutput = document.getElementById('hexadecimalOutput');
+
+        const copyBinary = document.getElementById('copyBinary');
+        const copyTernary = document.getElementById('copyTernary');
+        const copyOctal = document.getElementById('copyOctal');
+        const copyDecimal = document.getElementById('copyDecimal');
+        const copyHexadecimal = document.getElementById('copyHexadecimal');
+
+        function convertNumber() {
+            if (inputText.value === "") {
+                binaryOutput.value = "请输入数字";
+                ternaryOutput.value = "请输入数字";
+                octalOutput.value = "请输入数字";
+                decimalOutput.value = "请输入数字";
+                hexadecimalOutput.value = "请输入数字";
+                return;
+            }
+            const text = inputText.value;
+            const inputBase = parseInt(inputBaseSelect.value);
+            const decimalNumber = parseInt(text, inputBase);
+            if (isNaN(decimalNumber)) {
+                binaryOutput.value = "请输入正确的数字";
+                ternaryOutput.value = "请输入正确的数字";
+                octalOutput.value = "请输入正确的数字";
+                decimalOutput.value = "请输入正确的数字";
+                hexadecimalOutput.value = "请输入正确的数字";
+                return;
+            }
+            try {
+                binaryOutput.value = decimalNumber.toString(2);
+                ternaryOutput.value = convertToBase(decimalNumber, 3);
+                octalOutput.value = decimalNumber.toString(8);
+                decimalOutput.value = decimalNumber.toString(10);
+                hexadecimalOutput.value = decimalNumber.toString(16).toUpperCase();
+            } catch (error) {
+                console.error('进制转换时出错:', error);
+                binaryOutput.value = '转换出错，请重试';
+                ternaryOutput.value = '转换出错，请重试';
+                octalOutput.value = '转换出错，请重试';
+                decimalOutput.value = '转换出错，请重试';
+                hexadecimalOutput.value = '转换出错，请重试';
+            }
+        }
+
+        function convertToBase(num, base) {
+            if (num === 0) return '0';
+            let result = '';
+            while (num > 0) {
+                result = (num % base) + result;
+                num = Math.floor(num / base);
+            }
+            return result;
+        }
+
+        function copyText(outputElement, button) {
+            const textToCopy = outputElement.value;
+            if (textToCopy) {
+                navigator.clipboard.writeText(textToCopy)
+                   .then(() => {
+                        button.textContent = "已复制";
+                        setTimeout(() => {
+                            button.textContent = "复制";
+                        }, 2000);
+                    })
+                   .catch((error) => {
+                        console.error('复制失败:', error);
+                    });
+            }
+        }
+
+        copyBinary.addEventListener('click', () => copyText(binaryOutput, copyBinary));
+        copyTernary.addEventListener('click', () => copyText(ternaryOutput, copyTernary));
+        copyOctal.addEventListener('click', () => copyText(octalOutput, copyOctal));
+        copyDecimal.addEventListener('click', () => copyText(decimalOutput, copyDecimal));
+        copyHexadecimal.addEventListener('click', () => copyText(hexadecimalOutput, copyHexadecimal));
+
+        inputText.addEventListener('input', convertNumber);
+        inputBaseSelect.addEventListener('change', convertNumber);
+    </script>
+</body>
+
+</html>
