@@ -3,8 +3,10 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>掷骰子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>掷骰子-在线</title>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍉</text></svg>">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,7 +17,8 @@
             height: 100vh;
             margin: 0;
             background-color: #ffffff;
-            font-size: 14px; /* 调整基础字体大小 */
+            font-size: 14px;
+            /* 调整基础字体大小 */
         }
 
         /* 容器样式 */
@@ -24,7 +27,8 @@
             padding: 20px;
             border-radius: 15px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            width: 95%; /* 增加容器宽度，适应移动设备 */
+            width: 95%;
+            /* 增加容器宽度，适应移动设备 */
             height: 90vh;
             display: flex;
             box-sizing: border-box;
@@ -112,9 +116,11 @@
             background-color: #94b76c;
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 20px;
             cursor: pointer;
             margin: 0 5px;
+            height: 60px;
+            width: 60px;
         }
 
         button:hover {
@@ -138,8 +144,8 @@
             background-color: white;
         }
 
-         /* 表格样式 */
-         table {
+        /* 表格样式 */
+        table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 1px;
@@ -150,14 +156,17 @@
             border: 1px solid #e0e0e0;
             padding: 12px;
             text-align: center;
+            width: 50%;
         }
 
         th {
             background-color: #f0f0f0;
+            width: 50%;
             color: #333333;
         }
 
         tr:nth-child(even) {
+            width: 50%;
             background-color: #f9f9f9;
         }
     </style>
@@ -175,7 +184,7 @@
                 <div class="dice-face top">⚅</div>
                 <div class="dice-face bottom">⚁</div>
             </div>
-            <button onclick="rollDice()">掷骰子</button>
+            <button id="rollButton" onclick="rollDice()">掷</button>
         </div>
         <div class="log-section">
             <div id="log-table">
@@ -194,6 +203,8 @@
     <script>
         function rollDice() {
             const diceContainer = document.getElementById('dice-container');
+            const rollButton = document.getElementById('rollButton');
+            rollButton.hidden = true;
             const diceFaces = [
                 { x: 0, y: 0, point: '⚀', num: 1 },
                 { x: 180, y: 0, point: '⚂', num: 3 },
@@ -205,6 +216,7 @@
             const randomIndex = Math.floor(Math.random() * diceFaces.length);
             const { x, y, num } = diceFaces[randomIndex];
 
+
             diceContainer.classList.add('rolling');
             setTimeout(() => {
                 diceContainer.style.transform = `rotateX(${x}deg) rotateY(${y}deg)`;
@@ -212,13 +224,24 @@
 
                 const logBody = document.getElementById('log-body');
                 const now = new Date();
-                const time = now.toLocaleString();
-                const newRow = logBody.insertRow();
+                const time = formatTime(now);
+                const newRow = logBody.insertRow(0); // 插入到第一行
                 const timeCell = newRow.insertCell(0);
                 const pointCell = newRow.insertCell(1);
                 timeCell.textContent = time;
                 pointCell.textContent = num;
-            }, 3000);
+                rollButton.hidden = false;
+            }, 4000);
+        }
+
+        function formatTime(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const seconds = String(date.getSeconds()).padStart(2, '0');
+            return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
         }
     </script>
 </body>
