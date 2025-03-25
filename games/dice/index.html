@@ -30,7 +30,6 @@
             position: absolute;
             width: 200px;
             height: 200px;
-            background-color: white;
             border: 1px solid #ccc;
             display: flex;
             align-items: center;
@@ -41,39 +40,44 @@
 
         .dice-face.front {
             transform: translateZ(100px);
+            background-color: #FF5733;
         }
 
         .dice-face.back {
             transform: rotateY(180deg) translateZ(100px);
+            background-color: #C70039;
         }
 
         .dice-face.right {
             transform: rotateY(90deg) translateZ(100px);
+            background-color: #900C3F;
         }
 
         .dice-face.left {
             transform: rotateY(-90deg) translateZ(100px);
+            background-color: #581845;
         }
 
         .dice-face.top {
             transform: rotateX(90deg) translateZ(100px);
+            background-color: #FFC300;
         }
 
         .dice-face.bottom {
             transform: rotateX(-90deg) translateZ(100px);
+            background-color: #DAF7A6;
         }
 
         .dice-container.rolling {
-            animation: roll 1s ease-in-out;
+            animation: roll 5s ease-in-out; /* 动画持续时间变为 3 秒 */
         }
 
         @keyframes roll {
             0% {
                 transform: rotateX(0deg) rotateY(0deg);
             }
-
             100% {
-                transform: rotateX(720deg) rotateY(720deg);
+                transform: rotateX(5160deg) rotateY(5160deg); /* 3 秒内旋转 2160 度（六圈） */
             }
         }
 
@@ -121,7 +125,7 @@
             setTimeout(() => {
                 diceContainer.style.transform = `rotateX(${x}deg) rotateY(${y}deg)`;
                 diceContainer.classList.remove('rolling');
-            }, 1000);
+            }, 3000); // 延迟时间变为 3000 毫秒（即 3 秒）
         }
     </script>
 </body>
