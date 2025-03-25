@@ -14,7 +14,7 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
-            background-color: #f4f4f9;
+            background-color: #ecdede;
             perspective: 1000px;
         }
 
@@ -37,38 +37,39 @@
             font-size: 150px;
             line-height: 1;
             border-radius: 15px;
-            backface-visibility: hidden; /* 隐藏背面 */
-            overflow: hidden; /* 隐藏溢出部分 */
+            backface-visibility: hidden;
+            overflow: hidden;
+            color: blanchedalmond;
         }
 
         .dice-face.front {
             transform: translateZ(100px);
-            background-color: #FF5733;
+            background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
         }
 
         .dice-face.back {
             transform: rotateY(180deg) translateZ(100px);
-            background-color: #C70039;
+            background-image: linear-gradient(120deg, #a6c0fe 0%, #f68084 100%);
         }
 
         .dice-face.right {
             transform: rotateY(90deg) translateZ(100px);
-            background-color: #900C3F;
+            background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
         }
 
         .dice-face.left {
             transform: rotateY(-90deg) translateZ(100px);
-            background-color: #581845;
+            background-image: linear-gradient(to top, #9890e3 0%, #b1f4cf 100%);
         }
 
         .dice-face.top {
             transform: rotateX(90deg) translateZ(100px);
-            background-color: #FFC300;
+            background-image: linear-gradient(to top, #feada6 0%, #f5efef 100%);
         }
 
         .dice-face.bottom {
             transform: rotateX(-90deg) translateZ(100px);
-            background-color: #DAF7A6;
+            background-image: linear-gradient(-20deg, #dcb0ed 0%, #99c99c 100%);
         }
 
         .dice-container.rolling {
@@ -86,16 +87,16 @@
 
         button {
             padding: 10px 20px;
-            font-size: 16px;
-            background-color: #007BFF;
+            background-color: #94b76c;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 4px;
             cursor: pointer;
+            margin: 0 5px;
         }
 
         button:hover {
-            background-color: #0056b3;
+            background-color: #57aa7f;
         }
     </style>
 </head>
