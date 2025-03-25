@@ -14,8 +14,29 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
+            background-color: #ffffff;
+            font-size: 14px; /* 调整基础字体大小 */
+        }
+
+        /* 容器样式 */
+        .container {
             background-color: #ecdede;
-            perspective: 1000px;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            width: 95%; /* 增加容器宽度，适应移动设备 */
+            height: 90vh;
+            display: flex;
+            box-sizing: border-box;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .dice-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         .dice-container {
@@ -80,6 +101,7 @@
             0% {
                 transform: rotateX(0deg) rotateY(0deg);
             }
+
             100% {
                 transform: rotateX(5160deg) rotateY(5160deg);
             }
@@ -98,40 +120,107 @@
         button:hover {
             background-color: #57aa7f;
         }
+
+        .log-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        #log-table {
+            height: 80vh;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px;
+            overflow-y: auto;
+            background-color: white;
+        }
+
+         /* 表格样式 */
+         table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1px;
+        }
+
+        th,
+        td {
+            border: 1px solid #e0e0e0;
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f0f0f0;
+            color: #333333;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
     </style>
 </head>
 
 <body>
-    <div class="dice-container" id="dice-container">
-        <div class="dice-face front">⚀</div>
-        <div class="dice-face back">⚂</div>
-        <div class="dice-face right">⚃</div>
-        <div class="dice-face left">⚄</div>
-        <div class="dice-face top">⚅</div>
-        <div class="dice-face bottom">⚁</div>
+    <div class="container">
+
+        <div class="dice-section">
+            <div class="dice-container" id="dice-container">
+                <div class="dice-face front">⚀</div>
+                <div class="dice-face back">⚂</div>
+                <div class="dice-face right">⚃</div>
+                <div class="dice-face left">⚄</div>
+                <div class="dice-face top">⚅</div>
+                <div class="dice-face bottom">⚁</div>
+            </div>
+            <button onclick="rollDice()">掷骰子</button>
+        </div>
+        <div class="log-section">
+            <div id="log-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>时间</th>
+                            <th>点数</th>
+                        </tr>
+                    </thead>
+                    <tbody id="log-body"></tbody>
+                </table>
+            </div>
+        </div>
     </div>
-    <button onclick="rollDice()">掷骰子</button>
     <script>
         function rollDice() {
             const diceContainer = document.getElementById('dice-container');
             const diceFaces = [
-                { x: 0, y: 0 },
-                { x: 180, y: 0 },
-                { x: 0, y: -90 },
-                { x: 0, y: 90 },
-                { x: -90, y: 0 },
-                { x: 90, y: 0 }
+                { x: 0, y: 0, point: '⚀', num: 1 },
+                { x: 180, y: 0, point: '⚂', num: 3 },
+                { x: 0, y: -90, point: '⚃', num: 4 },
+                { x: 0, y: 90, point: '⚄', num: 5 },
+                { x: -90, y: 0, point: '⚅', num: 6 },
+                { x: 90, y: 0, point: '⚁', num: 2 }
             ];
             const randomIndex = Math.floor(Math.random() * diceFaces.length);
-            const { x, y } = diceFaces[randomIndex];
+            const { x, y, num } = diceFaces[randomIndex];
 
             diceContainer.classList.add('rolling');
             setTimeout(() => {
                 diceContainer.style.transform = `rotateX(${x}deg) rotateY(${y}deg)`;
                 diceContainer.classList.remove('rolling');
+
+                const logBody = document.getElementById('log-body');
+                const now = new Date();
+                const time = now.toLocaleString();
+                const newRow = logBody.insertRow();
+                const timeCell = newRow.insertCell(0);
+                const pointCell = newRow.insertCell(1);
+                timeCell.textContent = time;
+                pointCell.textContent = num;
             }, 3000);
         }
     </script>
 </body>
 
-</html>    
+</html>
