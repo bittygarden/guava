@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web Gradients Showcase</title>
-    <link rel="stylesheet" href="webgradients.css">
     <style>
         body {
             display: flex;
@@ -75,6 +74,21 @@
             cursor: pointer;
             background-color: transparent;
         }
+
+        /*001 Warm Flame*/
+        .warm_flame {
+            background-image: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+        }
+
+        /*002 Night Fade*/
+        .night_fade {
+            background-image: linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%);
+        }
+
+        /*003 Spring Warmth*/
+        .spring_warmth {
+            background-image: linear-gradient(to top, #fad0c4 0%, #fad0c4 1%, #ffd1ff 100%);
+        }
     </style>
 </head>
 
@@ -91,7 +105,7 @@
         <div class="gradient-box">
             <div class="gradient-circle night_fade"></div>
             <div class="info top-left">2. night_fade</div>
-            <div class="info bottom-left">From: #a18cd1 To: #fbc2eb</div>
+            <div class="info bottom-left">#a18cd1 → #fbc2eb</div>
             <div class="info bottom-right">
                 <button onclick="copyGradient('.night_fade')">复制</button>
             </div>
@@ -99,7 +113,7 @@
         <div class="gradient-box">
             <div class="gradient-circle spring_warmth"></div>
             <div class="info top-left">3. spring_warmth</div>
-            <div class="info bottom-left">From: #fad0c4 To: #ffd1ff</div>
+            <div class="info bottom-left">#fad0c4 → #ffd1ff</div>
             <div class="info bottom-right">
                 <button onclick="copyGradient('.spring_warmth')">复制</button>
             </div>
