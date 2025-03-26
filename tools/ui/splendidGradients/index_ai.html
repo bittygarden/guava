@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Gradients Showcase</title>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍉</text></svg>">
+    <title>渐变色-在线</title>
     <style>
         body {
             display: flex;
@@ -29,7 +31,7 @@
             width: 300px;
             height: 300px;
             margin: 10px;
-            border: 1px solid #ccc;
+            border: 1px solid #f3d024;
             border-radius: 5px;
         }
 
@@ -71,9 +73,16 @@
             padding: 1px 9px;
             border: none;
             border-radius: 3px;
-            border: 1px solid #333435;
+            border: 1px solid #FFA99F;
             cursor: pointer;
+            color: #FFA99F;
             background-color: transparent;
+            cursor: pointer;
+        }
+
+        button:hover {
+            color: #ffffff;
+            background-color: #FFA99F;
         }
 
         /* 颜色展示块样式 */
@@ -110,7 +119,7 @@
                 <span class="color-dot" style="background-color: #fad0c4;"></span>#fad0c4
             </div>
             <div class="info bottom-right">
-                <button onclick="copyGradient('.warm_flame')">复制</button>
+                <button onclick="copyGradient('.warm_flame', this)">复制</button>
             </div>
         </div>
         <div class="gradient-box">
@@ -121,7 +130,7 @@
                 <span class="color-dot" style="background-color: #fbc2eb;"></span>#fbc2eb
             </div>
             <div class="info bottom-right">
-                <button onclick="copyGradient('.night_fade')">复制</button>
+                <button onclick="copyGradient('.night_fade', this)">复制</button>
             </div>
         </div>
         <div class="gradient-box">
@@ -132,12 +141,12 @@
                 <span class="color-dot" style="background-color: #ffd1ff;"></span>#ffd1ff
             </div>
             <div class="info bottom-right">
-                <button onclick="copyGradient('.spring_warmth')">复制</button>
+                <button onclick="copyGradient('.spring_warmth', this)">复制</button>
             </div>
         </div>
     </div>
     <script>
-        function copyGradient(className) {
+        function copyGradient(className, button) {
             for (let i = 0; i < document.styleSheets.length; i++) {
                 const styleSheet = document.styleSheets[i];
                 for (let j = 0; j < styleSheet.cssRules.length; j++) {
@@ -150,6 +159,10 @@
                         textArea.select();
                         document.execCommand('copy');
                         document.body.removeChild(textArea);
+                        button.textContent = '已复制';
+                        setTimeout(() => {
+                            button.textContent = '复制';
+                        }, 3000);
                         break;
                     }
                 }

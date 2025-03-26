@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Gradients Showcase</title>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍉</text></svg>">
+    <title>渐变色-在线</title>
     <style>
         body {
             display: flex;
@@ -29,7 +31,7 @@
             width: 300px;
             height: 300px;
             margin: 10px;
-            border: 1px solid #ccc;
+            border: 1px solid #f3d024;
             border-radius: 5px;
         }
 
@@ -71,9 +73,16 @@
             padding: 1px 9px;
             border: none;
             border-radius: 3px;
-            border: 1px solid #333435;
+            border: 1px solid #FFA99F;
             cursor: pointer;
+            color: #FFA99F;
             background-color: transparent;
+            cursor: pointer;
+        }
+
+        button:hover {
+            color: #ffffff;
+            background-color: #FFA99F;
         }
 
         /* 颜色展示块样式 */
@@ -104,40 +113,2345 @@
     <div class="main-container">
         <div class="gradient-box">
             <div class="gradient-circle warm_flame" onclick="toggleFullscreen(this)"></div>
-            <div class="info top-left">1. warm_flame</div>
+            <div class="info top-left"> 1. warm_flame</div>
             <div class="info bottom-left">
                 <span class="color-dot" style="background-color: #ff9a9e;"></span>#ff9a9e →
                 <span class="color-dot" style="background-color: #fad0c4;"></span>#fad0c4
             </div>
             <div class="info bottom-right">
-                <button onclick="copyGradient('.warm_flame')">复制</button>
+                <button onclick="copyGradient('.warm_flame', this)">复制</button>
             </div>
         </div>
+
+
         <div class="gradient-box">
             <div class="gradient-circle night_fade" onclick="toggleFullscreen(this)"></div>
-            <div class="info top-left">2. night_fade</div>
+            <div class="info top-left"> 2. night_fade</div>
             <div class="info bottom-left">
                 <span class="color-dot" style="background-color: #a18cd1;"></span>#a18cd1 →
                 <span class="color-dot" style="background-color: #fbc2eb;"></span>#fbc2eb
             </div>
             <div class="info bottom-right">
-                <button onclick="copyGradient('.night_fade')">复制</button>
+                <button onclick="copyGradient('.night_fade', this)">复制</button>
             </div>
         </div>
+
+
         <div class="gradient-box">
             <div class="gradient-circle spring_warmth" onclick="toggleFullscreen(this)"></div>
-            <div class="info top-left">3. spring_warmth</div>
+            <div class="info top-left"> 3. spring_warmth</div>
             <div class="info bottom-left">
                 <span class="color-dot" style="background-color: #fad0c4;"></span>#fad0c4 →
                 <span class="color-dot" style="background-color: #ffd1ff;"></span>#ffd1ff
             </div>
             <div class="info bottom-right">
-                <button onclick="copyGradient('.spring_warmth')">复制</button>
+                <button onclick="copyGradient('.spring_warmth', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle juicy_peach" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left"> 4. juicy_peach</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #ffecd2;"></span>#ffecd2 →
+                <span class="color-dot" style="background-color: #fcb69f;"></span>#fcb69f
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.juicy_peach', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle young_passion" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left"> 5. young_passion</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #ff8177;"></span>#ff8177 →
+                <span class="color-dot" style="background-color: #b12a5b;"></span>#b12a5b
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.young_passion', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle lady_lips" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left"> 6. lady_lips</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #ff9a9e;"></span>#ff9a9e →
+                <span class="color-dot" style="background-color: #fecfef;"></span>#fecfef
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.lady_lips', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle sunny_morning" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left"> 7. sunny_morning</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #f6d365;"></span>#f6d365 →
+                <span class="color-dot" style="background-color: #fda085;"></span>#fda085
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.sunny_morning', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle rainy_ashville" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left"> 8. rainy_ashville</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #fbc2eb;"></span>#fbc2eb →
+                <span class="color-dot" style="background-color: #a6c1ee;"></span>#a6c1ee
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.rainy_ashville', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle frozen_dreams" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left"> 9. frozen_dreams</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #fdcbf1;"></span>#fdcbf1 →
+                <span class="color-dot" style="background-color: #e6dee9;"></span>#e6dee9
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.frozen_dreams', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle winter_neva" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">10. winter_neva</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #a1c4fd;"></span>#a1c4fd →
+                <span class="color-dot" style="background-color: #c2e9fb;"></span>#c2e9fb
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.winter_neva', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle dusty_grass" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">11. dusty_grass</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #d4fc79;"></span>#d4fc79 →
+                <span class="color-dot" style="background-color: #96e6a1;"></span>#96e6a1
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.dusty_grass', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle tempting_azure" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">12. tempting_azure</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #84fab0;"></span>#84fab0 →
+                <span class="color-dot" style="background-color: #8fd3f4;"></span>#8fd3f4
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.tempting_azure', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle heavy_rain" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">13. heavy_rain</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #cfd9df;"></span>#cfd9df →
+                <span class="color-dot" style="background-color: #e2ebf0;"></span>#e2ebf0
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.heavy_rain', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle amy_crisp" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">14. amy_crisp</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #a6c0fe;"></span>#a6c0fe →
+                <span class="color-dot" style="background-color: #f68084;"></span>#f68084
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.amy_crisp', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle mean_fruit" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">15. mean_fruit</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #fccb90;"></span>#fccb90 →
+                <span class="color-dot" style="background-color: #d57eeb;"></span>#d57eeb
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.mean_fruit', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle deep_blue" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">16. deep_blue</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #e0c3fc;"></span>#e0c3fc →
+                <span class="color-dot" style="background-color: #8ec5fc;"></span>#8ec5fc
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.deep_blue', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle ripe_malinka" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">17. ripe_malinka</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #f093fb;"></span>#f093fb →
+                <span class="color-dot" style="background-color: #f5576c;"></span>#f5576c
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.ripe_malinka', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle cloudy_knoxville" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">18. cloudy_knoxville</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #fdfbfb;"></span>#fdfbfb →
+                <span class="color-dot" style="background-color: #ebedee;"></span>#ebedee
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.cloudy_knoxville', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle malibu_beach" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">19. malibu_beach</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #4facfe;"></span>#4facfe →
+                <span class="color-dot" style="background-color: #00f2fe;"></span>#00f2fe
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.malibu_beach', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle new_life" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">20. new_life</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #43e97b;"></span>#43e97b →
+                <span class="color-dot" style="background-color: #38f9d7;"></span>#38f9d7
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.new_life', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle true_sunset" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">21. true_sunset</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #fa709a;"></span>#fa709a →
+                <span class="color-dot" style="background-color: #fee140;"></span>#fee140
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.true_sunset', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle morpheus_den" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">22. morpheus_den</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #30cfd0;"></span>#30cfd0 →
+                <span class="color-dot" style="background-color: #330867;"></span>#330867
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.morpheus_den', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle rare_wind" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">23. rare_wind</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #a8edea;"></span>#a8edea →
+                <span class="color-dot" style="background-color: #fed6e3;"></span>#fed6e3
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.rare_wind', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle near_moon" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">24. near_moon</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #5ee7df;"></span>#5ee7df →
+                <span class="color-dot" style="background-color: #b490ca;"></span>#b490ca
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.near_moon', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle wild_apple" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">25. wild_apple</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #d299c2;"></span>#d299c2 →
+                <span class="color-dot" style="background-color: #fef9d7;"></span>#fef9d7
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.wild_apple', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle saint_petersburg" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">26. saint_petersburg</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #f5f7fa;"></span>#f5f7fa →
+                <span class="color-dot" style="background-color: #c3cfe2;"></span>#c3cfe2
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.saint_petersburg', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle arielles_smile" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">27. arielles_smile</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #16d9e3;"></span>#16d9e3 →
+                <span class="color-dot" style="background-color: #46aef7;"></span>#46aef7
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.arielles_smile', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle plum_plate" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">28. plum_plate</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #667eea;"></span>#667eea →
+                <span class="color-dot" style="background-color: #764ba2;"></span>#764ba2
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.plum_plate', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle everlasting_sky" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">29. everlasting_sky</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #fdfcfb;"></span>#fdfcfb →
+                <span class="color-dot" style="background-color: #e2d1c3;"></span>#e2d1c3
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.everlasting_sky', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle happy_fisher" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">30. happy_fisher</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #89f7fe;"></span>#89f7fe →
+                <span class="color-dot" style="background-color: #66a6ff;"></span>#66a6ff
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.happy_fisher', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle blessing" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">31. blessing</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #fddb92;"></span>#fddb92 →
+                <span class="color-dot" style="background-color: #d1fdff;"></span>#d1fdff
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.blessing', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle sharpeye_eagle" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">32. sharpeye_eagle</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #9890e3;"></span>#9890e3 →
+                <span class="color-dot" style="background-color: #b1f4cf;"></span>#b1f4cf
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.sharpeye_eagle', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle ladoga_bottom" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">33. ladoga_bottom</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #ebc0fd;"></span>#ebc0fd →
+                <span class="color-dot" style="background-color: #d9ded8;"></span>#d9ded8
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.ladoga_bottom', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle lemon_gate" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">34. lemon_gate</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #96fbc4;"></span>#96fbc4 →
+                <span class="color-dot" style="background-color: #f9f586;"></span>#f9f586
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.lemon_gate', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle itmeo_branding" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">35. itmeo_branding</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #2af598;"></span>#2af598 →
+                <span class="color-dot" style="background-color: #009efd;"></span>#009efd
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.itmeo_branding', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle zeus_miracle" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">36. zeus_miracle</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #cd9cf2;"></span>#cd9cf2 →
+                <span class="color-dot" style="background-color: #f6f3ff;"></span>#f6f3ff
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.zeus_miracle', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle old_hat" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">37. old_hat</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #e4afcb;"></span>#e4afcb →
+                <span class="color-dot" style="background-color: #7edbdc;"></span>#7edbdc
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.old_hat', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle star_wine" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">38. star_wine</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #b8cbb8;"></span>#b8cbb8 →
+                <span class="color-dot" style="background-color: #ee609c;"></span>#ee609c
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.star_wine', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle deep_blue" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">39. deep_blue</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #6a11cb;"></span>#6a11cb →
+                <span class="color-dot" style="background-color: #2575fc;"></span>#2575fc
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.deep_blue', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle coup_de_grace" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">40. coup_de_grace</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #DCD9D4;"></span>#DCD9D4 →
+                <span class="color-dot" style="background-color: #DCD9D4;"></span>#DCD9D4
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.coup_de_grace', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle happy_acid" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">41. happy_acid</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #37ecba;"></span>#37ecba →
+                <span class="color-dot" style="background-color: #72afd3;"></span>#72afd3
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.happy_acid', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle awesome_pine" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">42. awesome_pine</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #ebbba7;"></span>#ebbba7 →
+                <span class="color-dot" style="background-color: #cfc7f8;"></span>#cfc7f8
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.awesome_pine', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle new_york" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">43. new_york</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #fff1eb;"></span>#fff1eb →
+                <span class="color-dot" style="background-color: #ace0f9;"></span>#ace0f9
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.new_york', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle shy_rainbow" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">44. shy_rainbow</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #eea2a2;"></span>#eea2a2 →
+                <span class="color-dot" style="background-color: #7ac5d8;"></span>#7ac5d8
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.shy_rainbow', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle loon_crest" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">45. loon_crest</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #989898;;"></span>#989898; →
+                <span class="color-dot" style="background-color: #989898;;"></span>#989898;
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.loon_crest', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle mixed_hopes" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">46. mixed_hopes</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #c471f5;"></span>#c471f5 →
+                <span class="color-dot" style="background-color: #fa71cd;"></span>#fa71cd
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.mixed_hopes', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle fly_high" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">47. fly_high</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #48c6ef;"></span>#48c6ef →
+                <span class="color-dot" style="background-color: #6f86d6;"></span>#6f86d6
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.fly_high', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle strong_bliss" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">48. strong_bliss</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #f78ca0;"></span>#f78ca0 →
+                <span class="color-dot" style="background-color: #fe9a8b;"></span>#fe9a8b
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.strong_bliss', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle fresh_milk" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">49. fresh_milk</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #feada6;"></span>#feada6 →
+                <span class="color-dot" style="background-color: #f5efef;"></span>#f5efef
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.fresh_milk', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle snow_again" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">50. snow_again</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #e6e9f0;"></span>#e6e9f0 →
+                <span class="color-dot" style="background-color: #eef1f5;"></span>#eef1f5
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.snow_again', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle february_ink" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">51. february_ink</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #accbee;"></span>#accbee →
+                <span class="color-dot" style="background-color: #e7f0fd;"></span>#e7f0fd
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.february_ink', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle kind_steel" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">52. kind_steel</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #e9defa;"></span>#e9defa →
+                <span class="color-dot" style="background-color: #fbfcdb;"></span>#fbfcdb
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.kind_steel', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle soft_grass" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">53. soft_grass</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #c1dfc4;"></span>#c1dfc4 →
+                <span class="color-dot" style="background-color: #deecdd;"></span>#deecdd
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.soft_grass', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle grown_early" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">54. grown_early</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #0ba360;"></span>#0ba360 →
+                <span class="color-dot" style="background-color: #3cba92;"></span>#3cba92
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.grown_early', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle sharp_blues" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">55. sharp_blues</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #00c6fb;"></span>#00c6fb →
+                <span class="color-dot" style="background-color: #005bea;"></span>#005bea
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.sharp_blues', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle shady_water" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">56. shady_water</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #74ebd5;"></span>#74ebd5 →
+                <span class="color-dot" style="background-color: #9face6;"></span>#9face6
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.shady_water', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle dirty_beauty" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">57. dirty_beauty</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #6a85b6;"></span>#6a85b6 →
+                <span class="color-dot" style="background-color: #bac8e0;"></span>#bac8e0
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.dirty_beauty', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle great_whale" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">58. great_whale</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #a3bded;"></span>#a3bded →
+                <span class="color-dot" style="background-color: #6991c7;"></span>#6991c7
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.great_whale', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle teen_notebook" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">59. teen_notebook</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #9795f0;"></span>#9795f0 →
+                <span class="color-dot" style="background-color: #fbc8d4;"></span>#fbc8d4
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.teen_notebook', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle polite_rumors" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">60. polite_rumors</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #a7a6cb;"></span>#a7a6cb →
+                <span class="color-dot" style="background-color: #8989ba;"></span>#8989ba
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.polite_rumors', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle sweet_period" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">61. sweet_period</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #3f51b1;"></span>#3f51b1 →
+                <span class="color-dot" style="background-color: #f7c978;"></span>#f7c978
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.sweet_period', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle wide_matrix" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">62. wide_matrix</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #fcc5e4;"></span>#fcc5e4 →
+                <span class="color-dot" style="background-color: #020f75;"></span>#020f75
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.wide_matrix', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle soft_cherish" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">63. soft_cherish</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #dbdcd7;"></span>#dbdcd7 →
+                <span class="color-dot" style="background-color: #1c1a27;"></span>#1c1a27
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.soft_cherish', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle red_salvation" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">64. red_salvation</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #f43b47;"></span>#f43b47 →
+                <span class="color-dot" style="background-color: #453a94;"></span>#453a94
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.red_salvation', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle burning_spring" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">65. burning_spring</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #4fb576;"></span>#4fb576 →
+                <span class="color-dot" style="background-color: #432c39;"></span>#432c39
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.burning_spring', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle night_party" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">66. night_party</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #0250c5;"></span>#0250c5 →
+                <span class="color-dot" style="background-color: #d43f8d;"></span>#d43f8d
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.night_party', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle sky_glider" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">67. sky_glider</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #88d3ce;"></span>#88d3ce →
+                <span class="color-dot" style="background-color: #6e45e2;"></span>#6e45e2
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.sky_glider', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle heaven_peach" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">68. heaven_peach</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #d9afd9;"></span>#d9afd9 →
+                <span class="color-dot" style="background-color: #97d9e1;"></span>#97d9e1
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.heaven_peach', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle purple_division" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">69. purple_division</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #7028e4;"></span>#7028e4 →
+                <span class="color-dot" style="background-color: #e5b2ca;"></span>#e5b2ca
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.purple_division', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle aqua_splash" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">70. aqua_splash</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #13547a;"></span>#13547a →
+                <span class="color-dot" style="background-color: #80d0c7;"></span>#80d0c7
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.aqua_splash', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle above_clouds" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">71. above_clouds</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #BDBBBE;"></span>#BDBBBE →
+                <span class="color-dot" style="background-color: #9D9EA3;"></span>#9D9EA3
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.above_clouds', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle spiky_naga" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">72. spiky_naga</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #505285;"></span>#505285 →
+                <span class="color-dot" style="background-color: #b5aee4;"></span>#b5aee4
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.spiky_naga', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle love_kiss" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">73. love_kiss</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #ff0844;"></span>#ff0844 →
+                <span class="color-dot" style="background-color: #ffb199;"></span>#ffb199
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.love_kiss', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle sharp_glass" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">74. sharp_glass</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #C9CCD3;"></span>#C9CCD3 →
+                <span class="color-dot" style="background-color: #C9CCD3;"></span>#C9CCD3
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.sharp_glass', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle clean_mirror" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">75. clean_mirror</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #93a5cf;"></span>#93a5cf →
+                <span class="color-dot" style="background-color: #e4efe9;"></span>#e4efe9
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.clean_mirror', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle premium_dark" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">76. premium_dark</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #434343;"></span>#434343 →
+                <span class="color-dot" style="background-color: #434343;"></span>#434343
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.premium_dark', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle cold_evening" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">77. cold_evening</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #0c3483;"></span>#0c3483 →
+                <span class="color-dot" style="background-color: #a2b6df;"></span>#a2b6df
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.cold_evening', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle cochiti_lake" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">78. cochiti_lake</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #93a5cf;"></span>#93a5cf →
+                <span class="color-dot" style="background-color: #e4efe9;"></span>#e4efe9
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.cochiti_lake', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle summer_games" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">79. summer_games</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #92fe9d;"></span>#92fe9d →
+                <span class="color-dot" style="background-color: #00c9ff;"></span>#00c9ff
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.summer_games', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle passionate_bed" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">80. passionate_bed</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #ff758c;"></span>#ff758c →
+                <span class="color-dot" style="background-color: #ff7eb3;"></span>#ff7eb3
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.passionate_bed', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle mountain_rock" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">81. mountain_rock</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #868f96;"></span>#868f96 →
+                <span class="color-dot" style="background-color: #596164;"></span>#596164
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.mountain_rock', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle desert_hump" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">82. desert_hump</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #c79081;"></span>#c79081 →
+                <span class="color-dot" style="background-color: #dfa579;"></span>#dfa579
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.desert_hump', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle jungle_day" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">83. jungle_day</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #8baaaa;"></span>#8baaaa →
+                <span class="color-dot" style="background-color: #ae8b9c;"></span>#ae8b9c
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.jungle_day', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle phoenix_start" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">84. phoenix_start</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #f83600;"></span>#f83600 →
+                <span class="color-dot" style="background-color: #f9d423;"></span>#f9d423
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.phoenix_start', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle october_silence" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">85. october_silence</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #b721ff;"></span>#b721ff →
+                <span class="color-dot" style="background-color: #21d4fd;"></span>#21d4fd
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.october_silence', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle faraway_river" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">86. faraway_river</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #6e45e2;"></span>#6e45e2 →
+                <span class="color-dot" style="background-color: #88d3ce;"></span>#88d3ce
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.faraway_river', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle alchemist_lab" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">87. alchemist_lab</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #d558c8;"></span>#d558c8 →
+                <span class="color-dot" style="background-color: #24d292;"></span>#24d292
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.alchemist_lab', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle over_sun" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">88. over_sun</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #abecd6;"></span>#abecd6 →
+                <span class="color-dot" style="background-color: #fbed96;"></span>#fbed96
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.over_sun', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle premium_white" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">89. premium_white</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #d5d4d0;"></span>#d5d4d0 →
+                <span class="color-dot" style="background-color: #e9e9e7;"></span>#e9e9e7
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.premium_white', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle mars_party" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">90. mars_party</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #5f72bd;"></span>#5f72bd →
+                <span class="color-dot" style="background-color: #9b23ea;"></span>#9b23ea
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.mars_party', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle eternal_constance" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">91. eternal_constance</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #09203f;"></span>#09203f →
+                <span class="color-dot" style="background-color: #537895;"></span>#537895
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.eternal_constance', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle japan_blush" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">92. japan_blush</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #ddd6f3;"></span>#ddd6f3 →
+                <span class="color-dot" style="background-color: #faaca8;"></span>#faaca8
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.japan_blush', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle smiling_rain" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">93. smiling_rain</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #dcb0ed;"></span>#dcb0ed →
+                <span class="color-dot" style="background-color: #99c99c;"></span>#99c99c
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.smiling_rain', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle cloudy_apple" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">94. cloudy_apple</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #f3e7e9;"></span>#f3e7e9 →
+                <span class="color-dot" style="background-color: #e3eeff;"></span>#e3eeff
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.cloudy_apple', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle big_mango" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">95. big_mango</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #c71d6f;"></span>#c71d6f →
+                <span class="color-dot" style="background-color: #d09693;"></span>#d09693
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.big_mango', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle healthy_water" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">96. healthy_water</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #96deda;"></span>#96deda →
+                <span class="color-dot" style="background-color: #50c9c3;"></span>#50c9c3
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.healthy_water', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle amour_amour" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">97. amour_amour</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #f77062;"></span>#f77062 →
+                <span class="color-dot" style="background-color: #fe5196;"></span>#fe5196
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.amour_amour', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle risky_concrete" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">98. risky_concrete</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #c4c5c7;"></span>#c4c5c7 →
+                <span class="color-dot" style="background-color: #ebebeb;"></span>#ebebeb
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.risky_concrete', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle strong_stick" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">99. strong_stick</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #a8caba;"></span>#a8caba →
+                <span class="color-dot" style="background-color: #5d4157;"></span>#5d4157
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.strong_stick', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle vicious_stance" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">100. vicious_stance</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #29323c;"></span>#29323c →
+                <span class="color-dot" style="background-color: #485563;"></span>#485563
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.vicious_stance', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle palo_alto" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">101. palo_alto</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #16a085;"></span>#16a085 →
+                <span class="color-dot" style="background-color: #f4d03f;"></span>#f4d03f
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.palo_alto', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle happy_memories" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">102. happy_memories</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #ff5858;"></span>#ff5858 →
+                <span class="color-dot" style="background-color: #f09819;"></span>#f09819
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.happy_memories', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle midnight_bloom" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">103. midnight_bloom</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #2b5876;"></span>#2b5876 →
+                <span class="color-dot" style="background-color: #4e4376;"></span>#4e4376
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.midnight_bloom', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle crystalline" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">104. crystalline</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #00cdac;"></span>#00cdac →
+                <span class="color-dot" style="background-color: #8ddad5;"></span>#8ddad5
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.crystalline', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle raccoon_back" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">105. raccoon_back</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #BCC5CE;"></span>#BCC5CE →
+                <span class="color-dot" style="background-color: #929EAD;"></span>#929EAD
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.raccoon_back', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle party_bliss" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">106. party_bliss</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #4481eb;"></span>#4481eb →
+                <span class="color-dot" style="background-color: #04befe;"></span>#04befe
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.party_bliss', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle confident_cloud" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">107. confident_cloud</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #dad4ec;"></span>#dad4ec →
+                <span class="color-dot" style="background-color: #f3e7e9;"></span>#f3e7e9
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.confident_cloud', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle le_cocktail" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">108. le_cocktail</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #874da2;"></span>#874da2 →
+                <span class="color-dot" style="background-color: #c43a30;"></span>#c43a30
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.le_cocktail', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle river_city" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">109. river_city</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #4481eb;"></span>#4481eb →
+                <span class="color-dot" style="background-color: #04befe;"></span>#04befe
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.river_city', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle frozen_berry" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">110. frozen_berry</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #e8198b;"></span>#e8198b →
+                <span class="color-dot" style="background-color: #c7eafd;"></span>#c7eafd
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.frozen_berry', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle elegance" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">111. elegance</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #EADFDF;"></span>#EADFDF →
+                <span class="color-dot" style="background-color: #ECE2DF;"></span>#ECE2DF
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.elegance', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle child_care" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">112. child_care</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #f794a4;"></span>#f794a4 →
+                <span class="color-dot" style="background-color: #fdd6bd;"></span>#fdd6bd
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.child_care', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle flying_lemon" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">113. flying_lemon</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #64b3f4;"></span>#64b3f4 →
+                <span class="color-dot" style="background-color: #c2e59c;"></span>#c2e59c
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.flying_lemon', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle new_retrowave" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">114. new_retrowave</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #3b41c5;"></span>#3b41c5 →
+                <span class="color-dot" style="background-color: #ffc8a9;"></span>#ffc8a9
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.new_retrowave', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle hidden_jaguar" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">115. hidden_jaguar</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #0fd850;"></span>#0fd850 →
+                <span class="color-dot" style="background-color: #f9f047;"></span>#f9f047
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.hidden_jaguar', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle above_the_sky" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">116. above_the_sky</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #e0e0e0;"></span>#e0e0e0 →
+                <span class="color-dot" style="background-color: #bcbcbc;"></span>#bcbcbc
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.above_the_sky', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle nega" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">117. nega</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #ee9ca7;"></span>#ee9ca7 →
+                <span class="color-dot" style="background-color: #ffdde1;"></span>#ffdde1
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.nega', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle dense_water" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">118. dense_water</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #3ab5b0;"></span>#3ab5b0 →
+                <span class="color-dot" style="background-color: #56317a;"></span>#56317a
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.dense_water', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle chemic_aqua" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">119. chemic_aqua</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #CDDCDC;"></span>#CDDCDC →
+                <span class="color-dot" style="background-color: #CDDCDC;"></span>#CDDCDC
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.chemic_aqua', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle seashore" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">120. seashore</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #209cff;"></span>#209cff →
+                <span class="color-dot" style="background-color: #68e0cf;"></span>#68e0cf
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.seashore', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle marble_wall" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">121. marble_wall</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #bdc2e8;"></span>#bdc2e8 →
+                <span class="color-dot" style="background-color: #e6dee9;"></span>#e6dee9
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.marble_wall', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle cheerful_caramel" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">122. cheerful_caramel</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #e6b980;"></span>#e6b980 →
+                <span class="color-dot" style="background-color: #eacda3;"></span>#eacda3
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.cheerful_caramel', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle night_sky" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">123. night_sky</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #1e3c72;"></span>#1e3c72 →
+                <span class="color-dot" style="background-color: #2a5298;"></span>#2a5298
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.night_sky', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle magic_lake" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">124. magic_lake</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #d5dee7;"></span>#d5dee7 →
+                <span class="color-dot" style="background-color: #c9ffbf;"></span>#c9ffbf
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.magic_lake', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle young_grass" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">125. young_grass</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #9be15d;"></span>#9be15d →
+                <span class="color-dot" style="background-color: #00e3ae;"></span>#00e3ae
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.young_grass', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle colorful_peach" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">126. colorful_peach</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #ed6ea0;"></span>#ed6ea0 →
+                <span class="color-dot" style="background-color: #ec8c69;"></span>#ec8c69
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.colorful_peach', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle gentle_care" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">127. gentle_care</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #ffc3a0;"></span>#ffc3a0 →
+                <span class="color-dot" style="background-color: #ffafbd;"></span>#ffafbd
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.gentle_care', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle plum_bath" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">128. plum_bath</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #cc208e;"></span>#cc208e →
+                <span class="color-dot" style="background-color: #6713d2;"></span>#6713d2
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.plum_bath', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle happy_unicorn" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">129. happy_unicorn</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #b3ffab;"></span>#b3ffab →
+                <span class="color-dot" style="background-color: #12fff7;"></span>#12fff7
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.happy_unicorn', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle full_metal" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">130. full_metal</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #D5DEE7;"></span>#D5DEE7 →
+                <span class="color-dot" style="background-color: #E2E7ED;"></span>#E2E7ED
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.full_metal', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle african_field" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">131. african_field</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #65bd60;"></span>#65bd60 →
+                <span class="color-dot" style="background-color: #fef381;"></span>#fef381
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.african_field', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle solid_stone" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">132. solid_stone</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #243949;"></span>#243949 →
+                <span class="color-dot" style="background-color: #517fa4;"></span>#517fa4
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.solid_stone', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle orange_juice" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">133. orange_juice</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #fc6076;"></span>#fc6076 →
+                <span class="color-dot" style="background-color: #ff9a44;"></span>#ff9a44
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.orange_juice', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle glass_water" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">134. glass_water</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #dfe9f3;"></span>#dfe9f3 →
+                <span class="color-dot" style="background-color: #dfe9f3;"></span>#dfe9f3
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.glass_water', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle slick_carbon" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">135. slick_carbon</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #323232;"></span>#323232 →
+                <span class="color-dot" style="background-color: #1C1C1C;"></span>#1C1C1C
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.slick_carbon', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle north_miracle" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">136. north_miracle</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #00dbde;"></span>#00dbde →
+                <span class="color-dot" style="background-color: #fc00ff;"></span>#fc00ff
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.north_miracle', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle fruit_blend" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">137. fruit_blend</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #f9d423;"></span>#f9d423 →
+                <span class="color-dot" style="background-color: #ff4e50;"></span>#ff4e50
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.fruit_blend', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle millennium_pine" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">138. millennium_pine</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #50cc7f;"></span>#50cc7f →
+                <span class="color-dot" style="background-color: #f5d100;"></span>#f5d100
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.millennium_pine', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle high_flight" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">139. high_flight</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #0acffe;"></span>#0acffe →
+                <span class="color-dot" style="background-color: #495aff;"></span>#495aff
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.high_flight', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle mole_hall" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">140. mole_hall</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #616161;"></span>#616161 →
+                <span class="color-dot" style="background-color: #9bc5c3;"></span>#9bc5c3
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.mole_hall', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle earl_gray" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">141. earl_gray</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #E4E4E1;"></span>#E4E4E1 →
+                <span class="color-dot" style="background-color: #E4E4E1;"></span>#E4E4E1
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.earl_gray', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle space_shift" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">142. space_shift</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #3d3393;"></span>#3d3393 →
+                <span class="color-dot" style="background-color: #35eb93;"></span>#35eb93
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.space_shift', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle forest_inei" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">143. forest_inei</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #df89b5;"></span>#df89b5 →
+                <span class="color-dot" style="background-color: #bfd9fe;"></span>#bfd9fe
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.forest_inei', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle royal_garden" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">144. royal_garden</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #ed6ea0;"></span>#ed6ea0 →
+                <span class="color-dot" style="background-color: #ec8c69;"></span>#ec8c69
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.royal_garden', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle rich_metal" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">145. rich_metal</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #d7d2cc;"></span>#d7d2cc →
+                <span class="color-dot" style="background-color: #304352;"></span>#304352
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.rich_metal', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle juicy_cake" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">146. juicy_cake</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #e14fad;"></span>#e14fad →
+                <span class="color-dot" style="background-color: #f9d423;"></span>#f9d423
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.juicy_cake', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle smart_indigo" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">147. smart_indigo</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #b224ef;"></span>#b224ef →
+                <span class="color-dot" style="background-color: #7579ff;"></span>#7579ff
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.smart_indigo', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle sand_strike" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">148. sand_strike</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #c1c161;"></span>#c1c161 →
+                <span class="color-dot" style="background-color: #d4d4b1;"></span>#d4d4b1
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.sand_strike', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle norse_beauty" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">149. norse_beauty</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #ec77ab;"></span>#ec77ab →
+                <span class="color-dot" style="background-color: #7873f5;"></span>#7873f5
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.norse_beauty', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle aqua_guidance" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">150. aqua_guidance</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #007adf;"></span>#007adf →
+                <span class="color-dot" style="background-color: #00ecbc;"></span>#00ecbc
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.aqua_guidance', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle sun_veggie" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">151. sun_veggie</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #20E2D7;"></span>#20E2D7 →
+                <span class="color-dot" style="background-color: #F9FEA5;"></span>#F9FEA5
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.sun_veggie', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle sea_lord" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">152. sea_lord</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #2CD8D5;"></span>#2CD8D5 →
+                <span class="color-dot" style="background-color: #FFBAC3;"></span>#FFBAC3
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.sea_lord', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle black_sea" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">153. black_sea</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #2CD8D5;"></span>#2CD8D5 →
+                <span class="color-dot" style="background-color: #8E37D7;"></span>#8E37D7
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.black_sea', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle grass_shampoo" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">154. grass_shampoo</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #DFFFCD;"></span>#DFFFCD →
+                <span class="color-dot" style="background-color: #39F3BB;"></span>#39F3BB
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.grass_shampoo', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle landing_aircraft" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">155. landing_aircraft</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #5D9FFF;"></span>#5D9FFF →
+                <span class="color-dot" style="background-color: #6BBBFF;"></span>#6BBBFF
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.landing_aircraft', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle witch_dance" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">156. witch_dance</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #A8BFFF;"></span>#A8BFFF →
+                <span class="color-dot" style="background-color: #884D80;"></span>#884D80
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.witch_dance', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle sleepless_night" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">157. sleepless_night</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #5271C4;"></span>#5271C4 →
+                <span class="color-dot" style="background-color: #ECA1FE;"></span>#ECA1FE
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.sleepless_night', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle angel_care" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">158. angel_care</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #FFE29F;"></span>#FFE29F →
+                <span class="color-dot" style="background-color: #FF719A;"></span>#FF719A
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.angel_care', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle crystal_river" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">159. crystal_river</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #22E1FF;"></span>#22E1FF →
+                <span class="color-dot" style="background-color: #625EB1;"></span>#625EB1
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.crystal_river', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle soft_lipstick" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">160. soft_lipstick</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #B6CEE8;"></span>#B6CEE8 →
+                <span class="color-dot" style="background-color: #F578DC;"></span>#F578DC
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.soft_lipstick', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle salt_mountain" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">161. salt_mountain</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #FFFEFF;"></span>#FFFEFF →
+                <span class="color-dot" style="background-color: #D7FFFE;"></span>#D7FFFE
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.salt_mountain', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle perfect_white" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">162. perfect_white</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #E3FDF5;"></span>#E3FDF5 →
+                <span class="color-dot" style="background-color: #FFE6FA;"></span>#FFE6FA
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.perfect_white', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle fresh_oasis" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">163. fresh_oasis</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #7DE2FC;"></span>#7DE2FC →
+                <span class="color-dot" style="background-color: #B9B6E5;"></span>#B9B6E5
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.fresh_oasis', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle strict_november" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">164. strict_november</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #CBBACC;"></span>#CBBACC →
+                <span class="color-dot" style="background-color: #2580B3;"></span>#2580B3
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.strict_november', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle morning_salad" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">165. morning_salad</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #B7F8DB;"></span>#B7F8DB →
+                <span class="color-dot" style="background-color: #50A7C2;"></span>#50A7C2
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.morning_salad', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle deep_relief" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">166. deep_relief</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #7085B6;"></span>#7085B6 →
+                <span class="color-dot" style="background-color: #DEF3F8;"></span>#DEF3F8
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.deep_relief', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle sea_strike" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">167. sea_strike</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #77FFD2;"></span>#77FFD2 →
+                <span class="color-dot" style="background-color: #1EECFF;"></span>#1EECFF
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.sea_strike', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle night_call" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">168. night_call</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #AC32E4;"></span>#AC32E4 →
+                <span class="color-dot" style="background-color: #4801FF;"></span>#4801FF
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.night_call', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle supreme_sky" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">169. supreme_sky</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #D4FFEC;"></span>#D4FFEC →
+                <span class="color-dot" style="background-color: #4596FB;"></span>#4596FB
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.supreme_sky', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle light_blue" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">170. light_blue</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #9EFBD3;"></span>#9EFBD3 →
+                <span class="color-dot" style="background-color: #45D4FB;"></span>#45D4FB
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.light_blue', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle mind_crawl" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">171. mind_crawl</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #473B7B;"></span>#473B7B →
+                <span class="color-dot" style="background-color: #30D2BE;"></span>#30D2BE
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.mind_crawl', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle lily_meadow" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">172. lily_meadow</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #65379B;"></span>#65379B →
+                <span class="color-dot" style="background-color: #6457C6;"></span>#6457C6
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.lily_meadow', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle sugar_lollipop" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">173. sugar_lollipop</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #A445B2;"></span>#A445B2 →
+                <span class="color-dot" style="background-color: #FF0066;"></span>#FF0066
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.sugar_lollipop', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle sweet_dessert" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">174. sweet_dessert</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #7742B2;"></span>#7742B2 →
+                <span class="color-dot" style="background-color: #FD8BD9;"></span>#FD8BD9
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.sweet_dessert', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle magic_ray" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">175. magic_ray</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #FF3CAC;"></span>#FF3CAC →
+                <span class="color-dot" style="background-color: #2B86C5;"></span>#2B86C5
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.magic_ray', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle teen_party" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">176. teen_party</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #FF057C;"></span>#FF057C →
+                <span class="color-dot" style="background-color: #321575;"></span>#321575
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.teen_party', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle frozen_heat" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">177. frozen_heat</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #FF057C;"></span>#FF057C →
+                <span class="color-dot" style="background-color: #4CC3FF;"></span>#4CC3FF
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.frozen_heat', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle gagarin_view" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">178. gagarin_view</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #69EACB;"></span>#69EACB →
+                <span class="color-dot" style="background-color: #6654F1;"></span>#6654F1
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.gagarin_view', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle fabled_sunset" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">179. fabled_sunset</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #231557;"></span>#231557 →
+                <span class="color-dot" style="background-color: #FFF800;"></span>#FFF800
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.fabled_sunset', this)">复制</button>
+            </div>
+        </div>
+
+
+        <div class="gradient-box">
+            <div class="gradient-circle perfect_blue" onclick="toggleFullscreen(this)"></div>
+            <div class="info top-left">180. perfect_blue</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #3D4E81;"></span>#3D4E81 →
+                <span class="color-dot" style="background-color: #6E7FF3;"></span>#6E7FF3
+            </div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.perfect_blue', this)">复制</button>
             </div>
         </div>
     </div>
     <script>
-        function copyGradient(className) {
+        function copyGradient(className, button) {
             for (let i = 0; i < document.styleSheets.length; i++) {
                 const styleSheet = document.styleSheets[i];
                 for (let j = 0; j < styleSheet.cssRules.length; j++) {
@@ -150,6 +2464,10 @@
                         textArea.select();
                         document.execCommand('copy');
                         document.body.removeChild(textArea);
+                        button.textContent = '已复制';
+                        setTimeout(() => {
+                            button.textContent = '复制';
+                        }, 3000);
                         break;
                     }
                 }
