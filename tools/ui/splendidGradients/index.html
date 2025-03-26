@@ -75,6 +75,15 @@
             background-color: transparent;
         }
 
+        /* 颜色展示块样式 */
+        .color-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
         /*001 Warm Flame*/
         .warm_flame {
             background-image: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
@@ -97,7 +106,10 @@
         <div class="gradient-box">
             <div class="gradient-circle warm_flame"></div>
             <div class="info top-left">1. warm_flame</div>
-            <div class="info bottom-left">#ff6e7f → #bfe9ff</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #ff9a9e;"></span>#ff9a9e → 
+                <span class="color-dot" style="background-color: #fad0c4;"></span>#fad0c4
+            </div>
             <div class="info bottom-right">
                 <button onclick="copyGradient('.warm_flame')">复制</button>
             </div>
@@ -105,7 +117,10 @@
         <div class="gradient-box">
             <div class="gradient-circle night_fade"></div>
             <div class="info top-left">2. night_fade</div>
-            <div class="info bottom-left">#a18cd1 → #fbc2eb</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #a18cd1;"></span>#a18cd1 → 
+                <span class="color-dot" style="background-color: #fbc2eb;"></span>#fbc2eb
+            </div>
             <div class="info bottom-right">
                 <button onclick="copyGradient('.night_fade')">复制</button>
             </div>
@@ -113,7 +128,10 @@
         <div class="gradient-box">
             <div class="gradient-circle spring_warmth"></div>
             <div class="info top-left">3. spring_warmth</div>
-            <div class="info bottom-left">#fad0c4 → #ffd1ff</div>
+            <div class="info bottom-left">
+                <span class="color-dot" style="background-color: #fad0c4;"></span>#fad0c4 → 
+                <span class="color-dot" style="background-color: #ffd1ff;"></span>#ffd1ff
+            </div>
             <div class="info bottom-right">
                 <button onclick="copyGradient('.spring_warmth')">复制</button>
             </div>
@@ -140,4 +158,4 @@
     </script>
 </body>
 
-</html>
+</html>    
