@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Gradients Showcase</title>
+    <link rel="stylesheet" href="webgradients.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Muli, Futura, Helvetica, Arial, sans-serif;
+        }
+
+        .main-container {
+            width: 90%;
+            height: 90%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .gradient-box {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .gradient-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin: 10px;
+            margin-top: 50px;
+            margin-left: 50px;
+        }
+
+        .info {
+            position: absolute;
+            padding: 5px;
+            border-radius: 3px;
+            font-size: .8125em;
+            color: #333435;
+            font-weight: 400;
+        }
+
+        .top-left {
+            top: 2px;
+            left: 2px;
+        }
+
+        .bottom-left {
+            bottom: 2px;
+            left: 2px;
+        }
+
+        .bottom-right {
+            bottom: 2px;
+            right: 2px;
+        }
+
+        button {
+            padding: 1px 9px;
+            border: none;
+            border-radius: 3px;
+            border: 1px solid #333435;
+            cursor: pointer;
+            background-color: transparent;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="gradient-box">
+            <div class="gradient-circle warm_flame"></div>
+            <div class="info top-left">1. warm_flame</div>
+            <div class="info bottom-left">#ff6e7f → #bfe9ff</div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.warm_flame')">复制</button>
+            </div>
+        </div>
+        <div class="gradient-box">
+            <div class="gradient-circle night_fade"></div>
+            <div class="info top-left">2. night_fade</div>
+            <div class="info bottom-left">From: #a18cd1 To: #fbc2eb</div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.night_fade')">复制</button>
+            </div>
+        </div>
+        <div class="gradient-box">
+            <div class="gradient-circle spring_warmth"></div>
+            <div class="info top-left">3. spring_warmth</div>
+            <div class="info bottom-left">From: #fad0c4 To: #ffd1ff</div>
+            <div class="info bottom-right">
+                <button onclick="copyGradient('.spring_warmth')">复制</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        function copyGradient(className) {
+            const styleSheet = document.styleSheets[1];
+            for (let i = 0; i < styleSheet.cssRules.length; i++) {
+                const rule = styleSheet.cssRules[i];
+                if (rule.selectorText === className) {
+                    const gradientStyle = rule.style.cssText;
+                    const textArea = document.createElement('textarea');
+                    textArea.value = gradientStyle;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    alert('渐变样式已复制到剪贴板');
+                    break;
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
