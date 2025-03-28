@@ -17,37 +17,39 @@
             flex-wrap: wrap;
             align-items: flex-start;
             margin: 0;
+            font-size: 18px;
             background-image: linear-gradient(-225deg, #E3FDF5 0%, #FFE6FA 100%);
         }
 
         .inputDiv {
-            margin: 10px;
-            width: 400px;
+            width: 500px;
             height: 300px;
         }
 
         #addCountdown {
-            width: 100%;
+            width: 500px;
             height: 300px;
-            padding: 10px 20px;
-            
-            color: white;
-            border: none;
+            border: 1px solid #94b76c;
+            color: #ffffff;
+            padding: 10px;
+            margin: 10px;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 48px;
+            font-size: 120px;
+            text-align: center;
+            line-height: 300px;
+            background-image: linear-gradient(225deg, #E3FDF5 0%, #FFE6FA 100%);
         }
-
-     
 
         .countdown-box {
             border: 1px solid #94b76c;
             border-radius: 4px;
             padding: 10px;
             margin: 10px;
-            width: 400px;
+            width: 500px;
             height: 300px;
             text-align: center;
+            background-image: linear-gradient(225deg, #E3FDF5 0%, #FFE6FA 100%);
         }
 
         .input-section {
@@ -55,9 +57,9 @@
             border: 1px solid #94b76c;
             border-radius: 4px;
             padding: 10px;
-            width: 400px;
-            height: 300px;
             margin: 10px;
+            width: 500px;
+            height: 300px;
         }
 
         .input-section .input-row {
@@ -94,13 +96,44 @@
                 width: 100%;
             }
         }
+
+        input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #94b76c;
+            border-radius: 4px;
+            height: 50px;
+        }
+
+        input:focus,
+        input:hover,
+        input:active {
+            border: 1px solid #57aa7f;
+            outline: 2px solid #57aa7f;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: 1px solid #94b76c;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+            height: 50px;
+            transition: background-color 0.3s ease;
+            background-color: #e5fbf6;
+        }
+
+        button:hover {
+            border: 1px solid #57aa7f;
+            background-color: #57aa7f;
+        }
     </style>
 </head>
 
 <body>
     <div id="countdowns"></div>
+    <div id="addCountdown">+</div>
     <div class="inputDiv">
-        <button id="addCountdown">+</button>
         <div class="input-section">
             <div class="input-row">
                 <label for="countdownName">名字:</label>
@@ -163,7 +196,7 @@
                         const remainingSecondsAfterHours = remainingSecondsAfterDays % 3600;
                         const minutes = Math.floor(remainingSecondsAfterHours / 60).toString().padStart(2, '0');
                         const seconds = (remainingSecondsAfterHours % 60).toString().padStart(2, '0');
-                        countdownText.textContent = `${days} 天 ${hours}:${minutes}:${seconds}`;
+                        countdownText.textContent = `${days} 天 ${hours}小时 ${minutes}分钟 ${seconds}秒`;
                     }
                 }, 1000);
 
@@ -177,4 +210,3 @@
 </body>
 
 </html>
-    
