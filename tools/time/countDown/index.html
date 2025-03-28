@@ -145,7 +145,7 @@
 
         .time-unit-label {
             position: absolute;
-            bottom: -1px;
+            bottom: 1px;
             right: 1px;
             font-size: 10px;
             color: #666;
@@ -366,6 +366,8 @@
                     box.style.flexDirection = 'column';
                     box.style.justifyContent = 'center';
                     box.style.alignItems = 'center';
+                    countdownText.style.transformOrigin = 'center';
+                    countdownText.style.willChange = 'transform';
                     countdownText.style.transform = 'scale(3)';
                     title.style.fontSize = '5em';
                     title.style.position = 'absolute';
