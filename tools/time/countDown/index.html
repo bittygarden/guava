@@ -204,6 +204,19 @@
         .delete-button:hover {
             color: #FFE6FA;
         }
+
+        .fullscreen-button {
+            position: absolute;
+            top: 10px;
+            right: 36px;
+            font-size: 15px;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .fullscreen-button:hover {
+            color: #FFE6FA;
+        }
     </style>
 </head>
 
@@ -319,6 +332,21 @@
             endTimeLabel.textContent = `结束时间: ${formattedEndTime}`;
             box.appendChild(endTimeLabel);
 
+            // 添加全屏按钮
+            const fullscreenButton = document.createElement('span');
+            fullscreenButton.className = 'fullscreen-button';
+            fullscreenButton.textContent = '🗖';
+            fullscreenButton.addEventListener('click', () => {
+                if (box.requestFullscreen) {
+                    box.requestFullscreen();
+                } else if (box.webkitRequestFullscreen) {
+                    box.webkitRequestFullscreen();
+                } else if (box.msRequestFullscreen) {
+                    box.msRequestFullscreen();
+                }
+            });
+            box.appendChild(fullscreenButton);
+
             // 添加删除按钮
             const deleteButton = document.createElement('span');
             deleteButton.className = 'delete-button';
@@ -328,6 +356,32 @@
                 saveCountdownsToStorage();
             });
             box.appendChild(deleteButton);
+
+            // 监听全屏状态变化
+            document.addEventListener('fullscreenchange', () => {
+                if (document.fullscreenElement === box) {
+                    fullscreenButton.style.display = 'none';
+                    deleteButton.style.display = 'none';
+                    box.style.display = 'flex';
+                    box.style.flexDirection = 'column';
+                    box.style.justifyContent = 'center';
+                    box.style.alignItems = 'center';
+                    countdownText.style.transform = 'scale(3)';
+                    title.style.fontSize = '5em';
+                    title.style.position = 'absolute';
+                    title.style.top = '20px';
+                } else {
+                    fullscreenButton.style.display = 'block';
+                    deleteButton.style.display = 'block';
+                    box.style.display = 'block';
+                    box.style.justifyContent = 'unset';
+                    box.style.alignItems = 'unset';
+                    countdownText.style.transform = 'scale(1)';
+                    title.style.fontSize = '';
+                    title.style.position = '';
+                    title.style.top = '';
+                }
+            });
 
             // 将新创建的倒计时框插入到添加按钮之前
             countdownsDiv.insertBefore(box, addCountdown);
@@ -423,4 +477,4 @@
     </script>
 </body>
 
-</html>
+</html>    
