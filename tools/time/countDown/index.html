@@ -145,7 +145,7 @@
 
         .time-unit-label {
             position: absolute;
-            bottom: 1px;
+            bottom: -1px;
             right: 1px;
             font-size: 10px;
             color: #666;
@@ -366,10 +366,29 @@
                     box.style.flexDirection = 'column';
                     box.style.justifyContent = 'center';
                     box.style.alignItems = 'center';
-                    countdownText.style.transformOrigin = 'center';
-                    countdownText.style.willChange = 'transform';
-                    countdownText.style.transform = 'scale(3)';
-                    title.style.fontSize = '5em';
+
+                    // 调整倒计时数字的大小
+                    const digits = countdownText.querySelectorAll('.flip-digit');
+                    digits.forEach(digit => {
+                        digit.style.width = '150px';
+                        digit.style.height = '270px';
+                        digit.style.fontSize = '150px';
+                    });
+                    
+                    // 调整时间单位标签的大小
+                    const unitLabels = countdownText.querySelectorAll('.time-unit-label');
+                    unitLabels.forEach(label => {
+                        label.style.fontSize = '20px';
+                        label.style.bottom = '3px';
+                        label.style.right= '3px';
+                    });
+
+                    const timeUnit = countdownText.querySelectorAll('.time-unit');
+                    timeUnit.forEach(label => {
+                        label.style.padding = '30px';
+                    });
+
+                    title.style.fontSize = '3em';
                     title.style.position = 'absolute';
                     title.style.top = '20px';
                 } else {
@@ -378,7 +397,26 @@
                     box.style.display = 'block';
                     box.style.justifyContent = 'unset';
                     box.style.alignItems = 'unset';
-                    countdownText.style.transform = 'scale(1)';
+                    // 恢复倒计时数字的大小
+                    const digits = countdownText.querySelectorAll('.flip-digit');
+                    digits.forEach(digit => {
+                        digit.style.width = '50px';
+                        digit.style.height = '90px';
+                        digit.style.fontSize = '50px';
+                    });
+                    // 恢复时间单位标签的大小
+                    const unitLabels = countdownText.querySelectorAll('.time-unit-label');
+                    unitLabels.forEach(label => {
+                        label.style.fontSize = '10px';
+                        label.style.bottom = '-1px';
+                        label.style.right= '1px';
+                    });
+
+                    const timeUnit = countdownText.querySelectorAll('.time-unit');
+                    timeUnit.forEach(label => {
+                        label.style.padding = '12px';
+                    });
+
                     title.style.fontSize = '';
                     title.style.position = '';
                     title.style.top = '';
@@ -479,4 +517,4 @@
     </script>
 </body>
 
-</html>    
+</html>
