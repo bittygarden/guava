@@ -127,6 +127,62 @@
             border: 1px solid #57aa7f;
             background-color: #57aa7f;
         }
+
+        .flip-clock {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding-top: 15%;
+        }
+
+        .time-unit {
+            position: relative;
+            display: inline-flex;
+            gap: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 12px;
+        }
+
+        .time-unit-label {
+            position: absolute;
+            bottom: -1px;
+            right: 1px;
+            font-size: 10px;
+            color: #666;
+        }
+
+        .flip-digit {
+            position: relative;
+            width: 30px;
+            height: 60px;
+            perspective: 200px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            transform-style: preserve-3d;
+        }
+
+        .flip-digit.flip {
+            animation: flip-digit 0.5s linear;
+        }
+
+        @keyframes flip-digit {
+            0% {
+                transform: rotateX(0deg);
+            }
+
+            50% {
+                transform: rotateX(-90deg);
+            }
+
+            100% {
+                transform: rotateX(0deg);
+            }
+        }
     </style>
 </head>
 
@@ -177,26 +233,102 @@
                 box.className = 'countdown-box';
                 const title = document.createElement('h3');
                 title.textContent = name;
-                const countdownText = document.createElement('p');
+                const countdownText = document.createElement('div');
+                countdownText.className = 'flip-clock';
+
+                const timeUnits = ['days', 'hours', 'minutes', 'seconds'];
+                const unitLabels = ['天', '时', '分', '秒'];
+                const allDigits = [];
+
+                timeUnits.forEach((timeUnit, index) => {
+                    const timeUnitDiv = document.createElement('div');
+                    timeUnitDiv.className = 'time-unit';
+
+                    if (timeUnit === 'days') {
+                        // 先创建一个初始数字容器，后续根据天数动态调整
+                        const digit = document.createElement('div');
+                        digit.className = 'flip-digit';
+                        timeUnitDiv.appendChild(digit);
+                        allDigits.push(digit);
+                    } else {
+                        for (let i = 0; i < 2; i++) {
+                            const digit = document.createElement('div');
+                            digit.className = 'flip-digit';
+                            timeUnitDiv.appendChild(digit);
+                            allDigits.push(digit);
+                        }
+                    }
+
+                    const label = document.createElement('div');
+                    label.className = 'time-unit-label';
+                    label.textContent = unitLabels[index];
+                    timeUnitDiv.appendChild(label);
+                    countdownText.appendChild(timeUnitDiv);
+                });
+
                 box.appendChild(title);
                 box.appendChild(countdownText);
                 countdownsDiv.appendChild(box);
 
+                let prevValues = [0, 0, 0, 0];
+
                 const interval = setInterval(() => {
                     const now = new Date().getTime();
-                    const distance = end - now;
-                    if (distance < 0) {
+                    const distance = Math.max(0, end - now);
+                    const totalSeconds = Math.floor(distance / 1000);
+                    const days = Math.floor(totalSeconds / (3600 * 24));
+                    const remainingSecondsAfterDays = totalSeconds % (3600 * 24);
+                    const hours = Math.floor(remainingSecondsAfterDays / 3600);
+                    const remainingSecondsAfterHours = remainingSecondsAfterDays % 3600;
+                    const minutes = Math.floor(remainingSecondsAfterHours / 60);
+                    const seconds = remainingSecondsAfterHours % 60;
+                    const values = [days, hours, minutes, seconds];
+
+                    const daysDigits = days.toString().split('');
+                    const daysIndex = 0;
+                    const daysTimeUnit = countdownText.children[daysIndex];
+                    const existingDaysDigits = Array.from(daysTimeUnit.querySelectorAll('.flip-digit'));
+
+                    // 调整天数数字容器的数量
+                    if (daysDigits.length > existingDaysDigits.length) {
+                        for (let i = existingDaysDigits.length; i < daysDigits.length; i++) {
+                            const digit = document.createElement('div');
+                            digit.className = 'flip-digit';
+                            daysTimeUnit.insertBefore(digit, daysTimeUnit.firstChild);
+                            allDigits.unshift(digit);
+                        }
+                    } else if (daysDigits.length < existingDaysDigits.length) {
+                        for (let i = existingDaysDigits.length - 1; i >= daysDigits.length; i--) {
+                            const digitToRemove = existingDaysDigits[i];
+                            daysTimeUnit.removeChild(digitToRemove);
+                            allDigits.shift();
+                        }
+                    }
+
+                    let digitIndex = 0;
+                    values.forEach((value, index) => {
+                        const paddedValue = index === daysIndex ? (value === 0 ? '0' : value.toString()) : value.toString().padStart(2, '0');
+                        const prevPaddedValue = index === daysIndex ? (prevValues[index] === 0 ? '0' : prevValues[index].toString()) : prevValues[index].toString().padStart(2, '0');
+
+                        for (let i = 0; i < paddedValue.length; i++) {
+                            const digit = allDigits[digitIndex];
+                            if (paddedValue[i] !== prevPaddedValue[i]) {
+                                digit.classList.add('flip');
+                                setTimeout(() => {
+                                    digit.textContent = paddedValue[i];
+                                    digit.classList.remove('flip');
+                                }, 250);
+                            } else {
+                                digit.textContent = prevPaddedValue[i];
+                            }
+                            digitIndex++;
+                        }
+                    });
+
+                    prevValues = values;
+
+                    if (distance <= 0) {
                         clearInterval(interval);
-                        countdownText.textContent = '已结束';
-                    } else {
-                        const totalSeconds = Math.floor(distance / 1000);
-                        const days = Math.floor(totalSeconds / (3600 * 24)).toString().padStart(2, '0');
-                        const remainingSecondsAfterDays = totalSeconds % (3600 * 24);
-                        const hours = Math.floor(remainingSecondsAfterDays / 3600).toString().padStart(2, '0');
-                        const remainingSecondsAfterHours = remainingSecondsAfterDays % 3600;
-                        const minutes = Math.floor(remainingSecondsAfterHours / 60).toString().padStart(2, '0');
-                        const seconds = (remainingSecondsAfterHours % 60).toString().padStart(2, '0');
-                        countdownText.textContent = `${days} 天 ${hours}小时 ${minutes}分钟 ${seconds}秒`;
                     }
                 }, 1000);
 
