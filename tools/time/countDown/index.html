@@ -13,17 +13,11 @@
         body {
             font-family: Arial, sans-serif;
             display: flex;
-            flex-direction: row;
             flex-wrap: wrap;
             align-items: flex-start;
             margin: 0;
             font-size: 18px;
             background-image: linear-gradient(-225deg, #E3FDF5 0%, #FFE6FA 100%);
-        }
-
-        .inputDiv {
-            width: 500px;
-            height: 300px;
         }
 
         #addCountdown {
@@ -53,13 +47,13 @@
         }
 
         .input-section {
-            display: none;
             border: 1px solid #94b76c;
             border-radius: 4px;
             padding: 10px;
             margin: 10px;
             width: 500px;
             height: 300px;
+            display: none;
         }
 
         .input-section .input-row {
@@ -187,9 +181,8 @@
 </head>
 
 <body>
-    <div id="countdowns"></div>
-    <div id="addCountdown">+</div>
-    <div class="inputDiv">
+    <div id="countdowns">
+        <div id="addCountdown">+</div>
         <div class="input-section">
             <div class="input-row">
                 <label for="countdownName">名字:</label>
@@ -268,7 +261,8 @@
 
                 box.appendChild(title);
                 box.appendChild(countdownText);
-                countdownsDiv.appendChild(box);
+                // 将新创建的倒计时框插入到添加按钮之前
+                countdownsDiv.insertBefore(box, addCountdown);
 
                 let prevValues = [0, 0, 0, 0];
 
