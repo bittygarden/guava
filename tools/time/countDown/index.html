@@ -8,7 +8,8 @@
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍉</text></svg>">
     <title>倒计时-在线</title>
-
+    <!-- 引入 flatpickr 的 CSS 文件 -->
+    <link rel="stylesheet" href="flatpickr.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -37,6 +38,7 @@
             margin: 10px;
             border-radius: 4px;
             box-sizing: border-box;
+            position: relative;
         }
 
         #addCountdown {
@@ -67,6 +69,7 @@
         .input-section label {
             flex: 0 0 80px;
             margin-right: 10px;
+            font-size: 14px;
         }
 
         .input-section input {
@@ -179,6 +182,14 @@
                 transform: rotateX(0deg);
             }
         }
+
+        .end-time-label {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 12px;
+            color: #666;
+        }
     </style>
 </head>
 
@@ -192,13 +203,16 @@
             </div>
             <div class="input-row">
                 <label for="endTime">结束时间:</label>
-                <input type="datetime-local" id="endTime">
+                <input type="text" id="endTime">
             </div>
             <button id="confirmAdd">确定</button>
             <button id="cancelAdd">取消</button>
         </div>
     </div>
 
+    <script src="flatpickr.js"></script>
+    <!-- 引入中文语言包 -->
+    <script src="zh.js"></script>
     <script>
         const addCountdown = document.getElementById('addCountdown');
         const inputSection = document.querySelector('.input-section');
@@ -207,6 +221,15 @@
         const countdownsDiv = document.getElementById('countdowns');
         const countdownName = document.getElementById('countdownName');
         const endTime = document.getElementById('endTime');
+
+        // 初始化 flatpickr
+        flatpickr(endTime, {
+            enableTime: true,
+            enableSeconds: true, // 启用秒选择
+            dateFormat: "Y-m-d H:i:S",
+            time_24hr: true,
+            locale: "zh" // 设置语言为英文
+        });
 
         addCountdown.addEventListener('click', () => {
             addCountdown.style.display = 'none';
@@ -263,6 +286,15 @@
 
                 box.appendChild(title);
                 box.appendChild(countdownText);
+
+                // 添加结束时间标签
+                const endTimeLabel = document.createElement('div');
+                endTimeLabel.className = 'end-time-label';
+                const endDate = new Date(end);
+                const formattedEndTime = `${endDate.getFullYear()}-${String(endDate.getMonth() + 1).padStart(2, '0')}-${String(endDate.getDate()).padStart(2, '0')} ${String(endDate.getHours()).padStart(2, '0')}:${String(endDate.getMinutes()).padStart(2, '0')}:${String(endDate.getSeconds()).padStart(2, '0')}`;
+                endTimeLabel.textContent = `结束时间: ${formattedEndTime}`;
+                box.appendChild(endTimeLabel);
+
                 // 将新创建的倒计时框插入到添加按钮之前
                 countdownsDiv.insertBefore(box, addCountdown);
 
