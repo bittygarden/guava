@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="倒计时-在线">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍉</text></svg>">
+    <title>倒计时-在线</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            margin: 0;
+            background-image: linear-gradient(-225deg, #E3FDF5 0%, #FFE6FA 100%);
+        }
+
+        .inputDiv {
+            margin: 10px;
+            width: 400px;
+            height: 300px;
+        }
+
+        #addCountdown {
+            width: 100%;
+            height: 300px;
+            padding: 10px 20px;
+            
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 48px;
+        }
+
+     
+
+        .countdown-box {
+            border: 1px solid #94b76c;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 10px;
+            width: 400px;
+            height: 300px;
+            text-align: center;
+        }
+
+        .input-section {
+            display: none;
+            border: 1px solid #94b76c;
+            border-radius: 4px;
+            padding: 10px;
+            width: 400px;
+            height: 300px;
+            margin: 10px;
+        }
+
+        .input-section .input-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .input-section label {
+            flex: 0 0 80px;
+            margin-right: 10px;
+        }
+
+        .input-section input {
+            flex: 1;
+            padding: 5px;
+        }
+
+        .input-section button {
+            width: 100%;
+        }
+
+        @media (max-width: 350px) {
+            .input-section .input-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .input-section label {
+                margin-bottom: 5px;
+            }
+
+            .input-section input {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="countdowns"></div>
+    <div class="inputDiv">
+        <button id="addCountdown">+</button>
+        <div class="input-section">
+            <div class="input-row">
+                <label for="countdownName">名字:</label>
+                <input type="text" id="countdownName">
+            </div>
+            <div class="input-row">
+                <label for="endTime">结束时间:</label>
+                <input type="datetime-local" id="endTime">
+            </div>
+            <button id="confirmAdd">确定</button>
+            <button id="cancelAdd">取消</button>
+        </div>
+    </div>
+
+    <script>
+        const addCountdown = document.getElementById('addCountdown');
+        const inputSection = document.querySelector('.input-section');
+        const confirmAdd = document.getElementById('confirmAdd');
+        const cancelAdd = document.getElementById('cancelAdd');
+        const countdownsDiv = document.getElementById('countdowns');
+        const countdownName = document.getElementById('countdownName');
+        const endTime = document.getElementById('endTime');
+
+        addCountdown.addEventListener('click', () => {
+            addCountdown.style.display = 'none';
+            inputSection.style.display = 'block';
+        });
+
+        cancelAdd.addEventListener('click', () => {
+            addCountdown.style.display = 'block';
+            inputSection.style.display = 'none';
+            countdownName.value = '';
+            endTime.value = '';
+        });
+
+        confirmAdd.addEventListener('click', () => {
+            const name = countdownName.value;
+            const end = new Date(endTime.value).getTime();
+            if (name && end) {
+                const box = document.createElement('div');
+                box.className = 'countdown-box';
+                const title = document.createElement('h3');
+                title.textContent = name;
+                const countdownText = document.createElement('p');
+                box.appendChild(title);
+                box.appendChild(countdownText);
+                countdownsDiv.appendChild(box);
+
+                const interval = setInterval(() => {
+                    const now = new Date().getTime();
+                    const distance = end - now;
+                    if (distance < 0) {
+                        clearInterval(interval);
+                        countdownText.textContent = '已结束';
+                    } else {
+                        const totalSeconds = Math.floor(distance / 1000);
+                        const days = Math.floor(totalSeconds / (3600 * 24)).toString().padStart(2, '0');
+                        const remainingSecondsAfterDays = totalSeconds % (3600 * 24);
+                        const hours = Math.floor(remainingSecondsAfterDays / 3600).toString().padStart(2, '0');
+                        const remainingSecondsAfterHours = remainingSecondsAfterDays % 3600;
+                        const minutes = Math.floor(remainingSecondsAfterHours / 60).toString().padStart(2, '0');
+                        const seconds = (remainingSecondsAfterHours % 60).toString().padStart(2, '0');
+                        countdownText.textContent = `${days} 天 ${hours}:${minutes}:${seconds}`;
+                    }
+                }, 1000);
+
+                addCountdown.style.display = 'block';
+                inputSection.style.display = 'none';
+                countdownName.value = '';
+                endTime.value = '';
+            }
+        });
+    </script>
+</body>
+
+</html>
+    
