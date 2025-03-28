@@ -20,14 +20,26 @@
             background-image: linear-gradient(-225deg, #E3FDF5 0%, #FFE6FA 100%);
         }
 
-        #addCountdown {
-            width: 500px;
+        #countdowns {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        #addCountdown,
+        .countdown-box,
+        .input-section {
+            width: calc(50% - 20px);
             height: 300px;
             border: 1px solid #94b76c;
             color: #ffffff;
             padding: 10px;
             margin: 10px;
             border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        #addCountdown {
             cursor: pointer;
             font-size: 120px;
             text-align: center;
@@ -36,24 +48,14 @@
         }
 
         .countdown-box {
-            border: 1px solid #94b76c;
-            border-radius: 4px;
-            padding: 10px;
-            margin: 10px;
-            width: 500px;
-            height: 300px;
             text-align: center;
+            color: black;
             background-image: linear-gradient(225deg, #E3FDF5 0%, #FFE6FA 100%);
         }
 
         .input-section {
-            border: 1px solid #94b76c;
-            border-radius: 4px;
-            padding: 10px;
-            margin: 10px;
-            width: 500px;
-            height: 300px;
             display: none;
+            color: black;
         }
 
         .input-section .input-row {
@@ -126,7 +128,7 @@
             display: flex;
             justify-content: center;
             gap: 10px;
-            padding-top: 15%;
+            padding-top: 10%;
         }
 
         .time-unit {
