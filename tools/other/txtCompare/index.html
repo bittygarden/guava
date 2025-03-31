@@ -26,248 +26,61 @@
             align-items: center;
             width: 95%;
             margin: 10px 0;
-            height: 85%;
+            height: 95%;
         }
 
-        .buttonDiv {
-            margin-top: 20px;
-        }
-
-        .inputText {
+        .editor {
             flex: 1;
-            padding: 10px;
+            height: 100%;
             border: 1px solid #94b76c;
             border-radius: 4px;
-            height: 100%;
-            font-family: Arial, sans-serif;
-            font-size: 16px;
-            overflow: auto;
-            /* 禁止自动换行 */
-            white-space: nowrap;
-        }
-
-        .inputText:focus,
-        .inputText:hover,
-        .inputText:active {
-            border: 1px solid #57aa7f;
-            outline: 2px solid #57aa7f;
-        }
-
-        .outputText {
-            flex: 1;
-            padding: 10px;
-            border: 2px solid #57aa7f;
-            border-radius: 4px;
-            height: 100%;
-            white-space: pre-wrap;
-            font-family: Arial, sans-serif;
-            font-size: 16px;
-            overflow: auto;
-            /* 禁止自动换行 */
-            white-space: nowrap;
-            background-color: #ffffff;
-        }
-
-        button {
-            padding: 10px 20px;
-            background-color: #94b76c;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin: 0 5px;
-        }
-
-        button:hover {
-            background-color: #57aa7f;
-        }
-
-        .addWord {
-            color: #0cb751;
-        }
-
-        .deleteWord {
-            color: #d93c0c;
-        }
-
-        .lineNumbers {
-            width: 30px;
-            height: 100%;
-            padding: 10px;
-            text-align: right;
-            overflow: hidden;
-            color: #777;
-            border-right: 1px solid #ccc;
-            user-select: none;
-        }
-
-        .highlight {
-            color: #d93c0c;
         }
     </style>
-    <!-- 引入 jsdiff 库 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsdiff/5.1.0/diff.min.js"></script>
+    <!-- 引入 Monaco Editor -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.38.0/min/vs/loader.js"></script>
+    <script>
+        require.config({
+            paths: {
+                'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.38.0/min/vs'
+            }
+        });
+    </script>
 </head>
 
 <body>
     <div class="inputDiv">
-        <div class="lineNumbers" id="lineNumbers1"></div>
-        <textarea class="inputText" id="text1" placeholder="请输入文本1"></textarea>
-        <div class="lineNumbers" id="lineNumbers2"></div>
-        <textarea class="inputText" id="text2" placeholder="请输入文本2"></textarea>
-        <div class="lineNumbers" id="lineNumbers3"></div>
-        <div class="outputText" id="text3" readonly placeholder="对比结果将显示在这里"></div>
-    </div>
-
-    <div class="buttonDiv">
-        <button id="compareButton">对比</button>
+        <div class="editor" id="editor"></div>
     </div>
 
     <script>
-        // 获取 DOM 元素
-        const text1 = document.getElementById('text1');
-        const text2 = document.getElementById('text2');
-        const text3 = document.getElementById('text3');
-        const compareButton = document.getElementById('compareButton');
-        const lineNumbers1 = document.getElementById('lineNumbers1');
-        const lineNumbers2 = document.getElementById('lineNumbers2');
-        const lineNumbers3 = document.getElementById('lineNumbers3');
+        require(['vs/editor/editor.main'], function () {
+            let originalModel = monaco.editor.createModel('', 'plaintext');
+            let modifiedModel = monaco.editor.createModel('', 'plaintext');
 
-        // 滚动联动函数
-        function syncScroll(target) {
-            const scrollTop = target.scrollTop;
-            const scrollLeft = target.scrollLeft;
-            if (target !== text1) {
-                text1.scrollTop = scrollTop;
-                text1.scrollLeft = scrollLeft;
-            }
-            if (target !== text2) {
-                text2.scrollTop = scrollTop;
-                text2.scrollLeft = scrollLeft;
-            }
-            if (target !== text3) {
-                text3.scrollTop = scrollTop;
-                text3.scrollLeft = scrollLeft;
-            }
-            if (target === text1) {
-                lineNumbers1.scrollTop = scrollTop;
-            } else if (target === text2) {
-                lineNumbers2.scrollTop = scrollTop;
-            } else if (target === text3) {
-                lineNumbers3.scrollTop = scrollTop;
-            }
-        }
+            const diffEditor = monaco.editor.createDiffEditor(document.getElementById('editor'), {
+                renderSideBySide: true,
+                originalEditable: true,
+                modifiedEditable: true
+            });
 
-        // 监听滚动事件
-        text1.addEventListener('scroll', function () {
-            syncScroll(this);
-        });
-        text2.addEventListener('scroll', function () {
-            syncScroll(this);
-        });
-        text3.addEventListener('scroll', function () {
-            syncScroll(this);
-        });
+            diffEditor.setModel({
+                original: originalModel,
+                modified: modifiedModel
+            });
 
-        // 更新行号函数
-        function updateLineNumbers(element, lineNumbers) {
-            let content = '';
-            if (element.tagName === 'TEXTAREA') {
-                content = element.value;
-            } else {
-                // 处理 div 元素，先把 <br> 替换为换行符
-                content = element.innerHTML.replace(/<br\s*\/?>/gi, '\n');
-            }
-            const lines = content.split('\n').length;
-            let lineNumberHTML = '';
-            for (let i = 1; i <= lines; i++) {
-                lineNumberHTML += i + '<br>';
-            }
-            lineNumbers.innerHTML = lineNumberHTML;
-        }
+            function performComparison() {
+                const originalValue = originalModel.getValue();
+                const modifiedValue = modifiedModel.getValue();
 
-        // 监听文本输入框内容变化事件
-        text1.addEventListener('input', function () {
-            updateLineNumbers(this, lineNumbers1);
-        });
-        text2.addEventListener('input', function () {
-            updateLineNumbers(this, lineNumbers2);
-        });
-
-        // 对比按钮点击事件
-        compareButton.addEventListener('click', function () {
-            // 去除末尾换行符
-            let input1 = text1.value;
-            let input2 = text2.value;
-
-            if (input1 === "" || input2 === "") {
-                text3.innerHTML = "请输入需要对比的文本";
-                return;
-            }
-
-            try {
-                // 使用 jsdiff 对比文本
-                const diff = Diff.diffChars(input1, input2);
-                console.log(diff);
-                const result = [];
-                const differentLines = new Set();
-                let currentLine = 1;
-
-                diff.forEach((part) => {
-                    let value = part.value;
-                    // 处理换行符
-                    value = value.replace(/>/g, '&gt;');
-                    value = value.replace(/</g, '&lt;');
-                    value = value.replace(/ /g, '<span>&nbsp;</span>');
-                    const newLines = (value.match(/\n/g) || []).length;
-                    if (part.added || part.removed) {
-                        for (let i = 0; i < newLines; i++) {
-                            differentLines.add(currentLine + i);
-                        }
-                        if (!value.endsWith('\n')) {
-                            differentLines.add(currentLine + newLines);
-                        }
-                    }
-                    currentLine += newLines;
-                    value = value.replace(/\n/g, '<br>');
-                    if (part.added) {
-                        result.push(`<span class="addWord">${value}</span>`);
-                    } else if (part.removed) {
-                        result.push(`<span class="deleteWord">${value}</span>`);
-                    } else {
-                        result.push(value);
-                    }
+                diffEditor.setModel({
+                    original: monaco.editor.createModel(originalValue, 'plaintext'),
+                    modified: monaco.editor.createModel(modifiedValue, 'plaintext')
                 });
-
-                if (result.length === 0) {
-                    text3.innerHTML = "两个文本内容相同";
-                } else {
-                    text3.innerHTML = result.join('');
-                }
-                updateLineNumbers(text3, lineNumbers3);
-
-                // 高亮不同行的行号
-                const lineNumbersArray = lineNumbers3.innerHTML.split('<br>');
-                let newLineNumbersHTML = '';
-                for (let i = 0; i < lineNumbersArray.length - 1; i++) {
-                    const lineNumber = i + 1;
-                    if (differentLines.has(lineNumber)) {
-                        newLineNumbersHTML += `<span class="highlight">${lineNumbersArray[i]}</span><br>`;
-                    } else {
-                        newLineNumbersHTML += `${lineNumbersArray[i]}<br>`;
-                    }
-                }
-                lineNumbers3.innerHTML = newLineNumbersHTML;
-            } catch (error) {
-                text3.innerHTML = "对比失败，错误信息: " + error.message;
             }
 
+            originalModel.onDidChangeContent(performComparison);
+            modifiedModel.onDidChangeContent(performComparison);
         });
-
-        // 初始化行号
-        updateLineNumbers(text1, lineNumbers1);
-        updateLineNumbers(text2, lineNumbers2);
-        updateLineNumbers(text3, lineNumbers3);
     </script>
 </body>
 
