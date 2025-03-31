@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="JSON 树形展示-在线">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍉</text></svg>">
+    <title>JSON 编辑-在线</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            background-image: linear-gradient(-225deg, #E3FDF5 0%, #FFE6FA 100%);
+        }
+
+        .input-container {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .output-container {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #inputText,
+        #outputTree {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #94b76c;
+            border-radius: 4px;
+            overflow-y: auto;
+        }
+
+        #inputText:focus,
+        #inputText:hover,
+        #inputText:active,
+        #outputTree:focus,
+        #outputTree:hover,
+        #outputTree:active {
+            border: 1px solid #57aa7f;
+            outline: 2px solid #57aa7f;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #94b76c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #57aa7f;
+        }
+
+        .tree {
+            list-style-type: none;
+            padding-left: 20px;
+        }
+
+        .tree li {
+            margin: 5px 0;
+        }
+
+        .tree li.has-children::before {
+            content: '▶ ';
+            cursor: pointer;
+        }
+
+        .tree li.has-children.expanded::before {
+            content: '▼ ';
+        }
+
+        .tree li ul {
+            display: none;
+        }
+
+        .tree li.expanded ul {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="input-container">
+        <textarea id="inputText" placeholder="请输入 JSON 文本"></textarea>
+        <button id="formatButton">格式化</button>
+    </div>
+    <div class="output-container">
+        <div id="outputTree"></div>
+        <button id="copyButton">复制</button>
+    </div>
+
+    <script>
+        const inputText = document.getElementById('inputText');
+        const formatButton = document.getElementById('formatButton');
+        const outputTree = document.getElementById('outputTree');
+        const copyButton = document.getElementById('copyButton');
+
+        function isValidJSON(str) {
+            try {
+                JSON.parse(str);
+                return true;
+            } catch (error) {
+                return error;
+            }
+        }
+
+        function createTree(json, parent) {
+            if (typeof json === 'object' && json !== null) {
+                const ul = document.createElement('ul');
+                for (const key in json) {
+                    const li = document.createElement('li');
+                    li.textContent = key;
+                    if (typeof json[key] === 'object' && json[key] !== null) {
+                        li.classList.add('has-children');
+                        li.addEventListener('click', function () {
+                            this.classList.toggle('expanded');
+                        });
+                        createTree(json[key], li);
+                    } else {
+                        li.textContent += ': ' + json[key];
+                    }
+                    ul.appendChild(li);
+                }
+                parent.appendChild(ul);
+            }
+        }
+
+        function updateTree() {
+            const input = inputText.value;
+            if (input === "") {
+                outputTree.textContent = "请输入 JSON 文本";
+            } else {
+                const validation = isValidJSON(input);
+                if (validation !== true) {
+                    outputTree.textContent = `请输入正确格式的 JSON，错误信息：${validation.message}`;
+                } else {
+                    const json = JSON.parse(input);
+                    outputTree.innerHTML = '';
+                    createTree(json, outputTree);
+                }
+            }
+        }
+
+        formatButton.addEventListener('click', function () {
+            const input = inputText.value;
+            const validation = isValidJSON(input);
+            if (validation === true) {
+                const formatted = JSON.stringify(JSON.parse(input), null, 2);
+                inputText.value = formatted;
+            }
+            updateTree();
+        });
+
+        inputText.addEventListener('input', updateTree);
+
+        copyButton.addEventListener('click', async function () {
+            const input = inputText.value;
+            if (input === "") {
+                return;
+            }
+            try {
+                if ('clipboard' in navigator) {
+                    await navigator.clipboard.writeText(input);
+                } else {
+                    const textArea = document.createElement('textarea');
+                    textArea.value = input;
+                    textArea.style.position = 'fixed';
+                    textArea.style.opacity = 0;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                }
+                copyButton.textContent = '已复制';
+                setTimeout(() => {
+                    copyButton.textContent = '复制输入框内容';
+                }, 2000);
+            } catch (error) {
+                console.error('复制失败:', error);
+            }
+        });
+    </script>
+</body>
+
+</html>  帮我把右边输出框用树形结构展示出来，点击加号可以展开，点击减号可以收起。并且在点击加号时，父节点的加号也要变成减号。点击减号时，父节点的减号也要变成加号。并且在点击加号时，子节点的加号也要变成减号。点击减号时，子节点的减号也要变成加号。并且在点击加号时，子节点的加号也要变成减号。点击减号时，子节点的减号也要变成加号。并且在点击加号时，子节点的加号也要变成减号。点击减号时，子节点的减号也要变成加号。并且在点击加号时，子节点的加号也要变成减号。点击减号时，子节点的减号也要变成加号。并且在点击加号时，子节点的加号也要变成减号。点击减号时，子节点的减号也要变成加号。
