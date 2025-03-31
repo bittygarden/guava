@@ -104,11 +104,6 @@
         .highlight {
             color: red;
         }
-
-        button:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-        }
     </style>
     <!-- 引入 jsdiff 库 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsdiff/5.1.0/diff.min.js"></script>
@@ -126,8 +121,6 @@
 
     <div class="buttonDiv">
         <button id="compareButton">对比</button>
-        <button id="prevButton" disabled>上一个</button>
-        <button id="nextButton" disabled>下一个</button>
     </div>
 
     <script>
@@ -139,11 +132,6 @@
         const lineNumbers1 = document.getElementById('lineNumbers1');
         const lineNumbers2 = document.getElementById('lineNumbers2');
         const lineNumbers3 = document.getElementById('lineNumbers3');
-        const prevButton = document.getElementById('prevButton');
-        const nextButton = document.getElementById('nextButton');
-
-        let differentLines = [];
-        let currentIndex = -1;
 
         // 滚动联动函数
         function syncScroll(target) {
@@ -222,7 +210,7 @@
                 const diff = Diff.diffChars(input1, input2);
                 console.log(diff);
                 const result = [];
-                differentLines = [];
+                const differentLines = new Set();
                 let currentLine = 1;
 
                 diff.forEach((part) => {
@@ -234,10 +222,10 @@
                     const newLines = (value.match(/\n/g) || []).length;
                     if (part.added || part.removed) {
                         for (let i = 0; i < newLines; i++) {
-                            differentLines.push(currentLine + i);
+                            differentLines.add(currentLine + i);
                         }
                         if (!value.endsWith('\n')) {
-                            differentLines.push(currentLine + newLines);
+                            differentLines.add(currentLine + newLines);
                         }
                     }
                     currentLine += newLines;
@@ -263,60 +251,17 @@
                 let newLineNumbersHTML = '';
                 for (let i = 0; i < lineNumbersArray.length - 1; i++) {
                     const lineNumber = i + 1;
-                    if (differentLines.includes(lineNumber)) {
+                    if (differentLines.has(lineNumber)) {
                         newLineNumbersHTML += `<span class="highlight">${lineNumbersArray[i]}</span><br>`;
                     } else {
                         newLineNumbersHTML += `${lineNumbersArray[i]}<br>`;
                     }
                 }
                 lineNumbers3.innerHTML = newLineNumbersHTML;
-
-                // 显示或隐藏按钮
-                if (differentLines.length > 0) {
-                    currentIndex = 0;
-                    prevButton.disabled = true;
-                    if (differentLines.length > 1) {
-                        nextButton.disabled = false;
-                    } else {
-                        nextButton.disabled = true;
-                    }
-                    // 定位到第一个不同的行
-                    const lineHeight = parseInt(getComputedStyle(lineNumbers3).fontSize);
-                    text3.scrollTop = (differentLines[0] - 1) * lineHeight;
-                } else {
-                    prevButton.disabled = true;
-                    nextButton.disabled = true;
-                }
             } catch (error) {
                 text3.innerHTML = "对比失败，错误信息: " + error.message;
             }
 
-        });
-
-        // 上一个按钮点击事件
-        prevButton.addEventListener('click', function () {
-            if (currentIndex > 0) {
-                currentIndex--;
-                const lineHeight = parseInt(getComputedStyle(lineNumbers3).fontSize);
-                text3.scrollTop = (differentLines[currentIndex] - 1) * lineHeight;
-                if (currentIndex === 0) {
-                    prevButton.disabled = true;
-                }
-                nextButton.disabled = false;
-            }
-        });
-
-        // 下一个按钮点击事件
-        nextButton.addEventListener('click', function () {
-            if (currentIndex < differentLines.length - 1) {
-                currentIndex++;
-                const lineHeight = parseInt(getComputedStyle(lineNumbers3).fontSize);
-                text3.scrollTop = (differentLines[currentIndex] - 1) * lineHeight;
-                if (currentIndex === differentLines.length - 1) {
-                    nextButton.disabled = true;
-                }
-                prevButton.disabled = false;
-            }
         });
 
         // 初始化行号
