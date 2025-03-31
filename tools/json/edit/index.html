@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="JSON 格式化展示-在线">
+    <meta name="description" content="JSON 编辑-在线">
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍉</text></svg>">
     <title>JSON 编辑-在线</title>
@@ -55,7 +55,6 @@
             white-space: pre-wrap;
             font-family: monospace;
             width: auto;
-            /* 让宽度自适应 */
         }
 
         #outputText:focus,
@@ -188,7 +187,7 @@
                 // 重新布局 monaco-editor
                 editor.layout();
             });
-            
+
             // 页面加载时触发一次调整
             window.dispatchEvent(new Event('resize'));
         });
