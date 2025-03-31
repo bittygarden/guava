@@ -100,6 +100,10 @@
             border-right: 1px solid #ccc;
             user-select: none;
         }
+
+        .highlight {
+            color: red;
+        }
     </style>
     <!-- 引入 jsdiff 库 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsdiff/5.1.0/diff.min.js"></script>
@@ -206,6 +210,8 @@
                 const diff = Diff.diffChars(input1, input2);
                 console.log(diff);
                 const result = [];
+                const differentLines = new Set();
+                let currentLine = 1;
 
                 diff.forEach((part) => {
                     let value = part.value;
@@ -213,6 +219,16 @@
                     value = value.replace(/>/g, '&gt;');
                     value = value.replace(/</g, '&lt;');
                     value = value.replace(/ /g, '<span>&nbsp;</span>');
+                    const newLines = (value.match(/\n/g) || []).length;
+                    if (part.added || part.removed) {
+                        for (let i = 0; i < newLines; i++) {
+                            differentLines.add(currentLine + i);
+                        }
+                        if (!value.endsWith('\n')) {
+                            differentLines.add(currentLine + newLines);
+                        }
+                    }
+                    currentLine += newLines;
                     value = value.replace(/\n/g, '<br>');
                     if (part.added) {
                         result.push(`<span class="addWord">${value}</span>`);
@@ -229,6 +245,19 @@
                     text3.innerHTML = result.join('');
                 }
                 updateLineNumbers(text3, lineNumbers3);
+
+                // 高亮不同行的行号
+                const lineNumbersArray = lineNumbers3.innerHTML.split('<br>');
+                let newLineNumbersHTML = '';
+                for (let i = 0; i < lineNumbersArray.length - 1; i++) {
+                    const lineNumber = i + 1;
+                    if (differentLines.has(lineNumber)) {
+                        newLineNumbersHTML += `<span class="highlight">${lineNumbersArray[i]}</span><br>`;
+                    } else {
+                        newLineNumbersHTML += `${lineNumbersArray[i]}<br>`;
+                    }
+                }
+                lineNumbers3.innerHTML = newLineNumbersHTML;
             } catch (error) {
                 text3.innerHTML = "对比失败，错误信息: " + error.message;
             }
