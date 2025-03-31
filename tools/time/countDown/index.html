@@ -192,10 +192,17 @@
             color: #666;
         }
 
-        .delete-button {
+        .button-container {
             position: absolute;
             top: 10px;
             right: 15px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .delete-button {
             font-size: 19px;
             cursor: pointer;
             color: #999;
@@ -206,10 +213,7 @@
         }
 
         .fullscreen-button {
-            position: absolute;
-            top: 10px;
-            right: 36px;
-            font-size: 15px;
+            font-size: 19px;
             cursor: pointer;
             color: #999;
         }
@@ -332,6 +336,10 @@
             endTimeLabel.textContent = `结束时间: ${formattedEndTime}`;
             box.appendChild(endTimeLabel);
 
+            // 添加按钮容器
+            const buttonContainer = document.createElement('div');
+            buttonContainer.className = 'button-container';
+
             // 添加全屏按钮
             const fullscreenButton = document.createElement('span');
             fullscreenButton.className = 'fullscreen-button';
@@ -345,7 +353,7 @@
                     box.msRequestFullscreen();
                 }
             });
-            box.appendChild(fullscreenButton);
+            buttonContainer.appendChild(fullscreenButton);
 
             // 添加删除按钮
             const deleteButton = document.createElement('span');
@@ -355,13 +363,14 @@
                 box.remove();
                 saveCountdownsToStorage();
             });
-            box.appendChild(deleteButton);
+            buttonContainer.appendChild(deleteButton);
+
+            box.appendChild(buttonContainer);
 
             // 监听全屏状态变化
             document.addEventListener('fullscreenchange', () => {
                 if (document.fullscreenElement === box) {
-                    fullscreenButton.style.display = 'none';
-                    deleteButton.style.display = 'none';
+                    buttonContainer.style.display = 'none';
                     box.style.display = 'flex';
                     box.style.flexDirection = 'column';
                     box.style.justifyContent = 'center';
@@ -374,13 +383,13 @@
                         digit.style.height = '270px';
                         digit.style.fontSize = '150px';
                     });
-                    
+
                     // 调整时间单位标签的大小
                     const unitLabels = countdownText.querySelectorAll('.time-unit-label');
                     unitLabels.forEach(label => {
                         label.style.fontSize = '20px';
                         label.style.bottom = '3px';
-                        label.style.right= '3px';
+                        label.style.right = '3px';
                     });
 
                     const timeUnit = countdownText.querySelectorAll('.time-unit');
@@ -392,8 +401,7 @@
                     title.style.position = 'absolute';
                     title.style.top = '20px';
                 } else {
-                    fullscreenButton.style.display = 'block';
-                    deleteButton.style.display = 'block';
+                    buttonContainer.style.display = 'flex';
                     box.style.display = 'block';
                     box.style.justifyContent = 'unset';
                     box.style.alignItems = 'unset';
@@ -409,7 +417,7 @@
                     unitLabels.forEach(label => {
                         label.style.fontSize = '10px';
                         label.style.bottom = '-1px';
-                        label.style.right= '1px';
+                        label.style.right = '1px';
                     });
 
                     const timeUnit = countdownText.querySelectorAll('.time-unit');
