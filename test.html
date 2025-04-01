@@ -4,6 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
     <title>游戏模拟器</title>
     <style>
         body {
@@ -94,7 +97,7 @@
         <div class="game-info">游戏信息界面</div>
     </div>
     <div class="buttons">
-        <button>开始</button>
+        <button id="fullscreenButton">开始</button>
         <div class="direction-buttons">
             <button>上</button>
             <button>左</button>
@@ -103,6 +106,20 @@
             <button>下</button>
         </div>
     </div>
+    <script>
+        const fullscreenButton = document.getElementById('fullscreenButton');
+
+        fullscreenButton.addEventListener('click', function () {
+            const elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) {
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) {
+                elem.msRequestFullscreen();
+            }
+        });
+    </script>
 </body>
 
 </html>
