@@ -1,29 +1,108 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monaco Editor JSON Example</title>
-    <script src="https://cdnjs.loli.net/ajax/libs/monaco-editor/0.33.0/min/vs/loader.js"></script>
-    <script>
-        require.config({ paths: { 'vs': 'https://cdnjs.loli.net/ajax/libs/monaco-editor/0.33.0/min/vs' } });
-        require(['vs/editor/editor.main'], function () {
-            const initialJson = JSON.stringify({
-                "name": "Bob",
-                "age": 35,
-                "city": "Chicago"
-            }, null, 2);
-            const editor = monaco.editor.create(document.getElementById('container'), {
-                value: initialJson,
-                language: 'json'
-            });
-        });
-    </script>
+    <title>游戏模拟器</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+       .screen {
+            flex: 0.7;
+            background-color: #333;
+            display: flex;
+            color: white;
+            font-size: 24px;
+        }
+
+       .game {
+            flex: 0.8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #222;
+        }
+
+       .game-info {
+            flex: 0.2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #444;
+        }
+
+       .buttons {
+            flex: 0.3;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        button {
+            margin: 0 5px;
+            padding: 10px 20px;
+            font-size: 18px;
+        }
+
+       .direction-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 5px;
+        }
+
+       .direction-buttons button:nth-child(1) {
+            grid-column: 2 / 3;
+            grid-row: 1 / 2;
+        }
+
+       .direction-buttons button:nth-child(2) {
+            grid-column: 1 / 2;
+            grid-row: 2 / 3;
+        }
+
+       .direction-buttons button:nth-child(3) {
+            grid-column: 2 / 3;
+            grid-row: 2 / 3;
+        }
+
+       .direction-buttons button:nth-child(4) {
+            grid-column: 3 / 4;
+            grid-row: 2 / 3;
+        }
+
+       .direction-buttons button:nth-child(5) {
+            grid-column: 2 / 3;
+            grid-row: 3 / 4;
+        }
+    </style>
 </head>
 
 <body>
-    <div id="container" style="width: 600px; height: 400px;"></div>
+    <div class="screen">
+        <div class="game">游戏界面</div>
+        <div class="game-info">游戏信息界面</div>
+    </div>
+    <div class="buttons">
+        <button>开始</button>
+        <div class="direction-buttons">
+            <button>上</button>
+            <button>左</button>
+            <button></button>
+            <button>右</button>
+            <button>下</button>
+        </div>
+    </div>
 </body>
 
 </html>
+    
