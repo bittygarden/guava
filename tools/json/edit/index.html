@@ -68,6 +68,7 @@
             padding: 10px 20px;
             background-color: #94b76c;
             color: white;
+            color: white;
             border: none;
             border-radius: 4px;
             cursor: pointer;
@@ -78,7 +79,7 @@
             background-color: #57aa7f;
         }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.33.0/min/vs/loader.js"></script>
+    <script src="https://cdn.staticfile.net/monaco-editor/0.45.0/min/vs/loader.js"></script>
 </head>
 
 <body>
@@ -92,7 +93,7 @@
     </div>
 
     <script>
-        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.33.0/min/vs' } });
+        require.config({ paths: { 'vs': 'https://cdn.staticfile.net/monaco-editor/0.45.0/min/vs' } });
         require(['vs/editor/editor.main'], function () {
             const LOCAL_STORAGE_KEY = 'json_editor_input';
             // 从本地缓存加载数据
