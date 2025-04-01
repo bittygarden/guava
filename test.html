@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>游戏模拟器</title>
     <style>
         body {
@@ -14,7 +14,7 @@
             height: 100vh;
         }
 
-       .screen {
+        .screen {
             flex: 0.7;
             background-color: #333;
             display: flex;
@@ -22,7 +22,7 @@
             font-size: 24px;
         }
 
-       .game {
+        .game {
             flex: 0.8;
             display: flex;
             align-items: center;
@@ -30,7 +30,7 @@
             background-color: #222;
         }
 
-       .game-info {
+        .game-info {
             flex: 0.2;
             display: flex;
             align-items: center;
@@ -38,7 +38,7 @@
             background-color: #444;
         }
 
-       .buttons {
+        .buttons {
             flex: 0.3;
             background-color: #f0f0f0;
             display: flex;
@@ -53,34 +53,34 @@
             font-size: 18px;
         }
 
-       .direction-buttons {
+        .direction-buttons {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             grid-template-rows: repeat(3, 1fr);
             gap: 5px;
         }
 
-       .direction-buttons button:nth-child(1) {
+        .direction-buttons button:nth-child(1) {
             grid-column: 2 / 3;
             grid-row: 1 / 2;
         }
 
-       .direction-buttons button:nth-child(2) {
+        .direction-buttons button:nth-child(2) {
             grid-column: 1 / 2;
             grid-row: 2 / 3;
         }
 
-       .direction-buttons button:nth-child(3) {
+        .direction-buttons button:nth-child(3) {
             grid-column: 2 / 3;
             grid-row: 2 / 3;
         }
 
-       .direction-buttons button:nth-child(4) {
+        .direction-buttons button:nth-child(4) {
             grid-column: 3 / 4;
             grid-row: 2 / 3;
         }
 
-       .direction-buttons button:nth-child(5) {
+        .direction-buttons button:nth-child(5) {
             grid-column: 2 / 3;
             grid-row: 3 / 4;
         }
@@ -105,4 +105,3 @@
 </body>
 
 </html>
-    
