@@ -17,7 +17,7 @@
             height: 100vh;
         }
 
-        .screen {
+       .screen {
             flex: 0.7;
             background-color: #333;
             display: flex;
@@ -25,7 +25,7 @@
             font-size: 24px;
         }
 
-        .game {
+       .game {
             flex: 0.8;
             display: flex;
             align-items: center;
@@ -33,7 +33,7 @@
             background-color: #222;
         }
 
-        .game-info {
+       .game-info {
             flex: 0.2;
             display: flex;
             align-items: center;
@@ -41,7 +41,7 @@
             background-color: #444;
         }
 
-        .buttons {
+       .buttons {
             flex: 0.3;
             background-color: #f0f0f0;
             display: flex;
@@ -56,35 +56,35 @@
             font-size: 18px;
         }
 
-        .direction-buttons {
+       .direction-buttons {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             grid-template-rows: repeat(3, 1fr);
             gap: 5px;
         }
 
-        .direction-buttons button:nth-child(1) {
+       .direction-buttons button:nth-child(1) {
             grid-column: 2 / 3;
             grid-row: 1 / 2;
         }
 
-        .direction-buttons button:nth-child(2) {
+       .direction-buttons button:nth-child(2) {
             grid-column: 1 / 2;
             grid-row: 2 / 3;
         }
 
-        .direction-buttons button:nth-child(3) {
+       .direction-buttons button:nth-child(3) {
             display: none;
             grid-column: 2 / 3;
             grid-row: 2 / 3;
         }
 
-        .direction-buttons button:nth-child(4) {
+       .direction-buttons button:nth-child(4) {
             grid-column: 3 / 4;
             grid-row: 2 / 3;
         }
 
-        .direction-buttons button:nth-child(5) {
+       .direction-buttons button:nth-child(5) {
             grid-column: 2 / 3;
             grid-row: 3 / 4;
         }
@@ -97,7 +97,7 @@
         <div class="game-info">游戏信息界面</div>
     </div>
     <div class="buttons">
-        <button id="fullscreenButton">开始</button>
+        <button id="fullscreenToggle">全屏</button>
         <div class="direction-buttons">
             <button>上</button>
             <button>左</button>
@@ -107,19 +107,32 @@
         </div>
     </div>
     <script>
-        const fullscreenButton = document.getElementById('fullscreenButton');
+        const fullscreenToggle = document.getElementById('fullscreenToggle');
 
-        fullscreenButton.addEventListener('click', function () {
+        fullscreenToggle.addEventListener('click', function () {
             const elem = document.documentElement;
-            if (elem.requestFullscreen) {
-                elem.requestFullscreen();
-            } else if (elem.webkitRequestFullscreen) {
-                elem.webkitRequestFullscreen();
-            } else if (elem.msRequestFullscreen) {
-                elem.msRequestFullscreen();
+            if (document.fullscreenElement) {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+                fullscreenToggle.textContent = '全屏';
+            } else {
+                if (elem.requestFullscreen) {
+                    elem.requestFullscreen();
+                } else if (elem.webkitRequestFullscreen) {
+                    elem.webkitRequestFullscreen();
+                } else if (elem.msRequestFullscreen) {
+                    elem.msRequestFullscreen();
+                }
+                fullscreenToggle.textContent = '退出全屏';
             }
         });
     </script>
 </body>
 
 </html>
+    
