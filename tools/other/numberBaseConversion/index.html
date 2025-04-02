@@ -2,6 +2,15 @@
 <html lang="zh-CN">
 
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RFTZ7J5H90"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-RFTZ7J5H90');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="进制转换-在线">
@@ -206,13 +215,13 @@
             const textToCopy = outputElement.value;
             if (textToCopy) {
                 navigator.clipboard.writeText(textToCopy)
-                   .then(() => {
+                    .then(() => {
                         button.textContent = "已复制";
                         setTimeout(() => {
                             button.textContent = "复制";
                         }, 2000);
                     })
-                   .catch((error) => {
+                    .catch((error) => {
                         console.error('复制失败:', error);
                     });
             }
