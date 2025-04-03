@@ -152,10 +152,13 @@
         const rightButton = document.getElementById('rightButton');
         const downButton = document.getElementById('downButton');
 
-        const ROWS = 20;
+        const ROWS = 30;
         const COLS = 10;
         let BLOCK_SIZE = Math.min(canvas.width / COLS, canvas.height / ROWS);
+        console.log(canvas.height, canvas.width);
+
         let board = [];
+
         for (let i = 0; i < ROWS; i++) {
             board[i] = [];
             for (let j = 0; j < COLS; j++) {
