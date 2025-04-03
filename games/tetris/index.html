@@ -152,13 +152,20 @@
         const rightButton = document.getElementById('rightButton');
         const downButton = document.getElementById('downButton');
 
-        const ROWS = 30;
+        const gameDiv = canvas.parentNode;
+        canvas.width = gameDiv.offsetWidth;
+        canvas.height = gameDiv.offsetHeight;
+        
+        const ROWS = 20;
         const COLS = 10;
-        let BLOCK_SIZE = Math.min(canvas.width / COLS, canvas.height / ROWS);
-        console.log(canvas.height, canvas.width);
+        let BLOCK_SIZE;
+        // 重新计算 BLOCK_SIZE
+        function calculateBlockSize() {
+            BLOCK_SIZE = Math.min(canvas.width / COLS, canvas.height / ROWS);
+        }
+        calculateBlockSize();
 
         let board = [];
-
         for (let i = 0; i < ROWS; i++) {
             board[i] = [];
             for (let j = 0; j < COLS; j++) {
