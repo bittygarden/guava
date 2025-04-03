@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="description" content="俄罗斯方块-在线">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍉</text></svg>">
+    <title>俄罗斯方块-在线</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .screen {
+            flex: 0.7;
+            background-color: #333;
+            display: flex;
+            color: black;
+            font-size: 24px;
+            border-radius: 40px;
+            padding: 14px;
+            border: none;
+            background-image: linear-gradient(to right, rgb(255, 236, 210) 0%, rgb(252, 182, 159) 100%);
+        }
+
+        .game {
+            flex: 0.7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            border-radius: 4px;
+        }
+
+        .game #gameCanvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .game-info {
+            flex: 0.3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            border-left: 10px solid #f3f1ee;
+            border-radius: 4px;
+        }
+
+        .buttons {
+            flex: 0.3;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            border-radius: 40px;
+            background-image: linear-gradient(to right, rgb(255, 236, 210) 0%, rgb(252, 182, 159) 100%);
+        }
+
+        .control-buttons {
+            display: flex;
+            flex-direction: column;
+        }
+
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 18px;
+            border: none;
+            border: 1px solid white;
+            color: white;
+            background-color: #16d9e3;
+        }
+
+        .direction-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 5px;
+        }
+
+        .direction-buttons button:nth-child(1) {
+            grid-column: 2 / 3;
+            grid-row: 1 / 2;
+        }
+
+        .direction-buttons button:nth-child(2) {
+            grid-column: 1 / 2;
+            grid-row: 2 / 3;
+        }
+
+        .direction-buttons button:nth-child(3) {
+            display: none;
+            grid-column: 2 / 3;
+            grid-row: 2 / 3;
+        }
+
+        .direction-buttons button:nth-child(4) {
+            grid-column: 3 / 4;
+            grid-row: 2 / 3;
+        }
+
+        .direction-buttons button:nth-child(5) {
+            grid-column: 2 / 3;
+            grid-row: 3 / 4;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="screen">
+        <div class="game">
+            <canvas id="gameCanvas"></canvas>
+        </div>
+        <div class="game-info">
+            <div id="score">得分: 0</div>
+            <div id="level">等级: 1</div>
+        </div>
+    </div>
+    <div class="buttons">
+        <div class="control-buttons">
+            <button id="startButton">开始</button>
+            <button id="fullscreenToggle">全屏</button>
+        </div>
+        <div class="direction-buttons">
+            <button id="upButton">上</button>
+            <button id="leftButton">左</button>
+            <button></button>
+            <button id="rightButton">右</button>
+            <button id="downButton">下</button>
+        </div>
+    </div>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreElement = document.getElementById('score');
+        const levelElement = document.getElementById('level');
+        const startButton = document.getElementById('startButton');
+        const fullscreenToggle = document.getElementById('fullscreenToggle');
+        const upButton = document.getElementById('upButton');
+        const leftButton = document.getElementById('leftButton');
+        const rightButton = document.getElementById('rightButton');
+        const downButton = document.getElementById('downButton');
+
+        const ROWS = 20;
+        const COLS = 10;
+        let BLOCK_SIZE = Math.min(canvas.width / COLS, canvas.height / ROWS);
+        let board = [];
+        for (let i = 0; i < ROWS; i++) {
+            board[i] = [];
+            for (let j = 0; j < COLS; j++) {
+                board[i][j] = 0;
+            }
+        }
+
+        const SHAPES = [
+            [[1, 1, 1, 1]],
+            [[1, 1], [1, 1]],
+            [[1, 1, 0], [0, 1, 1]],
+            [[0, 1, 1], [1, 1, 0]],
+            [[1, 1, 1], [0, 1, 0]],
+            [[1, 1, 1], [1, 0, 0]],
+            [[1, 1, 1], [0, 0, 1]]
+        ];
+
+        const COLORS = [
+            '#FF0D72', '#0DC2FF', '#0DFF72', '#F538FF', '#FF8E0D', '#FFE138', '#3877FF'
+        ];
+
+        let currentPiece;
+        let currentX;
+        let currentY;
+        let currentColor;
+        let score = 0;
+        let level = 1;
+        let intervalId;
+
+        function newPiece() {
+            const randomIndex = Math.floor(Math.random() * SHAPES.length);
+            currentPiece = SHAPES[randomIndex];
+            currentColor = COLORS[randomIndex];
+            currentX = Math.floor(COLS / 2) - Math.floor(currentPiece[0].length / 2);
+            currentY = 0;
+            if (collision()) {
+                gameOver();
+            }
+        }
+
+        function drawBoard() {
+            for (let i = 0; i < ROWS; i++) {
+                for (let j = 0; j < COLS; j++) {
+                    if (board[i][j]) {
+                        ctx.fillStyle = COLORS[board[i][j] - 1];
+                        ctx.fillRect(j * BLOCK_SIZE, i * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+                        ctx.strokeStyle = 'black';
+                        ctx.strokeRect(j * BLOCK_SIZE, i * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+                    }
+                }
+            }
+        }
+
+        function drawPiece() {
+            for (let i = 0; i < currentPiece.length; i++) {
+                for (let j = 0; j < currentPiece[i].length; j++) {
+                    if (currentPiece[i][j]) {
+                        ctx.fillStyle = currentColor;
+                        ctx.fillRect((currentX + j) * BLOCK_SIZE, (currentY + i) * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+                        ctx.strokeStyle = 'black';
+                        ctx.strokeRect((currentX + j) * BLOCK_SIZE, (currentY + i) * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+                    }
+                }
+            }
+        }
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function draw() {
+            clearCanvas();
+            drawBoard();
+            drawPiece();
+        }
+
+        function collision() {
+            for (let i = 0; i < currentPiece.length; i++) {
+                for (let j = 0; j < currentPiece[i].length; j++) {
+                    if (currentPiece[i][j]) {
+                        const newX = currentX + j;
+                        const newY = currentY + i;
+                        if (newX < 0 || newX >= COLS || newY >= ROWS || (newY >= 0 && board[newY][newX])) {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        function mergePiece() {
+            for (let i = 0; i < currentPiece.length; i++) {
+                for (let j = 0; j < currentPiece[i].length; j++) {
+                    if (currentPiece[i][j]) {
+                        board[currentY + i][currentX + j] = COLORS.indexOf(currentColor) + 1;
+                    }
+                }
+            }
+        }
+
+        function clearLines() {
+            let linesCleared = 0;
+            for (let i = 0; i < ROWS; i++) {
+                if (board[i].every(cell => cell)) {
+                    linesCleared++;
+                    board.splice(i, 1);
+                    board.unshift(new Array(COLS).fill(0));
+                }
+            }
+            if (linesCleared) {
+                score += 100 * linesCleared * level;
+                scoreElement.textContent = `得分: ${score}`;
+                if (score >= level * 1000) {
+                    level++;
+                    levelElement.textContent = `等级: ${level}`;
+                    clearInterval(intervalId);
+                    intervalId = setInterval(moveDown, 500 / level);
+                }
+            }
+        }
+
+        function moveDown() {
+            currentY++;
+            if (collision()) {
+                currentY--;
+                mergePiece();
+                clearLines();
+                newPiece();
+            }
+            draw();
+        }
+
+        function moveLeft() {
+            currentX--;
+            if (collision()) {
+                currentX++;
+            }
+            draw();
+        }
+
+        function moveRight() {
+            currentX++;
+            if (collision()) {
+                currentX--;
+            }
+            draw();
+        }
+
+        function rotate() {
+            const rotatedPiece = [];
+            for (let i = 0; i < currentPiece[0].length; i++) {
+                rotatedPiece[i] = [];
+                for (let j = currentPiece.length - 1; j >= 0; j--) {
+                    rotatedPiece[i][currentPiece.length - 1 - j] = currentPiece[j][i];
+                }
+            }
+            const tempPiece = currentPiece;
+            currentPiece = rotatedPiece;
+            if (collision()) {
+                currentPiece = tempPiece;
+            }
+            draw();
+        }
+
+        function gameOver() {
+            clearInterval(intervalId);
+            alert('游戏结束！得分: ' + score);
+            // 重置游戏
+            for (let i = 0; i < ROWS; i++) {
+                for (let j = 0; j < COLS; j++) {
+                    board[i][j] = 0;
+                }
+            }
+            score = 0;
+            level = 1;
+            scoreElement.textContent = `得分: ${score}`;
+            levelElement.textContent = `等级: ${level}`;
+        }
+
+        startButton.addEventListener('click', function () {
+            if (intervalId) {
+                clearInterval(intervalId);
+            }
+            newPiece();
+            intervalId = setInterval(moveDown, 500 / level);
+        });
+
+        fullscreenToggle.addEventListener('click', function () {
+            const elem = document.documentElement;
+            if (document.fullscreenElement) {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+                fullscreenToggle.textContent = '全屏';
+            } else {
+                if (elem.requestFullscreen) {
+                    elem.requestFullscreen();
+                } else if (elem.webkitRequestFullscreen) {
+                    elem.webkitRequestFullscreen();
+                } else if (elem.msRequestFullscreen) {
+                    elem.msRequestFullscreen();
+                }
+                fullscreenToggle.textContent = '退出全屏';
+            }
+        });
+
+        upButton.addEventListener('click', rotate);
+        leftButton.addEventListener('click', moveLeft);
+        rightButton.addEventListener('click', moveRight);
+        downButton.addEventListener('click', moveDown);
+
+        document.addEventListener('keydown', function (event) {
+            switch (event.key) {
+                case 'ArrowUp':
+                    rotate();
+                    break;
+                case 'ArrowLeft':
+                    moveLeft();
+                    break;
+                case 'ArrowRight':
+                    moveRight();
+                    break;
+                case 'ArrowDown':
+                    moveDown();
+                    break;
+            }
+        });
+    </script>
+</body>
+
+</html>
