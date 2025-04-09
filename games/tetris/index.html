@@ -44,6 +44,9 @@
         .game #gameCanvas {
             width: 100%;
             height: 100%;
+            margin: 0;
+            padding: 0;
+            border: none;
         }
 
         .game-info {
@@ -153,25 +156,46 @@
         const downButton = document.getElementById('downButton');
 
         const gameDiv = canvas.parentNode;
-        canvas.width = gameDiv.offsetWidth;
-        canvas.height = gameDiv.offsetHeight;
-        
-        const ROWS = 20;
-        const COLS = 10;
+
+        let ROWS;
+        let COLS;
         let BLOCK_SIZE;
-        // 重新计算 BLOCK_SIZE
+
+        function setCanvasSize() {
+            canvas.width = gameDiv.offsetWidth;
+            canvas.height = gameDiv.offsetHeight;
+            calculateRowsAndCols();
+            calculateBlockSize();
+            initializeBoard();
+            draw();
+        }
+
+        function calculateRowsAndCols() {
+            // 这里可以根据需要调整比例
+            const aspectRatio = canvas.height / canvas.width;
+            COLS = Math.max(8, Math.floor(canvas.width / 30));
+            ROWS = Math.floor(COLS * aspectRatio);
+        }
+
         function calculateBlockSize() {
             BLOCK_SIZE = Math.min(canvas.width / COLS, canvas.height / ROWS);
         }
-        calculateBlockSize();
 
-        let board = [];
-        for (let i = 0; i < ROWS; i++) {
-            board[i] = [];
-            for (let j = 0; j < COLS; j++) {
-                board[i][j] = 0;
+        function initializeBoard() {
+            board = [];
+            for (let i = 0; i < ROWS; i++) {
+                board[i] = [];
+                for (let j = 0; j < COLS; j++) {
+                    board[i][j] = 0;
+                }
             }
         }
+
+        window.addEventListener('load', setCanvasSize);
+        window.addEventListener('resize', setCanvasSize);
+        document.addEventListener('fullscreenchange', setCanvasSize);
+
+        let board = [];
 
         const SHAPES = [
             [[1, 1, 1, 1]],
@@ -220,13 +244,15 @@
         }
 
         function drawPiece() {
-            for (let i = 0; i < currentPiece.length; i++) {
-                for (let j = 0; j < currentPiece[i].length; j++) {
-                    if (currentPiece[i][j]) {
-                        ctx.fillStyle = currentColor;
-                        ctx.fillRect((currentX + j) * BLOCK_SIZE, (currentY + i) * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-                        ctx.strokeStyle = 'black';
-                        ctx.strokeRect((currentX + j) * BLOCK_SIZE, (currentY + i) * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+            if (currentPiece) {
+                for (let i = 0; i < currentPiece.length; i++) {
+                    for (let j = 0; j < currentPiece[i].length; j++) {
+                        if (currentPiece[i][j]) {
+                            ctx.fillStyle = currentColor;
+                            ctx.fillRect((currentX + j) * BLOCK_SIZE, (currentY + i) * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+                            ctx.strokeStyle = 'black';
+                            ctx.strokeRect((currentX + j) * BLOCK_SIZE, (currentY + i) * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+                        }
                     }
                 }
             }
@@ -248,7 +274,7 @@
                     if (currentPiece[i][j]) {
                         const newX = currentX + j;
                         const newY = currentY + i;
-                        if (newX < 0 || newX >= COLS || newY >= ROWS || (newY >= 0 && board[newY][newX])) {
+                        if (newX < 0 || newX > COLS - 1 || newY >= ROWS || (newY >= 0 && board[newY][newX])) {
                             return true;
                         }
                     }
@@ -326,6 +352,24 @@
             const tempPiece = currentPiece;
             currentPiece = rotatedPiece;
             if (collision()) {
+                // 尝试左移或右移
+                let newX = currentX;
+                if (newX > 0) {
+                    currentX--;
+                    if (!collision()) {
+                        draw();
+                        return;
+                    }
+                    currentX++;
+                }
+                if (newX < COLS - rotatedPiece[0].length) {
+                    currentX++;
+                    if (!collision()) {
+                        draw();
+                        return;
+                    }
+                    currentX--;
+                }
                 currentPiece = tempPiece;
             }
             draw();
@@ -335,11 +379,7 @@
             clearInterval(intervalId);
             alert('游戏结束！得分: ' + score);
             // 重置游戏
-            for (let i = 0; i < ROWS; i++) {
-                for (let j = 0; j < COLS; j++) {
-                    board[i][j] = 0;
-                }
-            }
+            initializeBoard();
             score = 0;
             level = 1;
             scoreElement.textContent = `得分: ${score}`;
@@ -402,3 +442,4 @@
 </body>
 
 </html>
+    
