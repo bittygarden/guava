@@ -171,7 +171,6 @@
         }
 
         function calculateRowsAndCols() {
-            // 这里可以根据需要调整比例
             const aspectRatio = canvas.height / canvas.width;
             COLS = Math.max(8, Math.floor(canvas.width / 30));
             ROWS = Math.floor(COLS * aspectRatio);
@@ -274,7 +273,7 @@
                     if (currentPiece[i][j]) {
                         const newX = currentX + j;
                         const newY = currentY + i;
-                        if (newX < 0 || newX > COLS - 1 || newY >= ROWS || (newY >= 0 && board[newY][newX])) {
+                        if (newX < 0 || newX >= COLS || newY >= ROWS || (newY >= 0 && board[newY][newX])) {
                             return true;
                         }
                     }
@@ -352,7 +351,6 @@
             const tempPiece = currentPiece;
             currentPiece = rotatedPiece;
             if (collision()) {
-                // 尝试左移或右移
                 let newX = currentX;
                 if (newX > 0) {
                     currentX--;
@@ -378,7 +376,6 @@
         function gameOver() {
             clearInterval(intervalId);
             alert('游戏结束！得分: ' + score);
-            // 重置游戏
             initializeBoard();
             score = 0;
             level = 1;
@@ -442,4 +439,3 @@
 </body>
 
 </html>
-    
