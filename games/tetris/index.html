@@ -35,7 +35,8 @@
             background-image: linear-gradient(to right, rgb(255, 236, 210) 0%, rgb(252, 182, 159) 100%);
             margin: 10px;
             box-sizing: border-box;
-            min-height: 0; /* 防止flex布局溢出 */
+            min-height: 0;
+            /* 防止flex布局溢出 */
         }
 
         .game {
@@ -47,8 +48,10 @@
             border-radius: 4px;
             overflow: hidden;
             box-sizing: border-box;
-            min-width: 0; /* 防止flex布局溢出 */
-            padding: 0; /* 移除内边距 */
+            min-width: 0;
+            /* 防止flex布局溢出 */
+            padding: 0;
+            /* 移除内边距 */
         }
 
         .game #gameCanvas {
@@ -117,13 +120,15 @@
             background-image: linear-gradient(to right, rgb(255, 236, 210) 0%, rgb(252, 182, 159) 100%);
             margin: 10px;
             box-sizing: border-box;
-            min-height: 0; /* 防止flex布局溢出 */
+            min-height: 0;
+            /* 防止flex布局溢出 */
         }
 
         .control-buttons {
             display: flex;
             flex-direction: column;
-            min-width: 100px; /* 设置最小宽度 */
+            min-width: 100px;
+            /* 设置最小宽度 */
         }
 
         .control-buttons button {
@@ -135,7 +140,8 @@
             color: white;
             background-color: #16d9e3;
             border-radius: 8px;
-            min-width: 80px; /* 设置最小宽度 */
+            min-width: 80px;
+            /* 设置最小宽度 */
         }
 
         .control-buttons button.pause {
@@ -147,7 +153,8 @@
             grid-template-columns: repeat(3, 1fr);
             grid-template-rows: repeat(3, 1fr);
             gap: 5px;
-            min-width: 150px; /* 设置最小宽度 */
+            min-width: 150px;
+            /* 设置最小宽度 */
         }
 
         .direction-buttons button:nth-child(1) {
@@ -184,19 +191,23 @@
             color: white;
             background-color: #16d9e3;
             border-radius: 8px;
-            min-width: 40px; /* 设置最小宽度 */
+            min-width: 40px;
+            /* 设置最小宽度 */
         }
 
         @media (min-width: 768px) {
             .screen {
                 flex: 0.8;
             }
+
             .buttons {
                 flex: 0.2;
             }
+
             .game-info {
                 font-size: 24px;
             }
+
             .control-buttons button,
             .direction-buttons button {
                 font-size: 18px;
@@ -210,16 +221,19 @@
                 padding: 5px;
                 margin: 5px;
             }
+
             .buttons {
                 flex: 0.35;
                 padding: 5px 10px;
                 margin: 5px;
             }
+
             .game-info {
                 font-size: 16px;
                 min-width: 80px;
                 padding: 5px;
             }
+
             .control-buttons button,
             .direction-buttons button {
                 font-size: 14px;
@@ -289,27 +303,27 @@
         function setCanvasSize() {
             const gameDivWidth = gameDiv.offsetWidth;
             const gameDivHeight = gameDiv.offsetHeight;
-            
+
             // 计算合适的方块大小，确保是整数
             const blockSize = Math.floor(Math.min(gameDivWidth * 0.95, gameDivHeight * 0.7) / 10);
-            
+
             // 设置画布大小，确保是方块大小的整数倍
             canvas.width = blockSize * 10;
             canvas.height = blockSize * 20;
-            
+
             // 设置预览画布大小
             const previewSize = Math.min(nextPieceCanvas.parentElement.offsetWidth, nextPieceCanvas.parentElement.offsetHeight) * 0.8;
             nextPieceCanvas.width = previewSize;
             nextPieceCanvas.height = previewSize;
-            
+
             calculateRowsAndCols();
             calculateBlockSize();
-            
+
             // 如果游戏没有结束，才初始化游戏板
             if (!isGameOver) {
                 initializeBoard();
             }
-            
+
             // 初始化第一个方块
             if (!currentPiece && !isGameOver) {
                 const randomIndex = Math.floor(Math.random() * SHAPES.length);
@@ -434,33 +448,33 @@
                 nextPiece = SHAPES[randomIndex];
                 nextColor = COLORS[randomIndex];
             }
-            
+
             currentPiece = nextPiece;
             currentColor = nextColor;
             currentX = Math.floor(COLS / 2) - Math.floor(currentPiece[0].length / 2);
             currentY = 0;
-            
+
             // 生成下一个方块
             const randomIndex = Math.floor(Math.random() * SHAPES.length);
             nextPiece = SHAPES[randomIndex];
             nextColor = COLORS[randomIndex];
-            
+
             if (collision()) {
                 gameOver();
             }
-            
+
             drawNextPiece();
         }
 
         function drawNextPiece() {
             if (!nextPiece) return;
-            
+
             nextPieceCtx.clearRect(0, 0, nextPieceCanvas.width, nextPieceCanvas.height);
-            
+
             const blockSize = nextPieceCanvas.width / 4;
             const offsetX = (nextPieceCanvas.width - nextPiece[0].length * blockSize) / 2;
             const offsetY = (nextPieceCanvas.height - nextPiece.length * blockSize) / 2;
-            
+
             for (let i = 0; i < nextPiece.length; i++) {
                 for (let j = 0; j < nextPiece[i].length; j++) {
                     if (nextPiece[i][j]) {
@@ -535,17 +549,17 @@
                     if (currentPiece[i][j]) {
                         const newX = currentX + j;
                         const newY = currentY + i;
-                        
+
                         // 检查是否超出底部边界
                         if (newY >= ROWS) {
                             return true;
                         }
-                        
+
                         // 检查是否超出左右边界
                         if (newX < 0 || newX >= COLS) {
                             return true;
                         }
-                        
+
                         // 检查是否与已有方块碰撞
                         if (newY >= 0 && board[newY] && board[newY][newX]) {
                             return true;
@@ -593,7 +607,7 @@
 
         function moveDown() {
             if (isPaused) return;
-            
+
             currentY++;
             if (collision()) {
                 currentY--;
@@ -743,7 +757,7 @@
         });
 
         // 修改全屏变化事件监听
-        document.addEventListener('fullscreenchange', function() {
+        document.addEventListener('fullscreenchange', function () {
             setCanvasSize();
         });
 
@@ -754,7 +768,7 @@
 
         document.addEventListener('keydown', function (event) {
             if (isPaused || isGameOver || startButton.disabled === false) return;
-            
+
             switch (event.key) {
                 case 'ArrowUp':
                     rotate();
@@ -776,7 +790,7 @@
         });
 
         // 页面加载时设置初始按钮状态
-        window.addEventListener('load', function() {
+        window.addEventListener('load', function () {
             setCanvasSize();
             loadGameState();
             pauseButton.disabled = true;
