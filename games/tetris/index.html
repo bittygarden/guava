@@ -600,7 +600,11 @@
                     level++;
                     levelElement.textContent = `等级: ${level}`;
                     clearInterval(intervalId);
-                    intervalId = setInterval(moveDown, 500 / level);
+                    // 修改速度计算公式，使速度增加更慢
+                    const baseSpeed = 500; // 基础速度（毫秒）
+                    const speedDecrease = 30; // 每级减少的时间（毫秒）
+                    const newSpeed = Math.max(100, baseSpeed - (level - 1) * speedDecrease); // 最小速度为100毫秒
+                    intervalId = setInterval(moveDown, newSpeed);
                 }
             }
         }
@@ -724,7 +728,11 @@
             if (!currentPiece) {
                 newPiece();
             }
-            intervalId = setInterval(moveDown, 500 / level);
+            // 使用相同的速度计算公式
+            const baseSpeed = 500;
+            const speedDecrease = 30;
+            const newSpeed = Math.max(100, baseSpeed - (level - 1) * speedDecrease);
+            intervalId = setInterval(moveDown, newSpeed);
         }
 
         startButton.addEventListener('click', startGame);
