@@ -265,7 +265,7 @@
         let ball = {
             x: canvas.width / 2,
             // 初始时将小球放在挡板上，更新球的 y 坐标以适应新的半径
-            y: canvas.height - paddle.height - 20, 
+            y: canvas.height - paddle.height - 20,
             radius: 20, // 修改球的半径
             dx: 0, // 初始水平速度为 0
             dy: 0  // 初始垂直速度为 0
@@ -335,7 +335,7 @@
                             bricks[c][r].x = brickX;
                             bricks[c][r].y = brickY;
                             ctx.beginPath();
-                            ctx.rect(brickX, brickY, brickWidth, brickHeight); 
+                            ctx.rect(brickX, brickY, brickWidth, brickHeight);
                             ctx.fillStyle = bricks[c][r].color;
                             ctx.fill();
                             ctx.closePath();
@@ -385,8 +385,8 @@
                 // 初始化方块
                 initBricks();
                 // 重置小球速度
-                ball.dx = 4;
-                ball.dy = -4;
+                ball.dx = 6;
+                ball.dy = -6;
                 startButton.disabled = true;
                 pauseButton.disabled = false;
                 requestAnimationFrame(draw);
@@ -569,13 +569,13 @@
                             if (b.status === 1) {
                                 if (ball.x > b.x && ball.x < b.x + brickWidth && ball.y > b.y && ball.y < b.y + brickHeight) {
                                     if (ball.dy < 0) {
-                                        ball.dy = ball.dy - 1;
+                                        ball.dy = ball.dy - 0.2;
                                     }
                                     if (ball.dy > 0) {
-                                        ball.dy = ball.dy + 1;
+                                        ball.dy = ball.dy + 0.2;
                                     }
                                     ball.dy = -ball.dy;
-                                    ball.dx = ball.dx + 1;
+                                    ball.dx = ball.dx + 0.2;
 
                                     b.status = 0;
                                     score++;
@@ -622,8 +622,8 @@
                 // 确保每次开始都重新初始化方块
                 initBricks();
                 // 重置小球速度
-                ball.dx = 3;
-                ball.dy = -3;
+                ball.dx = 12 + level;
+                ball.dy = -12 + level;
                 startButton.disabled = true;
                 pauseButton.disabled = false;
                 // 启动动画循环
@@ -659,11 +659,11 @@
             }
             if (ball.y + ball.dy < ball.radius) {
                 ball.dy = -ball.dy;
-            } 
+            }
             // 检测球与滑板的碰撞
-            else if (ball.y + ball.dy > canvas.height - paddle.height - ball.radius && 
-                     ball.x > paddle.x && 
-                     ball.x < paddle.x + paddle.width) {
+            else if (ball.y + ball.dy > canvas.height - paddle.height - ball.radius &&
+                ball.x > paddle.x &&
+                ball.x < paddle.x + paddle.width) {
                 // 计算球撞击滑板的位置，范围从 -1 到 1
                 const hitPosition = (ball.x - (paddle.x + paddle.width / 2)) / (paddle.width / 2);
                 // 定义最大水平速度
