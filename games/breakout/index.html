@@ -74,8 +74,9 @@
             flex: 0.3;
             display: flex;
             flex-direction: column;
+            row-gap: 5%;
             align-items: center;
-            justify-content: space-around;
+            justify-content: center;
             background-color: white;
             border-left: 4px solid #fdc4ac;
             border-radius: 4px;
@@ -83,6 +84,77 @@
             box-sizing: border-box;
             font-size: 20px;
             min-width: 120px;
+        }
+
+        .gameInfoDiv {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            border: 1px solid #fdc4ac;
+            width: 90%;
+            gap: 2px;
+        }
+
+        .gameInfoDiv .label_1 {
+            display: block;
+            text-align: center;
+            width: 100%;
+            border-bottom: 1px solid #fdc4ac;
+            background-color: #fdc4ac;
+        }
+
+        .gameInfoDiv .label_2 {
+            display: block;
+            text-align: center;
+            width: 100%;
+        }
+
+        .gameInfoDivThree {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            border: 1px solid #fdc4ac;
+            width: 90%;
+        }
+
+        .gameInfoDivThree .label_1 {
+            grid-column-start: 1;
+            grid-column-end: 3;
+            display: block;
+            text-align: center;
+            width: 100%;
+            border-bottom: 1px solid #fdc4ac;
+            background-color: #fdc4ac;
+        }
+
+        .gameInfoDivThree .label_2_1 {
+            display: block;
+            text-align: center;
+            width: 100%;
+            border-right: 1px solid #fdc4ac;
+        }
+        
+        .gameInfoDivThree .label_2_2 {
+            display: block;
+            text-align: center;
+            font-size: 0.8em;
+            width: 100%;
+        }
+
+        .gameInfoDivThree .label_3_1 {
+            display: block;
+            text-align: center;
+            width: 100%;
+            border-right: 1px solid #fdc4ac;
+            border-top: 1px solid #fdc4ac;
+        }
+      
+        .gameInfoDivThree .label_3__2 {
+            display: block;
+            text-align: center;
+            width: 100%;
+            font-size: 0.8em;
+            border-top: 1px solid #fdc4ac;
         }
 
         .next-piece {
@@ -228,8 +300,21 @@
             <canvas id="gameCanvas"></canvas>
         </div>
         <div class="game-info">
-            <div id="score">得分: 0</div>
-            <div id="level">关卡: 1</div>
+            <div class="gameInfoDiv">
+                <label class="label_1">得分</label>
+                <label id="score" class="label_2">0</label>
+            </div>
+            <div class="gameInfoDiv">
+                <label class="label_1">关卡</label>
+                <label id="level" class="label_2">1</label>
+            </div>
+            <div class="gameInfoDivThree">
+                <label class="label_1">速度</label>
+                <label id="" class="label_2_1">X</label>
+                <label id="speedX" class="label_2_2">0.0</label>
+                <label id="" class="label_3_1">Y</label>
+                <label id="speedY" class="label_3__2">0.0</label>
+            </div>
         </div>
     </div>
     <div class="buttons">
@@ -586,7 +671,7 @@
                                     b.status = 0;
                                     score++;
 
-                                    document.getElementById('score').textContent = `得分: ${score}`;
+                                    document.getElementById('score').textContent = `${score}`;
                                     // 检查是否所有方块都被击碎
                                     if (isAllBricksDestroyed()) {
                                         randomColor = `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`;
@@ -609,7 +694,7 @@
                                         startButton.disabled = false;
                                         pauseButton.disabled = true;
                                         // 确保更新关卡数显示
-                                        document.getElementById('level').textContent = `关卡: ${level}`;
+                                        document.getElementById('level').textContent = `${level}`;
                                     }
                                 }
                             }
@@ -626,9 +711,9 @@
                 isWaitingForStart = false;
                 if (level === 1) {
                     score = 0; // 仅在第一关重置得分
-                    document.getElementById('score').textContent = `得分: ${score}`;
+                    document.getElementById('score').textContent = `${score}`;
                 }
-                document.getElementById('level').textContent = `关卡: ${level}`;
+                document.getElementById('level').textContent = `${level}`;
                 // 初始化方块
                 initBricks();
                 // 重置小球速度
@@ -662,6 +747,9 @@
             drawBall();
             drawPaddle();
             collisionDetection();
+
+            document.getElementById('speedX').textContent = `${ball.dx.toFixed(1)}`;
+            document.getElementById('speedY').textContent = `${ball.dy.toFixed(1)}`;
 
             // 小球碰撞边界检测
             if (ball.x + ball.dx > canvas.width - ball.radius || ball.x + ball.dx < ball.radius) {
