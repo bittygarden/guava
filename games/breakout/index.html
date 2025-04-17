@@ -567,15 +567,36 @@
                         if (bricks[c][r]) {
                             const b = bricks[c][r];
                             if (b.status === 1) {
-                                if (ball.x > b.x && ball.x < b.x + brickWidth && ball.y > b.y && ball.y < b.y + brickHeight) {
-                                    if (ball.dy < 0) {
-                                        ball.dy = ball.dy - 0.2;
+                                // 计算小球边缘的坐标
+                                const ballLeft = ball.x - ball.radius;
+                                const ballRight = ball.x + ball.radius;
+                                const ballTop = ball.y - ball.radius;
+                                const ballBottom = ball.y + ball.radius;
+
+                                // 检查小球边缘是否与方块碰撞
+                                if (
+                                    ballRight > b.x &&
+                                    ballLeft < b.x + brickWidth &&
+                                    ballBottom > b.y &&
+                                    ballTop < b.y + brickHeight
+                                ) {
+                                    // 确定碰撞方向
+                                    const hitFromTop = ballTop < b.y + brickHeight && ball.y < b.y + brickHeight / 2;
+                                    const hitFromBottom = ballBottom > b.y && ball.y > b.y + brickHeight / 2;
+                                    const hitFromLeft = ballLeft < b.x + brickWidth && ball.x < b.x + brickWidth / 2;
+                                    const hitFromRight = ballRight > b.x && ball.x > b.x + brickWidth / 2;
+
+                                    if (hitFromTop || hitFromBottom) {
+                                        if (ball.dy < 0) {
+                                            ball.dy = ball.dy - 0.2;
+                                        }
+                                        if (ball.dy > 0) {
+                                            ball.dy = ball.dy + 0.2;
+                                        }
+                                        ball.dy = -ball.dy;
+                                    } else if (hitFromLeft || hitFromRight) {
+                                        ball.dx = -ball.dx;
                                     }
-                                    if (ball.dy > 0) {
-                                        ball.dy = ball.dy + 0.2;
-                                    }
-                                    ball.dy = -ball.dy;
-                                    ball.dx = ball.dx + 0.2;
 
                                     b.status = 0;
                                     score++;
