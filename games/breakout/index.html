@@ -272,13 +272,36 @@
         };
 
         let bricks = [];
-        let brickRowCount = 3;
-        const brickWidth = 75;
-        const brickHeight = 20;
+        // 增加初始行数
+        let brickRowCount = 5; 
+        let brickColumnCount = 5; 
         const brickPadding = 10;
-        const brickColumnCount = Math.floor((canvas.width - 2 * brickPadding) / (brickWidth + brickPadding));
-        const brickOffsetLeft = (canvas.width - (brickColumnCount * (brickWidth + brickPadding) - brickPadding)) / 2;
-        const brickOffsetTop = 30;
+        const brickOffsetLeft = 20; 
+        const brickOffsetTop = 20;
+
+        // 动态计算方块宽度和高度
+        function calculateBrickSize() {
+            // 设定方块的最小宽度和高度
+            const minBrickWidth = 20;
+            const minBrickHeight = 15;
+
+            const availableWidth = canvas.width - brickOffsetLeft * 2 - (brickColumnCount - 1) * brickPadding;
+            const availableHeight = canvas.height - brickOffsetTop - 100 - (brickRowCount - 1) * brickPadding;
+
+            // 计算方块宽度
+            let brickWidth = availableWidth / brickColumnCount;
+            // 确保方块宽度不小于最小宽度
+            brickWidth = Math.max(brickWidth, minBrickWidth);
+
+            // 计算方块高度
+            let brickHeight = availableHeight / brickRowCount;
+            // 确保方块高度不小于最小高度
+            brickHeight = Math.max(brickHeight, minBrickHeight);
+
+            return { brickWidth, brickHeight };
+        }
+
+        let { brickWidth, brickHeight } = calculateBrickSize();
 
         // 初始化方块
         function initBricks() {
@@ -291,6 +314,53 @@
                         y: 0,
                         status: 1
                     };
+                }
+            }
+        }
+
+        // 增加难度的函数
+        function increaseDifficulty() {
+            console.log(`Before increase - Level: ${level}, Rows: ${brickRowCount}, Columns: ${brickColumnCount}`);
+
+            // 根据关卡数判断是增加行还是列
+            if (level % 2 === 0) {
+                // 偶数关卡增加列数
+                brickColumnCount++;
+            } else {
+                // 奇数关卡增加行数
+                brickRowCount++;
+            }
+
+            // 重新计算方块尺寸
+            const { brickWidth: newBrickWidth, brickHeight: newBrickHeight } = calculateBrickSize();
+            brickWidth = newBrickWidth;
+            brickHeight = newBrickHeight;
+
+            // 调整小球速度和挡板宽度
+            ball.dx *= 1.2;
+            ball.dy *= 1.2;
+            paddle.width *= 0.95;
+
+            console.log(`After increase - Level: ${level}, Rows: ${brickRowCount}, Columns: ${brickColumnCount}, Brick Width: ${brickWidth}, Brick Height: ${brickHeight}`);
+        }
+
+        // 绘制方块
+        function drawBricks() {
+            for (let c = 0; c < brickColumnCount; c++) {
+                if (bricks[c]) { 
+                    for (let r = 0; r < brickRowCount; r++) {
+                        if (bricks[c][r] && bricks[c][r].status === 1) { 
+                            const brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
+                            const brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
+                            bricks[c][r].x = brickX;
+                            bricks[c][r].y = brickY;
+                            ctx.beginPath();
+                            ctx.rect(brickX, brickY, brickWidth, brickHeight);
+                            ctx.fillStyle = '#0095DD';
+                            ctx.fill();
+                            ctx.closePath();
+                        }
+                    }
                 }
             }
         }
@@ -464,28 +534,26 @@
                                     document.getElementById('score').textContent = `得分: ${score}`;
                                     // 检查是否所有方块都被击碎
                                     if (isAllBricksDestroyed()) {
-                                        level++;
+                                        level++; // 增加关卡数
                                         // 增加难度
                                         increaseDifficulty();
                                         // 重置小球和挡板位置
                                         paddle.x = (canvas.width - paddle.width) / 2;
-                                        // 将小球位置重置到挡板上方
                                         ball.x = canvas.width / 2;
                                         ball.y = canvas.height - paddle.height - ball.radius;
-                                        ball.dx = 0; // 重置水平速度
-                                        ball.dy = 0; // 重置垂直速度
+                                        ball.dx = 0; 
+                                        ball.dy = 0; 
                                         // 初始化下一关方块
                                         initBricks();
-                                        // 绘制下一关界面
-                                        ctx.clearRect(0, 0, canvas.width, canvas.height);
-                                        drawBricks();
-                                        drawBall();
-                                        drawPaddle();
+                                        // 渲染下一关界面
+                                        draw();
                                         // 标记为等待用户点击开始
                                         isWaitingForStart = true; 
                                         isGameStarted = false;
                                         startButton.disabled = false;
                                         pauseButton.disabled = true;
+                                        // 确保更新关卡数显示
+                                        document.getElementById('level').textContent = `关卡: ${level}`;
                                     }
                                 }
                             }
@@ -512,17 +580,6 @@
                 requestAnimationFrame(draw);
             }
         });
-
-        // 增加难度的函数
-        function increaseDifficulty() {
-            // 增加行数，但限制最大行数，避免超出界面
-            brickRowCount = Math.min(brickRowCount + 1, Math.floor((canvas.height - brickOffsetTop - 100) / (brickHeight + brickPadding)));
-            // 适当提高小球速度，增大倍数
-            ball.dx *= 1.2; 
-            ball.dy *= 1.2; 
-            // 可以根据需求添加更多难度增加逻辑，比如减少挡板宽度
-            paddle.width *= 0.95; 
-        }
 
         // 检查是否所有方块都被击碎
         function isAllBricksDestroyed() {
