@@ -255,10 +255,10 @@
 
         // 先定义 paddle 对象
         let paddle = {
-            width: 75,
+            width: canvas.width / 3,
             height: 10,
-            x: (canvas.width - 75) / 2,
-            dx: 50
+            x: (canvas.width - canvas.width / 3) / 2,
+            dx: 70
         };
 
         // 再定义 ball 对象，使用硬编码的半径值计算 y 坐标
@@ -426,12 +426,83 @@
 
         // 全屏按钮点击事件
         fullscreenToggle.addEventListener('click', function () {
-            if (canvas.requestFullscreen) {
-                canvas.requestFullscreen();
-            } else if (canvas.webkitRequestFullscreen) {
-                canvas.webkitRequestFullscreen();
-            } else if (canvas.msRequestFullscreen) {
-                canvas.msRequestFullscreen();
+            if (document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement) {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+                fullscreenToggle.textContent = '全屏';
+            } else {
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                } else if (document.documentElement.webkitRequestFullscreen) {
+                    document.documentElement.webkitRequestFullscreen();
+                } else if (document.documentElement.msRequestFullscreen) {
+                    document.documentElement.msRequestFullscreen();
+                }
+                fullscreenToggle.textContent = '退出全屏';
+            }
+        });
+
+        // 监听全屏状态变化事件
+function reRender() {
+    // 保存方块消除状态
+    const savedBricks = JSON.parse(JSON.stringify(bricks));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // 重新计算方块尺寸
+    const { brickWidth: newBrickWidth, brickHeight: newBrickHeight } = calculateBrickSize();
+    brickWidth = newBrickWidth;
+    brickHeight = newBrickHeight;
+    initBricks();
+    // 恢复方块消除状态
+    for (let c = 0; c < brickColumnCount; c++) {
+        if (bricks[c] && savedBricks[c]) {
+            for (let r = 0; r < brickRowCount; r++) {
+                if (bricks[c][r] && savedBricks[c][r]) {
+                    bricks[c][r].status = savedBricks[c][r].status;
+                }
+            }
+        }
+    }
+    drawInitial();
+}
+
+document.addEventListener('fullscreenchange', function () {
+    reRender();
+    if (!document.fullscreenElement) {
+        fullscreenToggle.textContent = '全屏';
+    }
+});
+
+document.addEventListener('webkitfullscreenchange', function () {
+    reRender();
+    if (!document.webkitFullscreenElement) {
+        fullscreenToggle.textContent = '全屏';
+    }
+});
+
+document.addEventListener('msfullscreenchange', function () {
+    reRender();
+    if (!document.msFullscreenElement) {
+        fullscreenToggle.textContent = '全屏';
+    }
+});
+        document.addEventListener('fullscreenchange', function () {
+            if (!document.fullscreenElement) {
+                fullscreenToggle.textContent = '全屏';
+            }
+        });
+        document.addEventListener('webkitfullscreenchange', function () {
+            if (!document.webkitFullscreenElement) {
+                fullscreenToggle.textContent = '全屏';
+            }
+        });
+        document.addEventListener('msfullscreenchange', function () {
+            if (!document.msFullscreenElement) {
+                fullscreenToggle.textContent = '全屏';
             }
         });
 
