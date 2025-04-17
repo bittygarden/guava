@@ -271,10 +271,14 @@
             dy: 0  // 初始垂直速度为 0
         };
 
+        let randomColor = `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`;
+
         let bricks = [];
+
         // 增加初始行数
         let brickRowCount = 5;
         let brickColumnCount = 5;
+
         const brickPadding = 10;
         const brickOffsetLeft = 20;
         const brickOffsetTop = 20;
@@ -282,8 +286,8 @@
         // 动态计算方块宽度和高度
         function calculateBrickSize() {
             // 设定方块的最小宽度和高度
-            const minBrickWidth = 20;
-            const minBrickHeight = 15;
+            const minBrickWidth = 0.1;
+            const minBrickHeight = 0.1;
 
             const availableWidth = canvas.width - brickOffsetLeft * 2 - (brickColumnCount - 1) * brickPadding;
             const availableHeight = canvas.height - brickOffsetTop - 100 - (brickRowCount - 1) * brickPadding;
@@ -310,7 +314,6 @@
                 bricks[c] = [];
                 for (let r = 0; r < brickRowCount; r++) {
                     // 随机生成颜色
-                    const randomColor = `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`;
                     bricks[c][r] = {
                         x: 0,
                         y: 0,
@@ -332,9 +335,8 @@
                             bricks[c][r].x = brickX;
                             bricks[c][r].y = brickY;
                             ctx.beginPath();
-                            ctx.rect(brickX, brickY, brickWidth, brickHeight);
-                            // 使用存储的随机颜色
-                            ctx.fillStyle = bricks[c][r].color; 
+                            ctx.rect(brickX, brickY, brickWidth, brickHeight); 
+                            ctx.fillStyle = bricks[c][r].color;
                             ctx.fill();
                             ctx.closePath();
                         }
@@ -383,8 +385,8 @@
                 // 初始化方块
                 initBricks();
                 // 重置小球速度
-                ball.dx = 3;
-                ball.dy = -3;
+                ball.dx = 4;
+                ball.dy = -4;
                 startButton.disabled = true;
                 pauseButton.disabled = false;
                 requestAnimationFrame(draw);
@@ -524,7 +526,7 @@
         function drawBall() {
             ctx.beginPath();
             ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
-            ctx.fillStyle = '#0095DD';
+            ctx.fillStyle = '#ff8e0d';
             ctx.fill();
             ctx.closePath();
         }
@@ -533,50 +535,24 @@
         function drawPaddle() {
             ctx.beginPath();
             ctx.rect(paddle.x, canvas.height - paddle.height, paddle.width, paddle.height);
-            ctx.fillStyle = '#0095DD';
+            ctx.fillStyle = '#16d9e3';
             ctx.fill();
             ctx.closePath();
         }
 
-        // 绘制方块
-        function drawBricks() {
-            for (let c = 0; c < brickColumnCount; c++) {
-                // Check if the column exists
-                if (bricks[c]) {
-                    for (let r = 0; r < brickRowCount; r++) {
-                        // Check if the row exists
-                        if (bricks[c][r] && bricks[c][r].status === 1) {
-                            const brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
-                            const brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
-                            bricks[c][r].x = brickX;
-                            bricks[c][r].y = brickY;
-                            ctx.beginPath();
-                            ctx.rect(brickX, brickY, brickWidth, brickHeight);
-                            ctx.fillStyle = '#0095DD';
-                            ctx.fill();
-                            ctx.closePath();
-                        }
-                    }
-                }
-            }
-        }
-
-        // 移除绘制得分函数
-        // function drawScore() {
-        //     ctx.font = '16px Arial';
-        //     ctx.fillStyle = '#0095DD';
-        //     ctx.fillText('得分: ' + score, 8, 20);
-        // }
-
         // 增加难度的函数
         function increaseDifficulty() {
             // 增加小球速度
-            ball.dx *= 1.1; 
-            ball.dy *= 1.1; 
+            ball.dx *= 1.1;
+            ball.dy *= 1.1;
+
             // 增加方块行数
-            if (brickRowCount < 10) { 
-                brickRowCount++;
+            if (brickRowCount > brickColumnCount) {
+                brickColumnCount++
+            } else {
+                brickRowCount++
             }
+
             // 重新计算方块尺寸
             const { brickWidth: newBrickWidth, brickHeight: newBrickHeight } = calculateBrickSize();
             brickWidth = newBrickWidth;
@@ -592,12 +568,22 @@
                             const b = bricks[c][r];
                             if (b.status === 1) {
                                 if (ball.x > b.x && ball.x < b.x + brickWidth && ball.y > b.y && ball.y < b.y + brickHeight) {
+                                    if (ball.dy < 0) {
+                                        ball.dy = ball.dy - 1;
+                                    }
+                                    if (ball.dy > 0) {
+                                        ball.dy = ball.dy + 1;
+                                    }
                                     ball.dy = -ball.dy;
+                                    ball.dx = ball.dx + 1;
+
                                     b.status = 0;
                                     score++;
+
                                     document.getElementById('score').textContent = `得分: ${score}`;
                                     // 检查是否所有方块都被击碎
                                     if (isAllBricksDestroyed()) {
+                                        randomColor = `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`;
                                         level++; // 增加关卡数
                                         // 增加难度
                                         increaseDifficulty();
