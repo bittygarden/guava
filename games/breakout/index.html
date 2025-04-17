@@ -372,27 +372,6 @@
             drawPaddle();
         }
 
-        // 开始按钮点击事件
-        startButton.addEventListener('click', function () {
-            if (!isGameStarted || isWaitingForStart) {
-                isGameStarted = true;
-                isWaitingForStart = false;
-                if (level === 1) {
-                    score = 0; // 仅在第一关重置得分
-                    document.getElementById('score').textContent = `得分: ${score}`;
-                }
-                document.getElementById('level').textContent = `关卡: ${level}`;
-                // 初始化方块
-                initBricks();
-                // 重置小球速度
-                ball.dx = 6;
-                ball.dy = -6;
-                startButton.disabled = true;
-                pauseButton.disabled = false;
-                requestAnimationFrame(draw);
-            }
-        });
-
         // 暂停按钮点击事件
         pauseButton.addEventListener('click', function () {
             isPaused = !isPaused;
@@ -595,6 +574,12 @@
                                         }
                                         ball.dy = -ball.dy;
                                     } else if (hitFromLeft || hitFromRight) {
+                                        if (ball.dx < 0) {
+                                            ball.dx = ball.dx - 0.2;
+                                        }
+                                        if (ball.dx > 0) {
+                                            ball.dx = ball.dx + 0.2;
+                                        }
                                         ball.dx = -ball.dx;
                                     }
 
@@ -639,18 +624,22 @@
             if (!isGameStarted || isWaitingForStart) {
                 isGameStarted = true;
                 isWaitingForStart = false;
+                if (level === 1) {
+                    score = 0; // 仅在第一关重置得分
+                    document.getElementById('score').textContent = `得分: ${score}`;
+                }
                 document.getElementById('level').textContent = `关卡: ${level}`;
-                // 确保每次开始都重新初始化方块
+                // 初始化方块
                 initBricks();
                 // 重置小球速度
-                ball.dx = 12 + level;
-                ball.dy = -12 + level;
+                ball.dx = 6 + level;
+                ball.dy = -6 + level;
                 startButton.disabled = true;
                 pauseButton.disabled = false;
-                // 启动动画循环
                 requestAnimationFrame(draw);
             }
         });
+
 
         // 检查是否所有方块都被击碎
         function isAllBricksDestroyed() {
