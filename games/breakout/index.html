@@ -133,7 +133,7 @@
             width: 100%;
             border-right: 1px solid #fdc4ac;
         }
-        
+
         .gameInfoDivThree .label_2_2 {
             display: block;
             text-align: center;
@@ -148,7 +148,7 @@
             border-right: 1px solid #fdc4ac;
             border-top: 1px solid #fdc4ac;
         }
-      
+
         .gameInfoDivThree .label_3__2 {
             display: block;
             text-align: center;
@@ -338,12 +338,17 @@
         canvas.width = canvas.offsetWidth;
         canvas.height = canvas.offsetHeight;
 
+        const ballWidth = canvas.width / 4;
+        const ballDx = ballWidth / 3;
+
+        const minBallSpeedY = 6;
+
         // 先定义 paddle 对象
         let paddle = {
-            width: canvas.width / 3,
+            width: ballWidth,
             height: 10,
-            x: (canvas.width - canvas.width / 3) / 2,
-            dx: 70
+            x: (canvas.width - ballWidth) / 2,
+            dx: ballDx
         };
 
         // 修改球的半径，这里将半径从 10 增大到 20
