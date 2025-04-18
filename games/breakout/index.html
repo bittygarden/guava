@@ -780,7 +780,7 @@
             else if (ball.y + ball.dy > canvas.height - ball.radius) {
                 ball.dy = -ball.dy;
 
-                ball.dy = -Math.min(Math.abs(ball.dy) - 0.2, minBallSpeedY)
+                ball.dy = -Math.max(Math.abs(ball.dy) - 0.2, minBallSpeedY)
             }
 
             // 移动小球和挡板
