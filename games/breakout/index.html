@@ -448,6 +448,9 @@
         const leftButton = document.getElementById('leftButton');
         const rightButton = document.getElementById('rightButton');
 
+        const maxSpeedX = 10;
+        const maxSpeedY = 25;
+
         // 初始化按钮状态
         pauseButton.disabled = true;
 
@@ -611,10 +614,6 @@
 
         // 增加难度的函数
         function increaseDifficulty() {
-            // 增加小球速度
-            ball.dx *= 1.1;
-            ball.dy *= 1.1;
-
             // 增加方块行数
             if (brickRowCount > brickColumnCount) {
                 brickColumnCount++
@@ -658,17 +657,21 @@
                                     if (hitFromTop || hitFromBottom) {
                                         if (ball.dy < 0) {
                                             ball.dy = ball.dy - 0.2;
+                                            ball.dy = -Math.min(Math.abs(ball.dy), maxSpeedY);
                                         }
                                         if (ball.dy > 0) {
                                             ball.dy = ball.dy + 0.2;
+                                            ball.dy = Math.min(Math.abs(ball.dy), maxSpeedY);
                                         }
                                         ball.dy = -ball.dy;
                                     } else if (hitFromLeft || hitFromRight) {
                                         if (ball.dx < 0) {
                                             ball.dx = ball.dx - 0.2;
+                                            ball.dx = -Math.min(Math.abs(ball.dx), maxSpeedX);
                                         }
                                         if (ball.dx > 0) {
                                             ball.dx = ball.dx + 0.2;
+                                            ball.dx = Math.min(Math.abs(ball.dx), maxSpeedX);
                                         }
                                         ball.dx = -ball.dx;
                                     }
@@ -722,8 +725,8 @@
                 // 初始化方块
                 initBricks();
                 // 重置小球速度
-                ball.dx = 6 + level;
-                ball.dy = -6 - level;
+                ball.dx = Math.min(ball.dx + level, maxSpeedX);
+                ball.dy = -Math.min(6 + level, maxSpeedY);
                 startButton.disabled = true;
                 pauseButton.disabled = false;
                 requestAnimationFrame(draw);
@@ -770,7 +773,7 @@
                 // 计算球撞击滑板的位置，范围从 -1 到 1
                 const hitPosition = (ball.x - (paddle.x + paddle.width / 2)) / (paddle.width / 2);
                 // 定义最大水平速度
-                const maxBounceAngle = 4;
+                const maxBounceAngle = 10;
                 // 根据撞击位置计算新的水平速度
                 ball.dx = hitPosition * maxBounceAngle;
                 // 反转垂直速度
