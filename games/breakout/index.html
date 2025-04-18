@@ -137,7 +137,7 @@
         .gameInfoDivThree .label_2_2 {
             display: block;
             text-align: center;
-            font-size: 0.8em;
+            font-size: 1em;
             width: 100%;
         }
 
@@ -153,7 +153,7 @@
             display: block;
             text-align: center;
             width: 100%;
-            font-size: 0.8em;
+            font-size: 1em;
             border-top: 1px solid #fdc4ac;
         }
 
@@ -779,6 +779,8 @@
             // 新增底部边框碰撞检测
             else if (ball.y + ball.dy > canvas.height - ball.radius) {
                 ball.dy = -ball.dy;
+
+                ball.dy = -Math.min(Math.abs(ball.dy) - 0.2, minBallSpeedY)
             }
 
             // 移动小球和挡板
