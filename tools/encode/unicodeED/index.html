@@ -13,26 +13,26 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="URL 编码 解码-在线">
+    <meta name="description" content="Unicode 编码 解码-在线">
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-    <title>URL 编码 解码-在线</title>
+    <title>Unicode 编码 解码-在线</title>
     <link rel="stylesheet" href="../baseUrl.css">
 </head>
 
 <body>
     <div class="inputDiv">
-        <label>URL：</label>
-        <textarea class="inputText" id="inputText" placeholder="请输入 URL"></textarea>
+        <label>输入：</label>
+        <textarea class="inputText" id="inputText" placeholder="请输入文本"></textarea>
     </div>
 
     <div class="outputDiv">
-        <label>结果：</label>
-        <textarea class="outputText" id="outputText" readonly placeholder="URL 编码/解码将显示在这里"></textarea>
+        <label>结果:</label>
+        <textarea class="outputText" id="outputText" readonly placeholder="Unicode 编码将显示在这里"></textarea>
     </div>
 
     <div>
-        <button id="generateButton">解码</button>
-        <button id="encodeButton">编码</button> <!-- 新增编码按钮 -->
+        <button id="generateButton">编码</button>
+        <button id="decodeButton">解码</button>
         <button id="copyButton">复制</button>
     </div>
 
@@ -40,48 +40,58 @@
         // 获取 DOM 元素
         const inputText = document.getElementById('inputText');
         const generateButton = document.getElementById('generateButton');
-        const encodeButton = document.getElementById('encodeButton'); // 获取新增的编码按钮
         const outputText = document.getElementById('outputText');
-        const copyButton = document.getElementById('copyButton');
+        const decodeButton = document.getElementById('decodeButton');
 
-        // 监听解码按钮点击事件
+        // 监听按钮点击事件
         generateButton.addEventListener('click', function () {
             if (inputText.value === "") {
-                outputText.value = "请输入URL文本";
+                outputText.value = "请输入文本";
                 copyButton.textContent = "复制";
                 return;
             }
             try {
                 // 获取输入框的内容
                 const text = inputText.value;
-                // 进行 URL 解码
-                const urlDecoded = decodeURIComponent(text);
-                // 将 URL 解码结果显示在输出框中
-                outputText.value = urlDecoded;
+                let unicodeEncoded = '';
+                // 遍历每个字符并转换为 Unicode 编码
+                for (let i = 0; i < text.length; i++) {
+                    const codePoint = text.codePointAt(i);
+                    // 将 Unicode 码点转换为十六进制字符串
+                    const hexCode = codePoint.toString(16).padStart(4, '0');
+                    unicodeEncoded += `\\u${hexCode}`;
+                    // 处理代理对
+                    if (codePoint > 0xFFFF) {
+                        i++;
+                    }
+                }
+                // 将 Unicode 编码显示在输出框中
+                outputText.value = unicodeEncoded;
                 copyButton.textContent = "复制";
             } catch (error) {
-                outputText.value = "解码出错：" + error.message;
+                outputText.value = "编码出错：" + error.message;
                 copyButton.textContent = "复制";
             }
         });
 
-        // 监听编码按钮点击事件
-        encodeButton.addEventListener('click', function () {
+        // 监听解码按钮点击事件
+        decodeButton.addEventListener('click', function () {
             if (inputText.value === "") {
-                outputText.value = "请输入URL文本";
+                outputText.value = "请输入文本";
                 copyButton.textContent = "复制";
                 return;
             }
             try {
                 // 获取输入框的内容
                 const text = inputText.value;
-                // 进行 URL 编码
-                const urlEncoded = encodeURIComponent(text);
-                // 将 URL 编码结果显示在输出框中
-                outputText.value = urlEncoded;
+                const decodedText = text.replace(/\\u([0-9A-Fa-f]{4})/g, (match, p1) => {
+                    return String.fromCharCode(parseInt(p1, 16));
+                });
+                // 将解码后的文本显示在输出框中
+                outputText.value = decodedText;
                 copyButton.textContent = "复制";
             } catch (error) {
-                outputText.value = "编码出错：" + error.message;
+                outputText.value = "解码出错：" + error.message;
                 copyButton.textContent = "复制";
             }
         });
@@ -93,7 +103,7 @@
                 navigator.clipboard.writeText(textToCopy)
                     .then(() => {
                         copyButton.textContent = "已复制";
-                        // 设置定时器，3 秒后将按钮文案变回“复制”
+                        // 设置 3 秒后恢复为“复制”
                         setTimeout(() => {
                             copyButton.textContent = "复制";
                         }, 1500);
