@@ -32,6 +32,7 @@
 
     <div>
         <button id="generateButton">解码</button>
+        <button id="encodeButton">编码</button> <!-- 新增编码按钮 -->
         <button id="copyButton">复制</button>
     </div>
 
@@ -39,9 +40,11 @@
         // 获取 DOM 元素
         const inputText = document.getElementById('inputText');
         const generateButton = document.getElementById('generateButton');
+        const encodeButton = document.getElementById('encodeButton'); // 获取新增的编码按钮
         const outputText = document.getElementById('outputText');
+        const copyButton = document.getElementById('copyButton');
 
-        // 监听按钮点击事件
+        // 监听解码按钮点击事件
         generateButton.addEventListener('click', function () {
             if (inputText.value === "") {
                 outputText.value = "请输入URL文本";
@@ -62,6 +65,27 @@
             }
         });
 
+        // 监听编码按钮点击事件
+        encodeButton.addEventListener('click', function () {
+            if (inputText.value === "") {
+                outputText.value = "请输入URL文本";
+                copyButton.textContent = "复制";
+                return;
+            }
+            try {
+                // 获取输入框的内容
+                const text = inputText.value;
+                // 进行 URL 编码
+                const urlEncoded = encodeURIComponent(text);
+                // 将 URL 编码结果显示在输出框中
+                outputText.value = urlEncoded;
+                copyButton.textContent = "复制";
+            } catch (error) {
+                outputText.value = "编码出错：" + error.message;
+                copyButton.textContent = "复制";
+            }
+        });
+
         // 监听复制按钮点击事件
         copyButton.addEventListener('click', function () {
             const textToCopy = outputText.value;
@@ -69,6 +93,10 @@
                 navigator.clipboard.writeText(textToCopy)
                     .then(() => {
                         copyButton.textContent = "已复制";
+                        // 设置定时器，3 秒后将按钮文案变回“复制”
+                        setTimeout(() => {
+                            copyButton.textContent = "复制";
+                        }, 3000);
                     })
                     .catch((error) => {
                         console.error('复制失败:', error);
