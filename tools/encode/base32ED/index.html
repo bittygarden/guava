@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RFTZ7J5H90"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-RFTZ7J5H90');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Base32 编码 解码-在线">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <title>Base32 编码 解码-在线</title>
+    <link rel="stylesheet" href="../baseUrl.css">
+</head>
+
+<body>
+    <div class="inputDiv">
+        <label>输入：</label>
+        <textarea class="inputText" id="inputText" placeholder="请输入文本"></textarea>
+    </div>
+
+    <div class="outputDiv">
+        <label>输出：</label>
+        <textarea class="outputText" id="outputText" readonly placeholder="Base32 编解码结果将显示在这里"></textarea>
+    </div>
+
+    <div>
+        <button id="generateButton">编码</button>
+        <button id="decodeButton">解码</button>
+        <button id="copyButton">复制</button>
+    </div>
+
+    <script>
+        // 获取 DOM 元素
+        const inputText = document.getElementById('inputText');
+        const generateButton = document.getElementById('generateButton');
+        const outputText = document.getElementById('outputText');
+
+        // Base32 编码表
+        const base32Alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+
+        function base32Encode(input) {
+            let output = '';
+            let bits = 0;
+            let value = 0;
+            for (let i = 0; i < input.length; i++) {
+                value = (value << 8) | input.charCodeAt(i);
+                bits += 8;
+                while (bits >= 5) {
+                    output += base32Alphabet[(value >>> (bits - 5)) & 31];
+                    bits -= 5;
+                }
+            }
+            if (bits > 0) {
+                output += base32Alphabet[(value << (5 - bits)) & 31];
+            }
+            // 添加填充
+            while (output.length % 8 !== 0) {
+                output += '=';
+            }
+            return output;
+        }
+
+        // Base32 解码表
+        const base32ReverseAlphabet = {};
+        for (let i = 0; i < base32Alphabet.length; i++) {
+            base32ReverseAlphabet[base32Alphabet[i]] = i;
+        }
+
+        function base32Decode(input) {
+            input = input.replace(/=/g, '').toUpperCase();
+            let output = '';
+            let bits = 0;
+            let value = 0;
+            for (let i = 0; i < input.length; i++) {
+                const char = input[i];
+                if (!(char in base32ReverseAlphabet)) {
+                    throw new Error('无效的 Base32 字符: ' + char);
+                }
+                value = (value << 5) | base32ReverseAlphabet[char];
+                bits += 5;
+                while (bits >= 8) {
+                    output += String.fromCharCode((value >>> (bits - 8)) & 255);
+                    bits -= 8;
+                }
+            }
+            try {
+                // 解码 UTF-8 编码的字符串
+                return decodeURIComponent(
+                    output.split('').map(c => {
+                        const code = c.charCodeAt(0);
+                        return '%' + ('0' + code.toString(16)).slice(-2);
+                    }).join('')
+                );
+            } catch (error) {
+                return output;
+            }
+        }
+
+        // 获取解码按钮
+        const decodeButton = document.getElementById('decodeButton');
+
+        // 监听解码按钮点击事件
+        decodeButton.addEventListener('click', function () {
+            if (inputText.value === "") {
+                outputText.value = "请输入文本";
+                copyButton.textContent = "复制";
+                return;
+            }
+            try {
+                // 获取输入框的内容
+                const text = inputText.value;
+                // 进行 Base32 解码
+                const base32Decoded = base32Decode(text);
+                // 将 Base32 解码结果显示在输出框中
+                outputText.value = base32Decoded;
+                copyButton.textContent = "复制";
+            } catch (error) {
+                outputText.value = "解码出错：" + error.message;
+                copyButton.textContent = "复制";
+            }
+        });
+
+        // 监听按钮点击事件
+        generateButton.addEventListener('click', function () {
+            if (inputText.value === "") {
+                outputText.value = "请输入文本";
+                copyButton.textContent = "复制";
+                return;
+            }
+            try {
+                // 获取输入框的内容
+                const text = inputText.value;
+                // 处理包含非 ASCII 字符的情况
+                const utf8Encoded = encodeURIComponent(text).replace(/%([0-9A-F]{2})/g, (match, p1) => {
+                    return String.fromCharCode(parseInt(p1, 16));
+                });
+                // 进行 Base32 编码
+                const base32Encoded = base32Encode(utf8Encoded);
+                // 将 Base32 编码显示在输出框中
+                outputText.value = base32Encoded;
+                copyButton.textContent = "复制";
+            } catch (error) {
+                outputText.value = "编码出错：" + error.message;
+                copyButton.textContent = "复制";
+            }
+        });
+
+        // 监听复制按钮点击事件
+        copyButton.addEventListener('click', function () {
+            const textToCopy = outputText.value;
+            if (textToCopy) {
+                navigator.clipboard.writeText(textToCopy)
+                    .then(() => {
+                        copyButton.textContent = "已复制";
+                        setTimeout(() => {
+                            copyButton.textContent = "复制";
+                        }, 1500);
+                    })
+                    .catch((error) => {
+                        console.error('复制失败:', error);
+                    });
+            }
+        });
+    </script>
+</body>
+
+</html>

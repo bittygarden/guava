@@ -27,7 +27,7 @@
 
     <div class="outputDiv">
         <label>结果：</label>
-        <textarea class="outputText" id="outputText" readonly placeholder="URL 编码/解码将显示在这里"></textarea>
+        <textarea class="outputText" id="outputText" readonly placeholder="URL 编解码结果将显示在这里"></textarea>
     </div>
 
     <div>
@@ -93,7 +93,6 @@
                 navigator.clipboard.writeText(textToCopy)
                     .then(() => {
                         copyButton.textContent = "已复制";
-                        // 设置定时器，3 秒后将按钮文案变回“复制”
                         setTimeout(() => {
                             copyButton.textContent = "复制";
                         }, 1500);
