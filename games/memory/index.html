@@ -2,21 +2,9 @@
 <html lang="zh-CN">
 
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RFTZ7J5H90"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-
-        gtag('config', 'G-RFTZ7J5H90');
-    </script>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="记忆力测试 在线">
-    <title>记忆力测试 在线</title>
-    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>记忆力测试游戏</title>
     <style>
         body {
             background: linear-gradient(to bottom, #4b0082, #6a0dad, #222);
@@ -152,6 +140,7 @@
         let timeLeft = 60;
         let timerInterval;
         let gameStarted = false;
+        let isShowingCards = false;
 
         function createCards() {
             const cardData = [];
@@ -178,6 +167,9 @@
                 card.dataset.id = data.id;
                 card.dataset.photo = data.photo;
                 card.addEventListener('click', function () {
+                    if (isShowingCards) {
+                        return;
+                    }
                     if (!gameStarted) {
                         startGame();
                     } else {
@@ -192,21 +184,31 @@
         }
 
         function startGame() {
+            if (!isShowingCards) {
+                isShowingCards = true;
+                createCards();
+                timeLeft = 60;
+                timer.textContent = timeLeft + ' 秒';
+                result.textContent = '';
+                flippedCards = [];
+                matchedCards = [];
+                disableCards();
+                showAllCards();
+                restartButton.textContent = '记住了';
+                restartButton.removeEventListener('click', startGame);
+                restartButton.addEventListener('click', startActualGame);
+            }
+        }
+
+        function startActualGame() {
             gameStarted = true;
-            createCards();
-            timeLeft = 60;
-            timer.textContent = timeLeft + ' 秒';
-            result.textContent = '';
-            flippedCards = [];
-            matchedCards = [];
-            disableCards();
-            showAllCards();
-            setTimeout(() => {
-                hideAllCards();
-                enableCards();
-                startTimer();
-            }, 1000);
+            isShowingCards = false;
+            hideAllCards();
+            enableCards();
+            startTimer();
             restartButton.textContent = '重新开始';
+            restartButton.removeEventListener('click', startActualGame);
+            restartButton.addEventListener('click', restartGame);
         }
 
         function startTimer() {
@@ -247,15 +249,21 @@
         }
 
         function showAllCards() {
-            cards.forEach(card => card.classList.add('flipped'));
+            cards.forEach(card => {
+                card.classList.add('flipped');
+            });
         }
 
         function hideAllCards() {
-            cards.forEach(card => card.classList.remove('flipped'));
+            cards.forEach(card => {
+                card.classList.remove('flipped');
+            });
         }
 
         function disableCards() {
-            cards.forEach(card => card.style.pointerEvents = 'none');
+            cards.forEach(card => {
+                card.style.pointerEvents = 'none';
+            });
         }
 
         function enableCards() {
@@ -276,8 +284,9 @@
             gameStarted = false;
         }
 
-        restartButton.addEventListener('click', function () {
+        function restartGame() {
             gameStarted = false;
+            isShowingCards = false;
             clearInterval(timerInterval);
             createCards();
             timeLeft = 60;
@@ -286,9 +295,12 @@
             flippedCards = [];
             matchedCards = [];
             restartButton.textContent = '开始游戏';
-        });
+            restartButton.removeEventListener('click', restartGame);
+            restartButton.addEventListener('click', startGame);
+        }
 
         createCards();
+        restartButton.addEventListener('click', startGame);
     </script>
 </body>
 
