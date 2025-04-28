@@ -13,7 +13,7 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="身份证定位-在线">
+    <meta name="description" content="身份证定位 根据身份证前6位定位到对应的省、市、区县">
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <title>身份证定位-在线</title>
 
@@ -194,6 +194,11 @@
 
         document.getElementById('copyOctal').addEventListener('click', function () {
             areaOutput.select();
+            document.execCommand('copy');
+        });
+
+        document.getElementById('allOutput').addEventListener('click', function () {
+            allOutput.select();
             document.execCommand('copy');
         });
     </script>
