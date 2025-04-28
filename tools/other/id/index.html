@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RFTZ7J5H90"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-RFTZ7J5H90');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="身份证定位-在线">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <title>身份证定位-在线</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-image: linear-gradient(-225deg, #E3FDF5 0%, #FFE6FA 100%);
+        }
+
+        .inputDiv {
+            display: flex;
+            align-items: center;
+            width: 90%;
+            margin: 10px 0;
+        }
+
+        .outputDiv {
+            display: flex;
+            align-items: center;
+            width: 90%;
+            margin: 10px 0;
+        }
+
+        label {
+            min-width: 120px;
+            margin-right: 10px;
+        }
+
+        .inputText {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #94b76c;
+            border-radius: 4px;
+        }
+
+        .inputText:focus,
+        .inputText:hover,
+        .inputText:active {
+            border: 1px solid #57aa7f;
+            outline: 2px solid #57aa7f;
+        }
+
+        .outputText {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #94b76c;
+            border-radius: 4px;
+        }
+
+        .outputText:focus,
+        .outputText:hover,
+        .outputText:active {
+            border: 1px solid #57aa7f;
+            outline: 2px solid #57aa7f;
+        }
+
+        .selectInput {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #94b76c;
+            border-radius: 4px;
+        }
+
+        .selectInput:focus,
+        .selectInput:hover,
+        .selectInput:active {
+            border: 1px solid #57aa7f;
+            outline: 2px solid #57aa7f;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #94b76c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        button:hover {
+            background-color: #57aa7f;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="inputDiv">
+        <label>身份证前六位：</label>
+        <input class="inputText" id="inputText" placeholder="请输入数字">
+    </div>
+
+    <div class="outputDiv">
+        <label>省份：</label>
+        <input class="outputText" id="provinceOutput" readonly placeholder="">
+        <button id="copyBinary">复制</button>
+    </div>
+
+    <div class="outputDiv">
+        <label>城市：</label>
+        <input class="outputText" id="cityOutput" readonly placeholder="">
+        <button id="copyTernary">复制</button>
+    </div>
+
+    <div class="outputDiv">
+        <label>区县：</label>
+        <input class="outputText" id="areaOutput" readonly placeholder="">
+        <button id="copyOctal">复制</button>
+    </div>
+
+    <div class="outputDiv">
+        <label>完整地址：</label>
+        <input class="outputText" id="allOutput" readonly placeholder="">
+        <button id="allOutput">复制</button>
+    </div>
+
+
+    <script src="./pca-code.js"></script>
+    <script>
+        const inputText = document.getElementById('inputText');
+        const provinceOutput = document.getElementById('provinceOutput');
+        const cityOutput = document.getElementById('cityOutput');
+        const areaOutput = document.getElementById('areaOutput');
+        const allOutput = document.getElementById('allOutput');
+
+        inputText.addEventListener('input', function () {
+            const inputValue = this.value;
+            const length = inputValue.length;
+
+            // 重置输出
+            provinceOutput.value = '';
+            cityOutput.value = '';
+            areaOutput.value = '';
+            allOutput.value = '';
+
+            if (length >= 2) {
+                const provinceCode = inputValue.slice(0, 2);
+                const provinceInfo = codeMap[provinceCode];
+                if (provinceInfo) {
+                    provinceOutput.value = provinceInfo.name;
+                }
+            }
+
+            if (length >= 4) {
+                const cityCode = inputValue.slice(0, 4);
+                const cityInfo = codeMap[cityCode];
+                if (cityInfo) {
+                    cityOutput.value = cityInfo.name;
+                }
+            }
+
+            if (length >= 6) {
+                const areaInfo = codeMap[inputValue.slice(0, 6)];
+                if (areaInfo) {
+                    areaOutput.value = areaInfo.name;
+                }
+            }
+
+            allOutput.value = provinceOutput.value + cityOutput.value + areaOutput.value;
+        });
+
+        // 复制功能
+        document.getElementById('copyBinary').addEventListener('click', function () {
+            provinceOutput.select();
+            document.execCommand('copy');
+        });
+
+        document.getElementById('copyTernary').addEventListener('click', function () {
+            cityOutput.select();
+            document.execCommand('copy');
+        });
+
+        document.getElementById('copyOctal').addEventListener('click', function () {
+            areaOutput.select();
+            document.execCommand('copy');
+        });
+    </script>
+</body>
+
+</html>
