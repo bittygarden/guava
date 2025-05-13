@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RFTZ7J5H90"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-RFTZ7J5H90');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="文本编辑-在线">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel='stylesheet'
+        href='https://chinese-fonts-cdn.deno.dev/packages/maple-mono-cn/dist/MapleMono-CN-Regular/result.css' />
+    <title>文本编辑--在线</title>
+    <style>
+        body {
+            /* font-family: Arial, sans-serif; */
+            font-family: 'Maple Mono CN';
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            background-image: linear-gradient(-225deg, #E3FDF5 0%, #FFE6FA 100%);
+        }
+
+        .input-container {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #monaco-editor {
+            flex: 1;
+            border: 1px solid #94b76c;
+            border-radius: 4px;
+            width: 100%;
+            height: 100%;
+        }
+
+        #monaco-editor:focus,
+        #monaco-editor:hover,
+        #monaco-editor:active {
+            border: 1px solid #57aa7f;
+            outline: 2px solid #57aa7f;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #94b76c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 10px auto;
+            /* 使按钮居中 */
+            display: block;
+        }
+
+        button:hover {
+            background-color: #57aa7f;
+        }
+    </style>
+    <script src="https://cdn.staticfile.net/monaco-editor/0.45.0/min/vs/loader.js"></script>
+</head>
+
+<body>
+    <div class="input-container">
+        <div id="monaco-editor"></div>
+    </div>
+    <button id="copyButton">复制</button>
+
+    <script>
+        require.config({ paths: { 'vs': 'https://cdn.staticfile.net/monaco-editor/0.45.0/min/vs' } });
+        require(['vs/editor/editor.main'], function () {
+            const LOCAL_STORAGE_KEY = 'text_editor_input';
+            // 从本地缓存加载数据
+            const savedInput = localStorage.getItem(LOCAL_STORAGE_KEY);
+            const initialText = savedInput || "请输入文本";
+
+            const editor = monaco.editor.create(document.getElementById('monaco-editor'), {
+                value: initialText,
+                language: 'plaintext' // 改为纯文本模式
+            });
+
+            const copyButton = document.getElementById('copyButton');
+
+            copyButton.addEventListener('click', async function () {
+                const input = editor.getValue();
+                if (input === "") {
+                    return;
+                }
+                try {
+                    if ('clipboard' in navigator) {
+                        await navigator.clipboard.writeText(input);
+                    } else {
+                        const textArea = document.createElement('textarea');
+                        textArea.value = input;
+                        textArea.style.position = 'fixed';
+                        textArea.style.opacity = 0;
+                        document.body.appendChild(textArea);
+                        textArea.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(textArea);
+                    }
+                    copyButton.textContent = '已复制';
+                    setTimeout(() => {
+                        copyButton.textContent = '复制';
+                    }, 2000);
+                } catch (error) {
+                    console.error('复制失败:', error);
+                }
+            });
+
+            // 保存数据到本地缓存
+            editor.onDidChangeModelContent(() => {
+                const input = editor.getValue();
+                localStorage.setItem(LOCAL_STORAGE_KEY, input);
+            });
+
+            // 监听窗口缩放事件
+            window.addEventListener('resize', function () {
+                // 重新布局 monaco-editor
+                editor.layout();
+            });
+
+            // 页面加载时触发一次调整
+            window.dispatchEvent(new Event('resize'));
+        });
+    </script>
+</body>
+
+</html>
