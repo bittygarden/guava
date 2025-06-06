@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-RFTZ7J5H90"></script>
@@ -29,19 +30,27 @@
             overflow-x: hidden;
         }
 
+        :not(:root):fullscreen::backdrop {
+            background: url('light.png') no-repeat center center fixed !important;
+            background-size: cover !important;
+        }
+
         /* 统一全屏状态下的背景样式 */
         :-webkit-full-screen body {
             background: url('light.png') no-repeat center center fixed !important;
             background-size: cover !important;
         }
+
         :-moz-full-screen body {
             background: url('light.png') no-repeat center center fixed !important;
             background-size: cover !important;
         }
+
         :-ms-fullscreen body {
             background: url('light.png') no-repeat center center fixed !important;
             background-size: cover !important;
         }
+
         :fullscreen body {
             background: url('light.png') no-repeat center center fixed !important;
             background-size: cover !important;
@@ -53,38 +62,16 @@
             left: 50%;
             transform: translateX(-50%);
             padding: 10px 20px;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: gray;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             display: none;
         }
-        <style>
-            body {
-                background: url('light.png') no-repeat center center fixed;
-                background-size: cover;
-            }
-            :not(:root):fullscreen::backdrop {
-                background: url('light.png') no-repeat center center fixed !important;
-                background-size: cover !important;
-            }
-            /* 其他浏览器的全屏伪类 */
-            :-webkit-full-screen::backdrop {
-                background: url('light.png') no-repeat center center fixed !important;
-                background-size: cover !important;
-            }
-            :-moz-full-screen::backdrop {
-                background: url('light.png') no-repeat center center fixed !important;
-                background-size: cover !important;
-            }
-            :-ms-fullscreen::backdrop {
-                background: url('light.png') no-repeat center center fixed !important;
-                background-size: cover !important;
-            }
-        </style>
     </style>
 </head>
+
 <body>
     <button id="fullscreenButton">全屏</button>
     
@@ -127,6 +114,13 @@
             }
         }
 
+        // 监听全屏状态变化事件
+        document.addEventListener('fullscreenchange', () => {
+            if (!document.fullscreenElement) {
+                fullscreenButton.textContent = '全屏';
+            }
+        });
+
         // 鼠标移动事件
         body.addEventListener('mousemove', (e) => {
             if (document.fullscreenElement && e.clientY > window.innerHeight / 2) {
@@ -147,4 +141,5 @@
         };
     </script>
 </body>
+
 </html>
