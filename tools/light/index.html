@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-RFTZ7J5H90"></script>
@@ -8,7 +7,6 @@
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
-
         gtag('config', 'G-RFTZ7J5H90');
     </script>
     <meta charset="UTF-8">
@@ -20,27 +18,133 @@
         /* 全局样式 */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #ffffff;
+            background: url('light.png') no-repeat center center fixed;
+            background-size: cover;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            /* 消除水平滚动条 */
             overflow-x: hidden;
         }
 
-        /* 容器样式 */
-        .container {
-            background-image: "light.png";
+        /* 统一全屏状态下的背景样式 */
+        :-webkit-full-screen body {
+            background: url('light.png') no-repeat center center fixed !important;
+            background-size: cover !important;
         }
+        :-moz-full-screen body {
+            background: url('light.png') no-repeat center center fixed !important;
+            background-size: cover !important;
+        }
+        :-ms-fullscreen body {
+            background: url('light.png') no-repeat center center fixed !important;
+            background-size: cover !important;
+        }
+        :fullscreen body {
+            background: url('light.png') no-repeat center center fixed !important;
+            background-size: cover !important;
+        }
+
+        #fullscreenButton {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: none;
+        }
+        <style>
+            body {
+                background: url('light.png') no-repeat center center fixed;
+                background-size: cover;
+            }
+            :not(:root):fullscreen::backdrop {
+                background: url('light.png') no-repeat center center fixed !important;
+                background-size: cover !important;
+            }
+            /* 其他浏览器的全屏伪类 */
+            :-webkit-full-screen::backdrop {
+                background: url('light.png') no-repeat center center fixed !important;
+                background-size: cover !important;
+            }
+            :-moz-full-screen::backdrop {
+                background: url('light.png') no-repeat center center fixed !important;
+                background-size: cover !important;
+            }
+            :-ms-fullscreen::backdrop {
+                background: url('light.png') no-repeat center center fixed !important;
+                background-size: cover !important;
+            }
+        </style>
     </style>
 </head>
-
 <body>
-    <div class="container">
-    </div>
-</body>
+    <button id="fullscreenButton">全屏</button>
+    
+    <script>
+        const fullscreenButton = document.getElementById('fullscreenButton');
+        const body = document.body;
 
+        // 进入全屏
+        function openFullscreen() {
+            if (body.requestFullscreen) {
+                body.requestFullscreen();
+            } else if (body.webkitRequestFullscreen) {
+                body.webkitRequestFullscreen();
+            } else if (body.msRequestFullscreen) {
+                body.msRequestFullscreen();
+            }
+            fullscreenButton.style.display = 'none';
+            fullscreenButton.textContent = '退出全屏';
+        }
+
+        // 退出全屏
+        function closeFullscreen() {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+            fullscreenButton.style.display = 'block';
+            fullscreenButton.textContent = '全屏';
+        }
+
+        // 切换全屏状态
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                openFullscreen();
+            } else {
+                closeFullscreen();
+            }
+        }
+
+        // 鼠标移动事件
+        body.addEventListener('mousemove', (e) => {
+            if (document.fullscreenElement && e.clientY > window.innerHeight / 2) {
+                fullscreenButton.style.display = 'block';
+            } else if (document.fullscreenElement) {
+                fullscreenButton.style.display = 'none';
+            } else {
+                fullscreenButton.style.display = 'block';
+            }
+        });
+
+        // 点击按钮事件
+        fullscreenButton.addEventListener('click', toggleFullscreen);
+
+        // 页面加载完成后显示按钮
+        window.onload = function () {
+            fullscreenButton.style.display = 'block';
+        };
+    </script>
+</body>
 </html>
