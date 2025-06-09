@@ -130,10 +130,12 @@
     </div>
 
     <div>
-        <button id="compressButton">压缩</button>
         <button id="formatButton">格式化</button>
+        <button id="compressButton">压缩</button>
         <button id="generateButton">转义</button>
-        <button id="copyButton">复制</button>
+        <button id="unescapeButton">去除转义</button>
+        <button id="copyInputButton">复制输入</button>
+        <button id="copyButton">复制输出</button>
     </div>
 
     <script>
@@ -144,6 +146,8 @@
         const formatButton = document.getElementById('formatButton');
         const outputText = document.getElementById('outputText');
         const copyButton = document.getElementById('copyButton');
+        const unescapeButton = document.getElementById('unescapeButton'); // 新增获取按钮元素
+        const copyInputButton = document.getElementById('copyInputButton'); // 新增获取按钮元素
 
         // 检查 JSON 格式是否正确的函数
         function isValidJSON(str) {
@@ -174,7 +178,6 @@
                     }
                 }
             }
-            copyButton.textContent = '复制';
         });
 
         // 压缩按钮点击事件
@@ -198,7 +201,6 @@
                     }
                 }
             }
-            copyButton.textContent = '复制';
         });
 
         // 格式化按钮点击事件
@@ -222,7 +224,6 @@
                     }
                 }
             }
-            copyButton.textContent = '复制';
         });
 
         // 复制按钮点击事件
@@ -231,11 +232,49 @@
             if (output === "") {
                 return;
             }
-            try {
-                await navigator.clipboard.writeText(output);
+
+            const originalText = copyButton.textContent;
+            navigator.clipboard.writeText(output).then(() => {
                 copyButton.textContent = '已复制';
-            } catch (error) {
-                // 可根据需要添加失败处理逻辑
+                setTimeout(() => {
+                    copyButton.textContent = originalText;
+                }, 2000); // 2 秒后恢复原文案
+            }).catch((error) => {
+                outputText.value = "复制输入框内容失败" + error.message;
+            });
+
+        });
+
+        // 复制输入内容按钮点击事件
+        copyInputButton.addEventListener('click', function () {
+            const input = inputText.value;
+            if (input === "") {
+                return
+            }
+
+            const originalText = copyInputButton.textContent;
+            navigator.clipboard.writeText(input).then(() => {
+                copyInputButton.textContent = '已复制';
+                setTimeout(() => {
+                    copyInputButton.textContent = originalText;
+                }, 2000); // 2 秒后恢复原文案
+            }).catch((error) => {
+                outputText.value = "复制输入框内容失败" + error.message;
+            });
+        });
+
+        // 去除转义按钮点击事件
+        unescapeButton.addEventListener('click', function () {
+            let input = inputText.value;
+            if (input === "") {
+                outputText.value = "请输入 JSON 文本";
+            } else {
+                try {
+                    const unescaped = JSON.parse(`"${input}"`);
+                    outputText.value = unescaped;
+                } catch (error) {
+                    outputText.value = "去除转义出错：" + error.message;
+                }
             }
         });
     </script>
