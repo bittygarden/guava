@@ -103,10 +103,8 @@
     <script>
         require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.52.2/min/vs' } });
         require(['vs/editor/editor.main'], function () {
-            const LOCAL_STORAGE_KEY = 'json_editor_input';
             // 从本地缓存加载数据
-            const savedInput = localStorage.getItem(LOCAL_STORAGE_KEY);
-            const initialJson = savedInput || JSON.stringify({
+            const initialJson = JSON.stringify({
                 "name": "张三",
                 "age": 18,
                 "message": "你好啊！",
@@ -136,8 +134,6 @@
 
             function updateOutput() {
                 const input = editor.getValue();
-                // 保存数据到本地缓存
-                localStorage.setItem(LOCAL_STORAGE_KEY, input);
                 if (input === "") {
                     outputText.textContent = "请输入 JSON 文本";
                 } else {
