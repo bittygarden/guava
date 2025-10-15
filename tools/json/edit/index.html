@@ -138,6 +138,7 @@
                         const json = JSON.parse(input);
                         const formatted = JSON.stringify(json, null, 2);
                         outputEditor.setValue(formatted);
+                        outputEditor.getAction('editor.foldLevel4').run();
                     }
                 }
             }
