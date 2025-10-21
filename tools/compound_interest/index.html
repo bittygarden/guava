@@ -298,7 +298,7 @@
                 <tr>
                     <th>时间（年/天）</th>
                     <th>倍数</th>
-                    <th>金额(万元)</th>
+                    <th>金额（万元）</th>
                 </tr>
             </thead>
             <tbody id="resultBody">
@@ -527,11 +527,7 @@
                             intersect: false,
                             enabled: true,
                             displayColors: false,
-                            callbacks: {
-                                label: function(context) {
-                                    return `金额: ${context.parsed.y.toFixed(2)}万元`;
-                                }
-                            }
+                            callbacks: {}
                         }
                     },
                     scales: {
@@ -539,7 +535,8 @@
                             type: 'linear', // 使用线性轴而不是类别轴
                             position: 'bottom',
                             title: {
-                                display: false
+                                display: true,
+                                text: '时间（年）'
                             },
                             grid: {
                                 color: 'rgba(0, 0, 0, 0.05)'
@@ -589,104 +586,7 @@
                             chart.canvas.style.cursor = 'default';
                         }
                     },
-                    // 使用Chart.js的插件方式实现交叉线
-                    plugins: [{
-                        id: 'crosshairPlugin',
-                        afterInit: function(chart) {
-                            // 创建自定义光标变量
-                            chart.crosshair = {
-                                x: null,
-                                y: null,
-                                visible: false
-                            };
-                            
-                            // 添加鼠标移动事件监听器
-                            chart.canvas.addEventListener('mousemove', function(e) {
-                                const rect = chart.canvas.getBoundingClientRect();
-                                const x = e.clientX - rect.left;
-                                const y = e.clientY - rect.top;
-                                
-                                // 获取鼠标位置对应的数据集索引
-                                const datasets = chart.data.datasets;
-                                let closestPoint = null;
-                                let minDistance = Infinity;
-                                
-                                // 遍历所有数据集查找最近的点
-                                for (let i = 0; i < datasets.length; i++) {
-                                    const meta = chart.getDatasetMeta(i);
-                                    if (meta.hidden) continue;
-                                    
-                                    for (let j = 0; j < meta.data.length; j++) {
-                                        const point = meta.data[j];
-                                        const distance = Math.sqrt(
-                                            Math.pow(x - point.x, 2) + 
-                                            Math.pow(y - point.y, 2)
-                                        );
-                                        
-                                        if (distance < minDistance && distance < 50) { // 50像素范围内
-                                            minDistance = distance;
-                                            closestPoint = {
-                                                x: point.x,
-                                                y: point.y,
-                                                datasetIndex: i,
-                                                index: j
-                                            };
-                                        }
-                                    }
-                                }
-                                
-                                // 更新交叉线位置
-                                if (closestPoint) {
-                                    chart.crosshair.x = closestPoint.x;
-                                    chart.crosshair.y = closestPoint.y;
-                                    chart.crosshair.visible = true;
-                                    chart.canvas.style.cursor = 'pointer';
-                                } else {
-                                    chart.crosshair.visible = false;
-                                    chart.canvas.style.cursor = 'default';
-                                }
-                                
-                                // 触发重绘
-                                chart.draw();
-                            });
-                            
-                            // 鼠标离开时隐藏交叉线
-                            chart.canvas.addEventListener('mouseout', function() {
-                                chart.crosshair.visible = false;
-                                chart.canvas.style.cursor = 'default';
-                                chart.draw();
-                            });
-                        },
-                        
-                        afterDraw: function(chart) {
-                            if (chart.crosshair && chart.crosshair.visible) {
-                                const ctx = chart.ctx;
-                                const x = chart.crosshair.x;
-                                const y = chart.crosshair.y;
-                                const xAxis = chart.scales.x;
-                                const yAxis = chart.scales.y;
-                                
-                                // 绘制垂直线到x轴
-                                ctx.save();
-                                ctx.beginPath();
-                                ctx.moveTo(x, y);
-                                ctx.lineTo(x, yAxis.bottom);
-                                ctx.strokeStyle = 'rgba(0, 0, 0, 0.6)';
-                                ctx.lineWidth = 1;
-                                ctx.setLineDash([5, 5]); // 虚线样式更明显
-                                ctx.stroke();
-                                
-                                // 绘制水平线到y轴
-                                ctx.beginPath();
-                                ctx.moveTo(x, y);
-                                ctx.lineTo(xAxis.left, y);
-                                ctx.strokeStyle = 'rgba(0, 0, 0, 0.6)';
-                                ctx.lineWidth = 1;
-                                ctx.stroke();
-                                ctx.restore();
-                            }
-                        }
-                    }]
+                    plugins: []
                 }
             });
         }
