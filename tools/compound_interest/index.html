@@ -380,6 +380,11 @@
             const chartData = [];    // 金额数据
             const chartXValues = []; // 实际的年数值
             
+            // 确保包含x=0的起始点
+            chartLabels.push('0年');
+            chartData.push(1); // 初始金额1万元
+            chartXValues.push(0); // x=0
+            
             results.forEach((result, index) => {
                 const row = document.createElement('tr');
                 
@@ -395,8 +400,8 @@
                 
                 resultBody.appendChild(row);
                 
-                // 收集图表数据（只收集数值类型的金额数据）
-                if (typeof result.amount === 'number') {
+                // 收集图表数据（只收集数值类型的金额数据，且跳过0天的重复数据）
+                if (typeof result.amount === 'number' && result.day > 0) {
                     chartLabels.push(years + '年');
                     chartData.push(result.amount / 10000); // 转换为万元
                     chartXValues.push(parseFloat(years)); // 保存实际的年数值
@@ -463,6 +468,11 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            bottom: 20 // 增加底部内边距
+                        }
+                    },
                     plugins: {
                         legend: {
                             display: true,
@@ -488,8 +498,7 @@
                             type: 'linear', // 使用线性轴而不是类别轴
                             position: 'bottom',
                             title: {
-                                display: true,
-                                text: '时间（年）'
+                                display: false
                             },
                             grid: {
                                 color: 'rgba(0, 0, 0, 0.05)'
@@ -502,9 +511,9 @@
                                     return Math.round(value) + '年';
                                 }
                             },
-                            // 设置x轴范围
+                            // 设置x轴范围，确保从0开始且没有多余空白
                             min: 0,
-                            max: Math.max(...xValues) * 1.05 // 稍微扩大最大值范围
+                            max: Math.max(...xValues) // 使用实际最大值，不再额外扩大范围
                         },
                         y: {
                             beginAtZero: true,
