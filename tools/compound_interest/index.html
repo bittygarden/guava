@@ -461,8 +461,9 @@
                         fill: true,
                         tension: 0.2,
                         pointBackgroundColor: '#94b76c',
-                            pointRadius: 1,
-                            pointHoverRadius: 3
+                        pointRadius: 1,
+                        pointHoverRadius: 8,
+                        pointHoverBackgroundColor: '#94b76c'
                     }]
                 },
                 options: {
@@ -479,16 +480,13 @@
                             position: 'top'
                         },
                         tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            enabled: true,
+                            displayColors: false,
                             callbacks: {
                                 label: function(context) {
                                     return `金额: ${context.parsed.y.toFixed(2)}万元`;
-                                },
-                                title: function(tooltipItems) {
-                                    // 查找最接近的标签
-                                    const xValue = tooltipItems[0].parsed.x;
-                                    const closestIndex = xValues.reduce((closest, value, index) => 
-                                        Math.abs(value - xValue) < Math.abs(xValues[closest] - xValue) ? index : closest, 0);
-                                    return labels[closestIndex];
                                 }
                             }
                         }
@@ -524,6 +522,63 @@
                             grid: {
                                 color: 'rgba(0, 0, 0, 0.05)'
                             }
+                        }
+                    },
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                        axis: 'x'
+                    },
+                    elements: {
+                        point: {
+                            radius: 4,
+                            hoverRadius: 8
+                        },
+                        line: {
+                            tension: 0.2
+                        }
+                    },
+                    onHover: function(event, activeElements) {
+                        const chart = this;
+                        if (activeElements && activeElements.length > 0) {
+                            chart.canvas.style.cursor = 'pointer';
+                        } else {
+                            chart.canvas.style.cursor = 'default';
+                        }
+                    },
+                    // 自定义绘制交叉线
+                    afterDraw: function(chart) {
+                        const ctx = chart.ctx;
+                        const points = chart.getElementsAtEventForMode(
+                            chart.lastEvent,
+                            'index',
+                            { intersect: false },
+                            false
+                        );
+                        
+                        if (points && points.length > 0) {
+                            const point = points[0];
+                            const meta = chart.getDatasetMeta(point.datasetIndex);
+                            const xScale = meta.controller.getScaleForId(meta.xAxisID);
+                            const yScale = meta.controller.getScaleForId(meta.yAxisID);
+                            
+                            // 绘制垂直线到x轴
+                            ctx.save();
+                            ctx.beginPath();
+                            ctx.moveTo(point.x, point.y);
+                            ctx.lineTo(point.x, yScale.getPixelForValue(0));
+                            ctx.strokeStyle = 'rgba(0, 0, 0, 0.2)';
+                            ctx.lineWidth = 1;
+                            ctx.stroke();
+                            
+                            // 绘制水平线到y轴
+                            ctx.beginPath();
+                            ctx.moveTo(point.x, point.y);
+                            ctx.lineTo(xScale.getPixelForValue(0), point.y);
+                            ctx.strokeStyle = 'rgba(0, 0, 0, 0.2)';
+                            ctx.lineWidth = 1;
+                            ctx.stroke();
+                            ctx.restore();
                         }
                     }
                 }
