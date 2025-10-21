@@ -497,9 +497,9 @@
                             ticks: {
                                 // 限制x轴显示的标签数量
                                 maxTicksLimit: 10,
-                                // 自定义标签格式
+                                // 自定义标签格式，确保显示整数年份
                                 callback: function(value) {
-                                    return value + '年';
+                                    return Math.round(value) + '年';
                                 }
                             },
                             // 设置x轴范围
