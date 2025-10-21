@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="复利计算器，使用复利计算器，轻松计算您的投资需要多少天才能翻倍。输入年收益率，即可查看从翻倍到翻1000倍的完整时间表。">
+    <title>复利计算器-在线</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <!-- 引入Chart.js库用于绘制折线图 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+    <style>
+        /* 全局样式 */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #ffffff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            /* 消除水平滚动条 */
+            overflow-x: hidden;
+        }
+
+        /* 容器样式 */
+        .container {
+            background-image: linear-gradient(-225deg, #E3FDF5 0%, #FFE6FA 100%);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* 标题样式 */
+        h1 {
+            text-align: center;
+            color: #333333;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        /* 标签样式 */
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #666666;
+            font-size: 16px;
+        }
+
+        /* 输入框样式 */
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #94b76c;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus {
+            border: 1px solid #57aa7f;
+            outline: 2px solid #57aa7f;
+        }
+        
+        /* 错误状态样式 */
+        input.error {
+            border: 2px solid #ff6b6b;
+            animation: shake 0.5s ease-in-out;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* 按钮样式 */
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #94b76c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            margin-bottom: 5px;
+        }
+
+        button:hover {
+            background-color: #57aa7f;
+        }
+
+        /* 表格样式 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+
+        th, td {
+            border: 1px solid #e0e0e0;
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f0f0f0;
+            color: #333333;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        /* 信息框样式 */
+        .info-box {
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 20px;
+            margin-bottom: 30px;
+            color: #666666;
+            font-size: 14px;
+        }
+
+        .info-box p {
+            margin: 8px 0;
+        }
+
+        /* 高亮样式 */
+        .highlight {
+            background-color: #e0f7fa !important;
+            font-weight: 600;
+        }
+
+        /* 小屏幕设备样式 */
+        @media (max-width: 480px) {
+
+            th, td {
+                padding: 10px;
+                font-size: 14px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            label {
+                font-size: 14px;
+            }
+
+            input, button {
+                font-size: 14px;
+            }
+        }
+
+        /* 淡入动画 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 返回首页按钮 */
+        .back-to-home {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #94b76c;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            font-size: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+        }
+
+        .back-to-home:hover {
+            background-color: #57aa7f;
+        }
+        
+        .highlight {
+            background: #fff7e6 !important;
+            font-weight: 600;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 30px;
+            background: #fafafa;
+            border-top: 1px solid #f0f0f0;
+            color: #8c8c8c;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>复利计算器</h1>
+        <label for="interestRate">年收益率 (%)</label>
+        <input type="number" id="interestRate" step="0.01" min="0.01" max="100" placeholder="请输入年收益率，例如：8.50" required>
+        <button onclick="calculateCompoundInterest()">开始计算</button>
+        
+        <div class="info-box">
+            <p><strong>初始金额：</strong>1 万元</p>
+            <p><strong>计算方式：</strong>复利计算【收益再投入】</p>
+            <p><strong>计算目标：</strong>翻倍、翻两倍，直到翻1000倍，每一次翻倍需要的时间</p>
+        </div>
+        
+        <!-- 图表容器 -->
+        <div style="margin: 30px 0; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: none; width: 100%; height: 580px; box-sizing: border-box;" id="chartContainer">
+            <h3 style="margin-bottom: 20px; color: #333;">复利增长趋势图</h3>
+            <div style="height: 500px; overflow: hidden;">
+                <canvas id="compoundInterestChart" style="width: 100%; height: 500px;"></canvas>
+            </div>
+        </div>
+        
+        <table id="resultTable" style="display: none;">
+            <thead>
+                <tr>
+                    <th>时间（年/天）</th>
+                    <th>倍数</th>
+                    <th>金额(万元)</th>
+                </tr>
+            </thead>
+            <tbody id="resultBody">
+            </tbody>
+        </table>
+    </div>
+    
+    <a href="../../index.html" class="back-to-home">🏠</a>
+    
+    <script>
+        let chartInstance = null;
+        
+        function calculateCompoundInterest() {
+            const principal = 10000; // 初始金额
+            const interestRateInput = document.getElementById('interestRate');
+            const interestRate = parseFloat(interestRateInput.value);
+            
+            // 先移除可能存在的错误样式
+            interestRateInput.classList.remove('error');
+            
+            if (isNaN(interestRate) || interestRate <= 0 || interestRate > 100) {
+                // 添加错误样式来高亮输入框
+                interestRateInput.classList.add('error');
+                
+                // 3秒后自动移除错误样式
+                setTimeout(() => {
+                    interestRateInput.classList.remove('error');
+                }, 3000);
+                
+                return;
+            }
+            
+            const dailyRate = interestRate / 100 / 365; // 日收益率
+            const targetMultiples = [];
+            
+            // 生成目标倍数：1倍到1000倍
+            for (let i = 1; i <= 1000; i++) {
+                targetMultiples.push(i);
+            }
+            
+            let currentAmount = principal;
+            let currentDay = 0;
+            let results = [];
+            let currentMultipleIndex = 0;
+            
+            // 添加初始金额（第0天）作为表格的第一行
+            results.push({
+                day: 0,
+                multiple: 1,
+                amount: principal
+            });
+            
+            // 计算每一天的增长，直到达到1000倍
+            // 将天数上限从100000增加到1000000，以适应低收益率的情况
+            while (currentAmount < principal * 1000 && currentDay < 1000000) { // 防止无限循环
+                currentDay++;
+                const previousAmount = currentAmount;
+                currentAmount = currentAmount * (1 + dailyRate);
+                
+                // 检查这一天是否跨越了多个目标倍数
+                let dayResults = [];
+                while (currentMultipleIndex < targetMultiples.length && 
+                       currentAmount >= principal * targetMultiples[currentMultipleIndex]) {
+                    const targetMultiple = targetMultiples[currentMultipleIndex];
+                    
+                    // 如果是第一天就达到的倍数
+                    if (previousAmount >= principal * targetMultiple) {
+                        currentMultipleIndex++;
+                        continue;
+                    }
+                    
+                    // 计算精确的天数（线性插值）
+                    const exactDay = currentDay - 1 + 
+                        (Math.log(targetMultiple) - Math.log(previousAmount / principal)) / 
+                        (Math.log(currentAmount / principal) - Math.log(previousAmount / principal));
+                    
+                    dayResults.push({
+                        multiple: targetMultiple,
+                        amount: principal * targetMultiple,
+                        exactDay: exactDay
+                    });
+                    
+                    currentMultipleIndex++;
+                }
+                
+                // 如果这一天有多个倍数达标，记录最小和最大的倍数和金额
+                if (dayResults.length > 0) {
+                    const minMultiple = dayResults[0].multiple;
+                    const maxMultiple = dayResults[dayResults.length - 1].multiple;
+                    const minAmount = dayResults[0].amount;
+                    const maxAmount = dayResults[dayResults.length - 1].amount;
+                    
+                    results.push({
+                        day: Math.ceil(dayResults[0].exactDay),
+                        multiple: minMultiple === maxMultiple ? minMultiple : `${minMultiple}-${maxMultiple}`,
+                        amount: minAmount === maxAmount ? minAmount : `${formatNumber(minAmount)}-${formatNumber(maxAmount)}`,
+                        exactDay: dayResults[0].exactDay
+                    });
+                }
+            }
+            
+            // 检查是否因为天数限制而停止计算
+            if (currentDay >= 1000000) {
+                // 添加一个提示行
+                results.push({
+                    day: currentDay,
+                    multiple: `计算截止于${currentDay}天`,
+                    amount: formatNumber(currentAmount)
+                });
+            }
+            
+            // 显示结果
+            displayResults(results);
+        }
+        
+        function displayResults(results) {
+            const resultBody = document.getElementById('resultBody');
+            resultBody.innerHTML = '';
+            
+            // 准备图表数据
+            const chartLabels = []; // 用于显示的标签
+            const chartData = [];    // 金额数据
+            const chartXValues = []; // 实际的年数值
+            
+            results.forEach((result, index) => {
+                const row = document.createElement('tr');
+                
+                // 计算年数（天数除以365，保留两位小数）
+                const years = (result.day / 365).toFixed(2);
+                const displayDay = `${years}年（${result.day}天）`;
+                
+                row.innerHTML = `
+                    <td>${displayDay}</td>
+                    <td>${result.multiple}x</td>
+                    <td>${typeof result.amount === 'number' ? formatNumber(result.amount) : result.amount}</td>
+                `;
+                
+                resultBody.appendChild(row);
+                
+                // 收集图表数据（只收集数值类型的金额数据）
+                if (typeof result.amount === 'number') {
+                    chartLabels.push(years + '年');
+                    chartData.push(result.amount / 10000); // 转换为万元
+                    chartXValues.push(parseFloat(years)); // 保存实际的年数值
+                }
+            });
+            
+            // 显示图表
+            renderChart(chartLabels, chartData, chartXValues);
+            document.getElementById('chartContainer').style.display = 'block';
+            
+            // 滚动到折线图区域
+            setTimeout(() => {
+                const chartContainer = document.getElementById('chartContainer');
+                if (chartContainer) {
+                    chartContainer.scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            }, 100); // 小延迟确保DOM已更新
+            
+            document.getElementById('resultTable').style.display = 'table';
+            
+            // 滚动到结果区域
+            document.getElementById('resultTable').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function renderChart(labels, data, xValues) {
+            const ctx = document.getElementById('compoundInterestChart').getContext('2d');
+            
+            // 设置canvas高度为固定的500px，并确保严格限制
+            const canvas = document.getElementById('compoundInterestChart');
+            canvas.height = 500;
+            canvas.style.height = '500px';
+            canvas.style.maxHeight = '500px';
+            canvas.style.display = 'block';
+            
+            // 如果图表实例已存在，先销毁它
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+            
+            // 创建新的图表实例
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels, // 显示的标签
+                    datasets: [{
+                        label: '金额（万元）',
+                        data: data.map((value, index) => ({
+                            x: xValues[index], // 使用实际的年数值
+                            y: value
+                        })),
+                        borderColor: '#94b76c',
+                        backgroundColor: 'rgba(148, 183, 108, 0.1)',
+                        borderWidth: 0.5,
+                        fill: true,
+                        tension: 0.2,
+                        pointBackgroundColor: '#94b76c',
+                            pointRadius: 1,
+                            pointHoverRadius: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `金额: ${context.parsed.y.toFixed(2)}万元`;
+                                },
+                                title: function(tooltipItems) {
+                                    // 查找最接近的标签
+                                    const xValue = tooltipItems[0].parsed.x;
+                                    const closestIndex = xValues.reduce((closest, value, index) => 
+                                        Math.abs(value - xValue) < Math.abs(xValues[closest] - xValue) ? index : closest, 0);
+                                    return labels[closestIndex];
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            type: 'linear', // 使用线性轴而不是类别轴
+                            position: 'bottom',
+                            title: {
+                                display: true,
+                                text: '时间（年）'
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            },
+                            ticks: {
+                                // 限制x轴显示的标签数量
+                                maxTicksLimit: 10,
+                                // 自定义标签格式
+                                callback: function(value) {
+                                    return value + '年';
+                                }
+                            },
+                            // 设置x轴范围
+                            min: 0,
+                            max: Math.max(...xValues) * 1.05 // 稍微扩大最大值范围
+                        },
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: '金额（万元）'
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function formatNumber(num) {
+            // 将金额转换为万元并添加单位
+            const amountInWanYuan = num / 10000;
+            return new Intl.NumberFormat('zh-CN', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(amountInWanYuan) + '万元';
+        }
+    </script>
+</body>
+</html>
