@@ -50,17 +50,42 @@
             color: #666666;
             font-size: 16px;
         }
+        
+        /* 行内标签样式 - 与按钮保持一致的背景色 */
+        .inline-label {
+            display: inline-flex;
+            align-items: center;
+            padding: 12px;
+            color: #666666;
+            border-radius: 8px;
+            margin-right: 10px;
+            white-space: nowrap;
+        }
 
         /* 输入框样式 */
         input {
             width: 100%;
             padding: 12px;
-            margin-bottom: 20px;
             border: 1px solid #94b76c;
             border-radius: 8px;
             box-sizing: border-box;
             font-size: 16px;
             transition: border-color 0.3s ease;
+            margin-bottom: 20px;
+        }
+        
+        /* 表单行样式 */
+        .form-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        /* 行内输入框样式 */
+        .inline-input {
+            width: auto;
+            flex: 1;
+            margin-bottom: 0;
         }
 
         input:focus {
@@ -82,7 +107,6 @@
 
         /* 按钮样式 */
         button {
-            width: 100%;
             padding: 12px;
             background-color: #94b76c;
             color: white;
@@ -91,6 +115,7 @@
             cursor: pointer;
             font-size: 16px;
             transition: background-color 0.3s ease;
+            width: 100%;
             margin-bottom: 5px;
         }
 
@@ -160,6 +185,22 @@
 
             input, button {
                 font-size: 14px;
+            }
+            
+            /* 在小屏幕上恢复垂直布局 */
+            .form-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .inline-label {
+                margin-bottom: 10px;
+                margin-right: 0;
+                justify-content: center;
+            }
+            
+            .inline-input {
+                width: 100%;
             }
         }
 
@@ -232,8 +273,10 @@
 <body>
     <div class="container">
         <h1>复利计算器</h1>
-        <label for="interestRate">年收益率 (%)</label>
-        <input type="number" id="interestRate" step="0.01" min="0.01" max="100" placeholder="请输入年收益率，例如：8.50" required>
+        <!-- <label for="interestRate" class="inline-label">年收益率 (%)：</label> -->
+        <div class="form-row">
+            <input type="number" id="interestRate" class="inline-input" step="0.01" min="0.01" max="100" placeholder="请输入年收益率，单位 %，例如：8.50" required>
+        </div>
         <button onclick="calculateCompoundInterest()">开始计算</button>
         
         <div class="info-box">
@@ -450,21 +493,21 @@
                 data: {
                     labels: labels, // 显示的标签
                     datasets: [{
-                        label: '金额（万元）',
-                        data: data.map((value, index) => ({
-                            x: xValues[index], // 使用实际的年数值
-                            y: value
-                        })),
-                        borderColor: '#94b76c',
-                        backgroundColor: 'rgba(148, 183, 108, 0.1)',
-                        borderWidth: 0.5,
-                        fill: true,
-                        tension: 0.2,
-                        pointBackgroundColor: '#94b76c',
-                        pointRadius: 1,
-                        pointHoverRadius: 8,
-                        pointHoverBackgroundColor: '#94b76c'
-                    }]
+                    label: '金额（万元）',
+                    data: data.map((value, index) => ({
+                        x: xValues[index], // 使用实际的年数值
+                        y: value
+                    })),
+                    borderColor: '#94b76c',
+                    backgroundColor: 'rgba(148, 183, 108, 0.1)',
+                    borderWidth: 0.5,
+                    fill: true,
+                    tension: 0.2,
+                    pointBackgroundColor: '#94b76c',
+                    pointRadius: 1,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: '#94b76c'
+                }]
                 },
                 options: {
                     responsive: true,
@@ -546,41 +589,104 @@
                             chart.canvas.style.cursor = 'default';
                         }
                     },
-                    // 自定义绘制交叉线
-                    afterDraw: function(chart) {
-                        const ctx = chart.ctx;
-                        const points = chart.getElementsAtEventForMode(
-                            chart.lastEvent,
-                            'index',
-                            { intersect: false },
-                            false
-                        );
+                    // 使用Chart.js的插件方式实现交叉线
+                    plugins: [{
+                        id: 'crosshairPlugin',
+                        afterInit: function(chart) {
+                            // 创建自定义光标变量
+                            chart.crosshair = {
+                                x: null,
+                                y: null,
+                                visible: false
+                            };
+                            
+                            // 添加鼠标移动事件监听器
+                            chart.canvas.addEventListener('mousemove', function(e) {
+                                const rect = chart.canvas.getBoundingClientRect();
+                                const x = e.clientX - rect.left;
+                                const y = e.clientY - rect.top;
+                                
+                                // 获取鼠标位置对应的数据集索引
+                                const datasets = chart.data.datasets;
+                                let closestPoint = null;
+                                let minDistance = Infinity;
+                                
+                                // 遍历所有数据集查找最近的点
+                                for (let i = 0; i < datasets.length; i++) {
+                                    const meta = chart.getDatasetMeta(i);
+                                    if (meta.hidden) continue;
+                                    
+                                    for (let j = 0; j < meta.data.length; j++) {
+                                        const point = meta.data[j];
+                                        const distance = Math.sqrt(
+                                            Math.pow(x - point.x, 2) + 
+                                            Math.pow(y - point.y, 2)
+                                        );
+                                        
+                                        if (distance < minDistance && distance < 50) { // 50像素范围内
+                                            minDistance = distance;
+                                            closestPoint = {
+                                                x: point.x,
+                                                y: point.y,
+                                                datasetIndex: i,
+                                                index: j
+                                            };
+                                        }
+                                    }
+                                }
+                                
+                                // 更新交叉线位置
+                                if (closestPoint) {
+                                    chart.crosshair.x = closestPoint.x;
+                                    chart.crosshair.y = closestPoint.y;
+                                    chart.crosshair.visible = true;
+                                    chart.canvas.style.cursor = 'pointer';
+                                } else {
+                                    chart.crosshair.visible = false;
+                                    chart.canvas.style.cursor = 'default';
+                                }
+                                
+                                // 触发重绘
+                                chart.draw();
+                            });
+                            
+                            // 鼠标离开时隐藏交叉线
+                            chart.canvas.addEventListener('mouseout', function() {
+                                chart.crosshair.visible = false;
+                                chart.canvas.style.cursor = 'default';
+                                chart.draw();
+                            });
+                        },
                         
-                        if (points && points.length > 0) {
-                            const point = points[0];
-                            const meta = chart.getDatasetMeta(point.datasetIndex);
-                            const xScale = meta.controller.getScaleForId(meta.xAxisID);
-                            const yScale = meta.controller.getScaleForId(meta.yAxisID);
-                            
-                            // 绘制垂直线到x轴
-                            ctx.save();
-                            ctx.beginPath();
-                            ctx.moveTo(point.x, point.y);
-                            ctx.lineTo(point.x, yScale.getPixelForValue(0));
-                            ctx.strokeStyle = 'rgba(0, 0, 0, 0.2)';
-                            ctx.lineWidth = 1;
-                            ctx.stroke();
-                            
-                            // 绘制水平线到y轴
-                            ctx.beginPath();
-                            ctx.moveTo(point.x, point.y);
-                            ctx.lineTo(xScale.getPixelForValue(0), point.y);
-                            ctx.strokeStyle = 'rgba(0, 0, 0, 0.2)';
-                            ctx.lineWidth = 1;
-                            ctx.stroke();
-                            ctx.restore();
+                        afterDraw: function(chart) {
+                            if (chart.crosshair && chart.crosshair.visible) {
+                                const ctx = chart.ctx;
+                                const x = chart.crosshair.x;
+                                const y = chart.crosshair.y;
+                                const xAxis = chart.scales.x;
+                                const yAxis = chart.scales.y;
+                                
+                                // 绘制垂直线到x轴
+                                ctx.save();
+                                ctx.beginPath();
+                                ctx.moveTo(x, y);
+                                ctx.lineTo(x, yAxis.bottom);
+                                ctx.strokeStyle = 'rgba(0, 0, 0, 0.6)';
+                                ctx.lineWidth = 1;
+                                ctx.setLineDash([5, 5]); // 虚线样式更明显
+                                ctx.stroke();
+                                
+                                // 绘制水平线到y轴
+                                ctx.beginPath();
+                                ctx.moveTo(x, y);
+                                ctx.lineTo(xAxis.left, y);
+                                ctx.strokeStyle = 'rgba(0, 0, 0, 0.6)';
+                                ctx.lineWidth = 1;
+                                ctx.stroke();
+                                ctx.restore();
+                            }
                         }
-                    }
+                    }]
                 }
             });
         }
