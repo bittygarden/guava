@@ -27,9 +27,15 @@
     </div>
 
     <div class="outputDiv" style="display: flex; align-items: center;">
-        <label style="margin-right: 5px;">MD5：</label>
+        <label style="margin-right: 5px;">MD5（小写）：</label>
         <input type="text" class="outputText" id="outputText" readonly placeholder="MD5 编码将显示在这里" style="flex: 1; margin-right: 5px;">
         <button id="copyButton">复制</button>
+    </div>
+    
+    <div class="outputDiv" style="display: flex; align-items: center; margin-top: 10px;">
+        <label style="margin-right: 5px;">MD5（大写）：</label>
+        <input type="text" class="outputText" id="outputTextUpper" readonly placeholder="大写 MD5 编码将显示在这里" style="flex: 1; margin-right: 5px;">
+        <button id="copyButtonUpper">复制</button>
     </div>
 
     <!-- 引入 blueimp-md5 库 -->
@@ -38,12 +44,17 @@
         // 获取 DOM 元素
         const inputText = document.getElementById('inputText');
         const outputText = document.getElementById('outputText');
+        const outputTextUpper = document.getElementById('outputTextUpper');
+        const copyButton = document.getElementById('copyButton');
+        const copyButtonUpper = document.getElementById('copyButtonUpper');
 
         // 自动生成MD5的函数
         function generateMd5() {
             if (inputText.value === "") {
                 outputText.value = "";
+                outputTextUpper.value = "";
                 copyButton.textContent = "复制";
+                copyButtonUpper.textContent = "复制";
                 return;
             }
             try {
@@ -51,12 +62,17 @@
                 const text = inputText.value;
                 // 计算 MD5 编码
                 const md5Hash = md5(text);
-                // 将 MD5 编码显示在输出框中
+                // 将 MD5 编码显示在输出框中（小写）
                 outputText.value = md5Hash;
+                // 将大写 MD5 编码显示在第二个输出框中
+                outputTextUpper.value = md5Hash.toUpperCase();
                 copyButton.textContent = "复制";
+                copyButtonUpper.textContent = "复制";
             } catch (error) {
                 outputText.value = "编码出错：" + error.message;
+                outputTextUpper.value = "编码出错：" + error.message;
                 copyButton.textContent = "复制";
+                copyButtonUpper.textContent = "复制";
             }
         }
 
@@ -73,6 +89,24 @@
                         // 1秒后恢复文案为"复制"
                         setTimeout(() => {
                             copyButton.textContent = "复制";
+                        }, 1000);
+                    })
+                    .catch((error) => {
+                        console.error('复制失败:', error);
+                    });
+            }
+        });
+        
+        // 监听大写MD5复制按钮点击事件
+        copyButtonUpper.addEventListener('click', function () {
+            const textToCopy = outputTextUpper.value;
+            if (textToCopy) {
+                navigator.clipboard.writeText(textToCopy)
+                    .then(() => {
+                        copyButtonUpper.textContent = "已复制";
+                        // 1秒后恢复文案为"复制"
+                        setTimeout(() => {
+                            copyButtonUpper.textContent = "复制";
                         }, 1000);
                     })
                     .catch((error) => {
