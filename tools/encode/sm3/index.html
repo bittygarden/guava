@@ -21,19 +21,21 @@
 </head>
 
 <body>
-    <div class="inputDiv">
-        <label>输入：</label>
-        <textarea class="inputText" id="inputText" placeholder="请输入文本"></textarea>
+    <div class="inputDiv" style="display: flex; align-items: flex-start; margin-bottom: 30px;">
+        <label style="margin-right: 5px; width: 120px; white-space: nowrap;">输入：</label>
+        <textarea class="inputText" id="inputText" placeholder="请输入文本" style="flex: 1;"></textarea>
     </div>
 
-    <div class="outputDiv">
-        <label>SM3：</label>
-        <textarea class="outputText" id="outputText" readonly placeholder="SM3 编码将显示在这里"></textarea>
-    </div>
-
-    <div>
-        <button id="generateButton">生成</button>
+    <div class="outputDiv" style="display: flex; align-items: center;">
+        <label style="margin-right: 5px; width: 120px; white-space: nowrap;">SM3（小写）：</label>
+        <input type="text" class="outputText" id="outputText" readonly placeholder="SM3 编码将显示在这里" style="flex: 1; margin-right: 5px;">
         <button id="copyButton">复制</button>
+    </div>
+    
+    <div class="outputDiv" style="display: flex; align-items: center; margin-top: 10px;">
+        <label style="margin-right: 5px; width: 120px; white-space: nowrap;">SM3（大写）：</label>
+        <input type="text" class="outputText" id="outputTextUpper" readonly placeholder="大写 SM3 编码将显示在这里" style="flex: 1; margin-right: 5px;">
+        <button id="copyButtonUpper">复制</button>
     </div>
 
     <!-- 引入 sm-crypto 库 -->
@@ -41,30 +43,41 @@
     <script>
         // 获取 DOM 元素
         const inputText = document.getElementById('inputText');
-        const generateButton = document.getElementById('generateButton');
         const outputText = document.getElementById('outputText');
+        const outputTextUpper = document.getElementById('outputTextUpper');
+        const copyButton = document.getElementById('copyButton');
+        const copyButtonUpper = document.getElementById('copyButtonUpper');
 
-        // 监听按钮点击事件
-        generateButton.addEventListener('click', function () {
+        // 自动生成SM3的函数
+        function generateSm3() {
             if (inputText.value === "") {
-                outputText.value = "请输入文本";
+                outputText.value = "";
+                outputTextUpper.value = "";
                 copyButton.textContent = "复制";
+                copyButtonUpper.textContent = "复制";
                 return;
             }
-
             try {
                 // 获取输入框的内容
                 const text = inputText.value;
                 // 计算 SM3 编码
                 const sm3Hash = sm3(text);
-                // 将 SM3 编码显示在输出框中
+                // 将 SM3 编码显示在输出框中（小写）
                 outputText.value = sm3Hash;
+                // 将大写 SM3 编码显示在第二个输出框中
+                outputTextUpper.value = sm3Hash.toUpperCase();
                 copyButton.textContent = "复制";
+                copyButtonUpper.textContent = "复制";
             } catch (error) {
                 outputText.value = "编码出错：" + error.message;
+                outputTextUpper.value = "编码出错：" + error.message;
                 copyButton.textContent = "复制";
+                copyButtonUpper.textContent = "复制";
             }
-        });
+        }
+
+        // 监听输入框内容变化事件
+        inputText.addEventListener('input', generateSm3);
 
         // 监听复制按钮点击事件
         copyButton.addEventListener('click', function () {
@@ -73,6 +86,28 @@
                 navigator.clipboard.writeText(textToCopy)
                     .then(() => {
                         copyButton.textContent = "已复制";
+                        // 1秒后恢复文案为"复制"
+                        setTimeout(() => {
+                            copyButton.textContent = "复制";
+                        }, 1000);
+                    })
+                    .catch((error) => {
+                        console.error('复制失败:', error);
+                    });
+            }
+        });
+        
+        // 监听大写SM3复制按钮点击事件
+        copyButtonUpper.addEventListener('click', function () {
+            const textToCopy = outputTextUpper.value;
+            if (textToCopy) {
+                navigator.clipboard.writeText(textToCopy)
+                    .then(() => {
+                        copyButtonUpper.textContent = "已复制";
+                        // 1秒后恢复文案为"复制"
+                        setTimeout(() => {
+                            copyButtonUpper.textContent = "复制";
+                        }, 1000);
                     })
                     .catch((error) => {
                         console.error('复制失败:', error);
