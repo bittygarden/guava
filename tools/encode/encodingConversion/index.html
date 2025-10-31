@@ -22,9 +22,10 @@
 </head>
 
 <body>
-    <div class="inputDiv" style="display: flex; align-items: flex-start; margin-bottom: 30px; height: 30%;">
+    <div class="inputDiv" style="display: flex; align-items: stretch; margin-bottom: 30px; height: 30%;">
         <label style="margin-right: 5px; width: 120px; white-space: nowrap;">输入文本：</label>
-        <textarea class="inputText" id="inputText" placeholder="请输入要转换的文本" rows="6" style="flex: 1; resize: vertical;"></textarea>
+        <textarea class="inputText" id="inputText" placeholder="请输入要转换的文本" rows="6" style="flex: 1; resize: vertical; padding: 0; border: 1px solid #ccc; box-sizing: border-box;"></textarea>
+        <button id="modeToggle" style="margin-left: 5px; height: 100%; width: auto; aspect-ratio: 1/1; padding: 0; border: 1px solid #94b76c; border-radius: 4px; background-color: #94b76c; color: white; cursor: pointer; box-sizing: border-box; font-weight: bold; font-size: 18px;">编码</button>
     </div>
 
     <div class="outputDiv" style="display: flex; align-items: stretch;">
@@ -72,6 +73,10 @@
         const copyBase58 = document.getElementById('copyBase58');
         const copyBase64 = document.getElementById('copyBase64');
         const copyBase64url = document.getElementById('copyBase64url');
+        const modeToggle = document.getElementById('modeToggle');
+        
+        // 模式状态变量：true 为编码模式，false 为解码模式
+        let isEncodeMode = true;
 
         // Base16编码函数
         function base16Encode(str) {
@@ -165,6 +170,128 @@
         }
 
 
+        // Base16解码函数
+        function base16Decode(hexStr) {
+            // 验证输入是否为有效的十六进制字符串
+            if (!/^[0-9A-Fa-f]*$/.test(hexStr)) {
+                throw new Error('无效的Base16格式');
+            }
+            
+            if (hexStr.length % 2 !== 0) {
+                throw new Error('Base16字符串长度必须为偶数');
+            }
+            
+            const bytes = new Uint8Array(hexStr.length / 2);
+            for (let i = 0; i < hexStr.length; i += 2) {
+                bytes[i / 2] = parseInt(hexStr.substr(i, 2), 16);
+            }
+            
+            const decoder = new TextDecoder();
+            return decoder.decode(bytes);
+        }
+        
+        // Base32解码函数
+        function base32Decode(encoded) {
+            const base32Chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+            const charMap = {};
+            for (let i = 0; i < base32Chars.length; i++) {
+                charMap[base32Chars[i]] = i;
+            }
+            
+            // 验证输入
+            encoded = encoded.toUpperCase();
+            if (!/^[A-Z2-7]*$/.test(encoded)) {
+                throw new Error('无效的Base32格式');
+            }
+            
+            let bits = 0;
+            let value = 0;
+            const bytes = [];
+            
+            for (let i = 0; i < encoded.length; i++) {
+                value = (value << 5) | charMap[encoded[i]];
+                bits += 5;
+                
+                while (bits >= 8) {
+                    bytes.push((value >>> (bits - 8)) & 255);
+                    bits -= 8;
+                }
+            }
+            
+            const decoder = new TextDecoder();
+            return decoder.decode(new Uint8Array(bytes));
+        }
+        
+        // Base58解码函数
+        function base58Decode(encoded) {
+            const ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+            const charMap = {};
+            for (let i = 0; i < ALPHABET.length; i++) {
+                charMap[ALPHABET[i]] = i;
+            }
+            
+            // 验证输入
+            if (!/^[1-9A-HJ-NP-Za-km-z]*$/.test(encoded)) {
+                throw new Error('无效的Base58格式');
+            }
+            
+            // 处理前导'1'字符（转换为零字节）
+            let leadingZeros = 0;
+            while (leadingZeros < encoded.length && encoded[leadingZeros] === '1') {
+                leadingZeros++;
+            }
+            
+            // 转换为256进制
+            const digits = [0];
+            for (let i = 0; i < encoded.length; i++) {
+                let carry = charMap[encoded[i]];
+                for (let j = 0; j < digits.length; j++) {
+                    carry += digits[j] * 58;
+                    digits[j] = carry % 256;
+                    carry = Math.floor(carry / 256);
+                }
+                while (carry > 0) {
+                    digits.push(carry % 256);
+                    carry = Math.floor(carry / 256);
+                }
+            }
+            
+            // 构建结果字节数组
+            const bytes = new Uint8Array(leadingZeros + digits.length);
+            for (let i = leadingZeros; i < bytes.length; i++) {
+                bytes[i] = digits[bytes.length - 1 - i];
+            }
+            
+            const decoder = new TextDecoder();
+            return decoder.decode(bytes);
+        }
+        
+        // Base64解码函数
+        function base64Decode(encoded) {
+            try {
+                return decodeURIComponent(escape(atob(encoded)));
+            } catch (error) {
+                throw new Error('无效的Base64格式');
+            }
+        }
+        
+        // Base64url解码函数
+        function base64urlDecode(encoded) {
+            // 将Base64url转换回Base64格式
+            encoded = encoded.replace(/-/g, '+').replace(/_/g, '/');
+            // 添加缺失的填充
+            const paddingNeeded = 4 - (encoded.length % 4);
+            if (paddingNeeded < 4) {
+                encoded += '='.repeat(paddingNeeded);
+            }
+            
+            try {
+                return decodeURIComponent(escape(atob(encoded)));
+            } catch (error) {
+                throw new Error('无效的Base64url格式');
+            }
+        }
+        
         function convertEncoding() {
             const text = inputText.value;
             
@@ -182,39 +309,98 @@
                 return;
             }
 
-            try {
-                // Base16编码
-                const base16 = base16Encode(text);
-                base16Output.value = base16;
+            if (isEncodeMode) {
+                // 编码模式
+                try {
+                    // Base16编码
+                    const base16 = base16Encode(text);
+                    base16Output.value = base16;
 
-                // Base32编码
-                const base32 = base32Encode(text);
-                base32Output.value = base32;
+                    // Base32编码
+                    const base32 = base32Encode(text);
+                    base32Output.value = base32;
 
-                // Base58编码
-                const base58 = base58Encode(text);
-                base58Output.value = base58;
+                    // Base58编码
+                    const base58 = base58Encode(text);
+                    base58Output.value = base58;
 
-                // Base64编码
-                const base64 = btoa(unescape(encodeURIComponent(text)));
-                base64Output.value = base64;
+                    // Base64编码
+                    const base64 = btoa(unescape(encodeURIComponent(text)));
+                    base64Output.value = base64;
 
-                // Base64url编码
-                const base64url = base64urlEncode(text);
-                base64urlOutput.value = base64url;
-            } catch (error) {
-                console.error('编码转换时出错:', error);
-                base16Output.value = "编码出错：" + error.message;
-                base32Output.value = "编码出错：" + error.message;
-                base58Output.value = "编码出错：" + error.message;
-                base64Output.value = "编码出错：" + error.message;
-                base64urlOutput.value = "编码出错：" + error.message;
-                copyBase16.textContent = "复制";
-                copyBase32.textContent = "复制";
-                copyBase58.textContent = "复制";
-                copyBase64.textContent = "复制";
-                copyBase64url.textContent = "复制";
+                    // Base64url编码
+                    const base64url = base64urlEncode(text);
+                    base64urlOutput.value = base64url;
+                } catch (error) {
+                    console.error('编码转换时出错:', error);
+                    base16Output.value = "编码出错：" + error.message;
+                    base32Output.value = "编码出错：" + error.message;
+                    base58Output.value = "编码出错：" + error.message;
+                    base64Output.value = "编码出错：" + error.message;
+                    base64urlOutput.value = "编码出错：" + error.message;
+                }
+            } else {
+                // 解码模式，对每种编码分别处理错误
+                // Base16解码
+                try {
+                    base16Output.value = base16Decode(text);
+                } catch (error) {
+                    base16Output.value = "解码出错：" + error.message;
+                }
+                
+                // Base32解码
+                try {
+                    base32Output.value = base32Decode(text);
+                } catch (error) {
+                    base32Output.value = "解码出错：" + error.message;
+                }
+                
+                // Base58解码
+                try {
+                    base58Output.value = base58Decode(text);
+                } catch (error) {
+                    base58Output.value = "解码出错：" + error.message;
+                }
+                
+                // Base64解码
+                try {
+                    base64Output.value = base64Decode(text);
+                } catch (error) {
+                    base64Output.value = "解码出错：" + error.message;
+                }
+                
+                // Base64url解码
+                try {
+                    base64urlOutput.value = base64urlDecode(text);
+                } catch (error) {
+                    base64urlOutput.value = "解码出错：" + error.message;
+                }
             }
+            
+            // 重置复制按钮文本
+            copyBase16.textContent = "复制";
+            copyBase32.textContent = "复制";
+            copyBase58.textContent = "复制";
+            copyBase64.textContent = "复制";
+            copyBase64url.textContent = "复制";
+        }
+        
+        // 切换编码/解码模式
+        function toggleMode() {
+            isEncodeMode = !isEncodeMode;
+            // 更新按钮文本为当前模式
+            modeToggle.textContent = isEncodeMode ? "编码" : "解码";
+            inputText.placeholder = isEncodeMode ? "请输入要转换的文本" : "请输入要解码的文本";
+            
+            // 更新输出框占位符
+            base16Output.placeholder = isEncodeMode ? "Base16编码结果" : "Base16解码结果";
+            base32Output.placeholder = isEncodeMode ? "Base32编码结果" : "Base32解码结果";
+            base58Output.placeholder = isEncodeMode ? "Base58编码结果" : "Base58解码结果";
+            base64Output.placeholder = isEncodeMode ? "Base64编码结果" : "Base64解码结果";
+            base64urlOutput.placeholder = isEncodeMode ? "Base64url编码结果" : "Base64url解码结果";
+            
+            // 重新执行转换
+            convertEncoding();
         }
 
         function copyText(outputElement, button) {
@@ -240,6 +426,9 @@
         copyBase58.addEventListener('click', () => copyText(base58Output, copyBase58));
         copyBase64.addEventListener('click', () => copyText(base64Output, copyBase64));
         copyBase64url.addEventListener('click', () => copyText(base64urlOutput, copyBase64url));
+        
+        // 添加模式切换按钮事件监听器
+        modeToggle.addEventListener('click', toggleMode);
 
         inputText.addEventListener('input', convertEncoding);
 
