@@ -390,6 +390,15 @@
             isEncodeMode = !isEncodeMode;
             // 更新按钮HTML内容为当前模式和右下角提示文字
             modeToggle.innerHTML = isEncodeMode ? "编码<span style='font-size: 10px; font-weight: normal; position: absolute; bottom: 2px; right: 2px;'>点击切换</span>" : "解码<span style='font-size: 10px; font-weight: normal; position: absolute; bottom: 2px; right: 2px;'>点击切换</span>";
+            
+            // 根据模式切换按钮颜色
+            if (isEncodeMode) {
+                modeToggle.style.backgroundColor = '#94b76c';
+                modeToggle.style.borderColor = '#94b76c';
+            } else {
+                modeToggle.style.backgroundColor = '#57aa7f';
+                modeToggle.style.borderColor = '#57aa7f';
+            }
             inputText.placeholder = isEncodeMode ? "请输入要转换的文本" : "请输入要解码的文本";
             
             // 更新输出框占位符
@@ -420,12 +429,38 @@
             }
         }
 
-        // 添加复制按钮事件监听器
-        copyBase16.addEventListener('click', () => copyText(base16Output, copyBase16));
-        copyBase32.addEventListener('click', () => copyText(base32Output, copyBase32));
-        copyBase58.addEventListener('click', () => copyText(base58Output, copyBase58));
-        copyBase64.addEventListener('click', () => copyText(base64Output, copyBase64));
-        copyBase64url.addEventListener('click', () => copyText(base64urlOutput, copyBase64url));
+        // 为复制按钮添加鼠标悬停效果和点击事件监听器
+        const copyButtons = [copyBase16, copyBase32, copyBase58, copyBase64, copyBase64url];
+        const originalColors = {};
+        
+        // 保存原始颜色
+        copyButtons.forEach(button => {
+            originalColors[button.id] = {
+                backgroundColor: button.style.backgroundColor,
+                borderColor: button.style.borderColor
+            };
+            
+            // 添加点击事件
+            button.addEventListener('click', () => {
+                if (button.id === 'copyBase16') copyText(base16Output, copyBase16);
+                else if (button.id === 'copyBase32') copyText(base32Output, copyBase32);
+                else if (button.id === 'copyBase58') copyText(base58Output, copyBase58);
+                else if (button.id === 'copyBase64') copyText(base64Output, copyBase64);
+                else if (button.id === 'copyBase64url') copyText(base64urlOutput, copyBase64url);
+            });
+            
+            // 添加鼠标悬停事件
+            button.addEventListener('mouseover', () => {
+                button.style.backgroundColor = '#57aa7f';
+                button.style.borderColor = '#57aa7f';
+            });
+            
+            // 添加鼠标移出事件
+            button.addEventListener('mouseout', () => {
+                button.style.backgroundColor = originalColors[button.id].backgroundColor;
+                button.style.borderColor = originalColors[button.id].borderColor;
+            });
+        });
         
         // 添加模式切换按钮事件监听器
         modeToggle.addEventListener('click', toggleMode);
