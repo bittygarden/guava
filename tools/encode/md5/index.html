@@ -21,19 +21,19 @@
 </head>
 
 <body>
-    <div class="inputDiv">
-        <label>输入：</label>
-        <textarea class="inputText" id="inputText" placeholder="请输入文本"></textarea>
+    <div class="inputDiv" style="display: flex; align-items: flex-start; margin-bottom: 30px;">
+        <label style="margin-right: 5px; width: 120px; white-space: nowrap;">输入：</label>
+        <textarea class="inputText" id="inputText" placeholder="请输入文本" style="flex: 1;"></textarea>
     </div>
 
     <div class="outputDiv" style="display: flex; align-items: center;">
-        <label style="margin-right: 5px;">MD5（小写）：</label>
+        <label style="margin-right: 5px; width: 120px; white-space: nowrap;">MD5（小写）：</label>
         <input type="text" class="outputText" id="outputText" readonly placeholder="MD5 编码将显示在这里" style="flex: 1; margin-right: 5px;">
         <button id="copyButton">复制</button>
     </div>
     
     <div class="outputDiv" style="display: flex; align-items: center; margin-top: 10px;">
-        <label style="margin-right: 5px;">MD5（大写）：</label>
+        <label style="margin-right: 5px; width: 120px; white-space: nowrap;">MD5（大写）：</label>
         <input type="text" class="outputText" id="outputTextUpper" readonly placeholder="大写 MD5 编码将显示在这里" style="flex: 1; margin-right: 5px;">
         <button id="copyButtonUpper">复制</button>
     </div>
