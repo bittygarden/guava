@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RFTZ7J5H90"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-RFTZ7J5H90');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="一个在线工具，用于在不同编码格式（Base16、Base32、Base64）之间转换文本。只需输入文本即可查看转换结果。">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <title>编码转换器 - Base16, Base32, Base64</title>
+    <link rel="stylesheet" href="../../../styles/floating-button.css">
+    <link rel="stylesheet" href="../base.css">
+</head>
+
+<body>
+    <div class="inputDiv" style="display: flex; align-items: flex-start; margin-bottom: 30px; height: 30%;">
+        <label style="margin-right: 5px; width: 120px; white-space: nowrap;">输入文本：</label>
+        <textarea class="inputText" id="inputText" placeholder="请输入要转换的文本" rows="6" style="flex: 1; resize: vertical;"></textarea>
+    </div>
+
+    <div class="outputDiv" style="display: flex; align-items: stretch;">
+        <label style="margin-right: 5px; width: 120px; white-space: nowrap; align-self: center;">Base16：</label>
+        <textarea class="outputText" id="base16Output" readonly placeholder="Base16编码结果" rows="3" style="flex: 1; margin-right: 5px; resize: vertical;"></textarea>
+        <button id="copyBase16" style="height: 100%; width: 60px; padding: 0; margin: 0; border: 1px solid #94b76c; border-radius: 4px; background-color: #94b76c; color: white; cursor: pointer;">复制</button>
+    </div>
+
+    <div class="outputDiv" style="display: flex; align-items: stretch; margin-top: 10px;">
+        <label style="margin-right: 5px; width: 120px; white-space: nowrap; align-self: center;">Base32：</label>
+        <textarea class="outputText" id="base32Output" readonly placeholder="Base32编码结果" rows="3" style="flex: 1; margin-right: 5px; resize: vertical;"></textarea>
+        <button id="copyBase32" style="height: 100%; width: 60px; padding: 0; margin: 0; border: 1px solid #94b76c; border-radius: 4px; background-color: #94b76c; color: white; cursor: pointer;">复制</button>
+    </div>
+
+    <div class="outputDiv" style="display: flex; align-items: stretch; margin-top: 10px;">
+        <label style="margin-right: 5px; width: 120px; white-space: nowrap; align-self: center;">Base64：</label>
+        <textarea class="outputText" id="base64Output" readonly placeholder="Base64编码结果" rows="3" style="flex: 1; margin-right: 5px; resize: vertical;"></textarea>
+        <button id="copyBase64" style="height: 100%; width: 60px; padding: 0; margin: 0; border: 1px solid #94b76c; border-radius: 4px; background-color: #94b76c; color: white; cursor: pointer;">复制</button>
+    </div>
+
+
+
+    <script>
+        const inputText = document.getElementById('inputText');
+        const base16Output = document.getElementById('base16Output');
+        const base32Output = document.getElementById('base32Output');
+        const base64Output = document.getElementById('base64Output');
+
+        const copyBase16 = document.getElementById('copyBase16');
+        const copyBase32 = document.getElementById('copyBase32');
+        const copyBase64 = document.getElementById('copyBase64');
+
+        // Base16编码函数
+        function base16Encode(str) {
+            // 将字符串转换为UTF-8字节
+            const encoder = new TextEncoder();
+            const bytes = encoder.encode(str);
+            
+            let result = '';
+            for (let i = 0; i < bytes.length; i++) {
+                result += bytes[i].toString(16).padStart(2, '0').toUpperCase();
+            }
+            return result;
+        }
+
+        // Base32编码函数
+        function base32Encode(str) {
+            const base32Chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+            let result = '';
+            let bits = 0;
+            let value = 0;
+            
+            // 将字符串转换为UTF-8字节
+            const encoder = new TextEncoder();
+            const bytes = encoder.encode(str);
+            
+            for (let i = 0; i < bytes.length; i++) {
+                value = (value << 8) | bytes[i];
+                bits += 8;
+                
+                while (bits >= 5) {
+                    result += base32Chars[(value >>> (bits - 5)) & 31];
+                    bits -= 5;
+                }
+            }
+            
+            // 处理剩余的位
+            if (bits > 0) {
+                result += base32Chars[(value << (5 - bits)) & 31];
+            }
+            
+            return result;
+        }
+
+
+
+        function convertEncoding() {
+            const text = inputText.value;
+            
+            if (text === "") {
+                base16Output.value = "";
+                base32Output.value = "";
+                base64Output.value = "";
+                copyBase16.textContent = "复制";
+                copyBase32.textContent = "复制";
+                copyBase64.textContent = "复制";
+                return;
+            }
+
+            try {
+                // Base16编码
+                const base16 = base16Encode(text);
+                base16Output.value = base16;
+
+                // Base32编码
+                const base32 = base32Encode(text);
+                base32Output.value = base32;
+
+                // Base64编码
+                const base64 = btoa(unescape(encodeURIComponent(text)));
+                base64Output.value = base64;
+            } catch (error) {
+                console.error('编码转换时出错:', error);
+                base16Output.value = "编码出错：" + error.message;
+                base32Output.value = "编码出错：" + error.message;
+                base64Output.value = "编码出错：" + error.message;
+                copyBase16.textContent = "复制";
+                copyBase32.textContent = "复制";
+                copyBase64.textContent = "复制";
+            }
+        }
+
+        function copyText(outputElement, button) {
+            const textToCopy = outputElement.value;
+            if (textToCopy) {
+                navigator.clipboard.writeText(textToCopy)
+                    .then(() => {
+                        button.textContent = "已复制";
+                // 1秒后恢复文案为"复制"
+                setTimeout(() => {
+                    button.textContent = "复制";
+                }, 1000);
+                    })
+                    .catch((error) => {
+                        console.error('复制失败:', error);
+                    });
+            }
+        }
+
+        // 添加复制按钮事件监听器
+        copyBase16.addEventListener('click', () => copyText(base16Output, copyBase16));
+        copyBase32.addEventListener('click', () => copyText(base32Output, copyBase32));
+        copyBase64.addEventListener('click', () => copyText(base64Output, copyBase64));
+
+        inputText.addEventListener('input', convertEncoding);
+
+        // 初始化调用一次
+        convertEncoding();
+    </script>
+    <a href="../../../index.html" class="back-to-home">🏠</a>
+</body>
+
+</html>
