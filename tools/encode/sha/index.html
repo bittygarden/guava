@@ -29,14 +29,14 @@
 </head>
 
 <body>
-    <div class="inputDiv">
-        <label>输入：</label>
-        <textarea class="inputText" id="inputText" placeholder="请输入文本"></textarea>
+    <div class="inputDiv" style="display: flex; align-items: flex-start; margin-bottom: 30px;">
+        <label style="margin-right: 5px; width: 120px; white-space: nowrap;">输入：</label>
+        <textarea class="inputText" id="inputText" placeholder="请输入文本" style="flex: 1;"></textarea>
     </div>
 
-    <div class="selectDiv">
-        <label for="algorithmSelect">算法：</label>
-        <select class="selectInput" id="algorithmSelect">
+    <div class="selectDiv" style="display: flex; align-items: center; margin-top: 10px;">
+        <label for="algorithmSelect" style="margin-right: 5px; width: 120px; white-space: nowrap;">算法：</label>
+        <select class="selectInput" id="algorithmSelect" style="flex: 1; max-width: 200px;">
             <option value="SHA1">SHA-1</option>
             <option value="SHA224">SHA2-224</option>
             <option value="SHA256">SHA2-256</option>
@@ -47,28 +47,34 @@
         </select>
     </div>
 
-    <div class="outputDiv">
-        <label>SHA：</label>
-        <textarea class="outputText" id="outputText" readonly placeholder="编码结果将显示在这里"></textarea>
-    </div>
-
-    <div>
-        <button id="generateButton">生成</button>
+    <div class="outputDiv" style="display: flex; align-items: center;">
+        <label style="margin-right: 5px; width: 120px; white-space: nowrap;">SHA（小写）：</label>
+        <input type="text" class="outputText" id="outputText" readonly placeholder="SHA 编码将显示在这里" style="flex: 1; margin-right: 5px;">
         <button id="copyButton">复制</button>
+    </div>
+    
+    <div class="outputDiv" style="display: flex; align-items: center; margin-top: 10px;">
+        <label style="margin-right: 5px; width: 120px; white-space: nowrap;">SHA（大写）：</label>
+        <input type="text" class="outputText" id="outputTextUpper" readonly placeholder="大写 SHA 编码将显示在这里" style="flex: 1; margin-right: 5px;">
+        <button id="copyButtonUpper">复制</button>
     </div>
 
     <script>
         // 获取 DOM 元素
         const inputText = document.getElementById('inputText');
-        const generateButton = document.getElementById('generateButton');
         const outputText = document.getElementById('outputText');
+        const outputTextUpper = document.getElementById('outputTextUpper');
         const algorithmSelect = document.getElementById('algorithmSelect');
+        const copyButton = document.getElementById('copyButton');
+        const copyButtonUpper = document.getElementById('copyButtonUpper');
 
-        // 监听按钮点击事件
-        generateButton.addEventListener('click', async function () {
+        // 自动生成SHA的函数
+        function generateSha() {
             if (inputText.value === "") {
-                outputText.value = "请输入文本";
+                outputText.value = "";
+                outputTextUpper.value = "";
                 copyButton.textContent = "复制";
+                copyButtonUpper.textContent = "复制";
                 return;
             }
             // 获取输入框的内容
@@ -102,14 +108,26 @@
                     default:
                         throw new Error('不支持的算法');
                 }
-                outputText.value = hashHex.toString();
+                const hashString = hashHex.toString();
+                // 将 SHA 编码显示在输出框中（小写）
+                outputText.value = hashString;
+                // 将大写 SHA 编码显示在第二个输出框中
+                outputTextUpper.value = hashString.toUpperCase();
                 copyButton.textContent = "复制";
+                copyButtonUpper.textContent = "复制";
             } catch (error) {
                 console.error('计算 SHA 哈希值时出错:', error);
                 outputText.value = '计算哈希值时出错，请重试';
+                outputTextUpper.value = '计算哈希值时出错，请重试';
                 copyButton.textContent = "复制";
+                copyButtonUpper.textContent = "复制";
             }
-        });
+        }
+
+        // 监听输入框内容变化事件
+        inputText.addEventListener('input', generateSha);
+        // 监听算法选择变化事件
+        algorithmSelect.addEventListener('change', generateSha);
 
         // 监听复制按钮点击事件
         copyButton.addEventListener('click', function () {
@@ -118,6 +136,28 @@
                 navigator.clipboard.writeText(textToCopy)
                     .then(() => {
                         copyButton.textContent = "已复制";
+                        // 1秒后恢复文案为"复制"
+                        setTimeout(() => {
+                            copyButton.textContent = "复制";
+                        }, 1000);
+                    })
+                    .catch((error) => {
+                        console.error('复制失败:', error);
+                    });
+            }
+        });
+        
+        // 监听大写SHA复制按钮点击事件
+        copyButtonUpper.addEventListener('click', function () {
+            const textToCopy = outputTextUpper.value;
+            if (textToCopy) {
+                navigator.clipboard.writeText(textToCopy)
+                    .then(() => {
+                        copyButtonUpper.textContent = "已复制";
+                        // 1秒后恢复文案为"复制"
+                        setTimeout(() => {
+                            copyButtonUpper.textContent = "复制";
+                        }, 1000);
                     })
                     .catch((error) => {
                         console.error('复制失败:', error);
