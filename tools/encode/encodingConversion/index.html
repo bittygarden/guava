@@ -25,7 +25,7 @@
     <div class="inputDiv" style="display: flex; align-items: stretch; margin-bottom: 30px; height: 30%;">
         <label style="margin-right: 5px; width: 120px; white-space: nowrap;">输入文本：</label>
         <textarea class="inputText" id="inputText" placeholder="请输入要转换的文本" rows="6" style="flex: 1; resize: vertical; padding: 0; border: 1px solid #ccc; box-sizing: border-box;"></textarea>
-        <button id="modeToggle" style="margin-left: 5px; height: 100%; width: auto; aspect-ratio: 1/1; padding: 0; border: 1px solid #94b76c; border-radius: 4px; background-color: #94b76c; color: white; cursor: pointer; box-sizing: border-box; font-weight: bold; font-size: 18px;">编码</button>
+        <button id="modeToggle" style="margin-left: 5px; height: 100%; width: auto; aspect-ratio: 1/1; padding: 0; border: 1px solid #94b76c; border-radius: 4px; background-color: #94b76c; color: white; cursor: pointer; box-sizing: border-box; font-weight: bold; font-size: 18px; display: flex; position: relative; justify-content: center; align-items: center;">编码<span style="font-size: 10px; font-weight: normal; position: absolute; bottom: 2px; right: 2px;">点击切换</span></button>
     </div>
 
     <div class="outputDiv" style="display: flex; align-items: stretch;">
@@ -388,8 +388,8 @@
         // 切换编码/解码模式
         function toggleMode() {
             isEncodeMode = !isEncodeMode;
-            // 更新按钮文本为当前模式
-            modeToggle.textContent = isEncodeMode ? "编码" : "解码";
+            // 更新按钮HTML内容为当前模式和右下角提示文字
+            modeToggle.innerHTML = isEncodeMode ? "编码<span style='font-size: 10px; font-weight: normal; position: absolute; bottom: 2px; right: 2px;'>点击切换</span>" : "解码<span style='font-size: 10px; font-weight: normal; position: absolute; bottom: 2px; right: 2px;'>点击切换</span>";
             inputText.placeholder = isEncodeMode ? "请输入要转换的文本" : "请输入要解码的文本";
             
             // 更新输出框占位符
