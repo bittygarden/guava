@@ -14,9 +14,9 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="一个在线工具，用于在不同编码格式（Base16、Base32、Base64）之间转换文本。只需输入文本即可查看转换结果。">
+    <meta name="description" content="一个在线工具，用于在不同编码格式（Base16、Base32、Base58、Base64、Base64url）之间转换文本。只需输入文本即可查看转换结果。">
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-    <title>编码转换器 - Base16, Base32, Base64</title>
+    <title>编码转换器 - Base16, Base32, Base58, Base64, Base64url</title>
     <link rel="stylesheet" href="../../../styles/floating-button.css">
     <link rel="stylesheet" href="../base.css">
 </head>
@@ -40,9 +40,21 @@
     </div>
 
     <div class="outputDiv" style="display: flex; align-items: stretch; margin-top: 10px;">
+        <label style="margin-right: 5px; width: 120px; white-space: nowrap; align-self: center;">Base58：</label>
+        <textarea class="outputText" id="base58Output" readonly placeholder="Base58编码结果" rows="3" style="flex: 1; margin-right: 5px; resize: vertical;"></textarea>
+        <button id="copyBase58" style="height: 100%; width: 60px; padding: 0; margin: 0; border: 1px solid #94b76c; border-radius: 4px; background-color: #94b76c; color: white; cursor: pointer;">复制</button>
+    </div>
+
+    <div class="outputDiv" style="display: flex; align-items: stretch; margin-top: 10px;">
         <label style="margin-right: 5px; width: 120px; white-space: nowrap; align-self: center;">Base64：</label>
         <textarea class="outputText" id="base64Output" readonly placeholder="Base64编码结果" rows="3" style="flex: 1; margin-right: 5px; resize: vertical;"></textarea>
         <button id="copyBase64" style="height: 100%; width: 60px; padding: 0; margin: 0; border: 1px solid #94b76c; border-radius: 4px; background-color: #94b76c; color: white; cursor: pointer;">复制</button>
+    </div>
+
+    <div class="outputDiv" style="display: flex; align-items: stretch; margin-top: 10px;">
+        <label style="margin-right: 5px; width: 120px; white-space: nowrap; align-self: center;">Base64url：</label>
+        <textarea class="outputText" id="base64urlOutput" readonly placeholder="Base64url编码结果" rows="3" style="flex: 1; margin-right: 5px; resize: vertical;"></textarea>
+        <button id="copyBase64url" style="height: 100%; width: 60px; padding: 0; margin: 0; border: 1px solid #94b76c; border-radius: 4px; background-color: #94b76c; color: white; cursor: pointer;">复制</button>
     </div>
 
 
@@ -51,11 +63,15 @@
         const inputText = document.getElementById('inputText');
         const base16Output = document.getElementById('base16Output');
         const base32Output = document.getElementById('base32Output');
+        const base58Output = document.getElementById('base58Output');
         const base64Output = document.getElementById('base64Output');
+        const base64urlOutput = document.getElementById('base64urlOutput');
 
         const copyBase16 = document.getElementById('copyBase16');
         const copyBase32 = document.getElementById('copyBase32');
+        const copyBase58 = document.getElementById('copyBase58');
         const copyBase64 = document.getElementById('copyBase64');
+        const copyBase64url = document.getElementById('copyBase64url');
 
         // Base16编码函数
         function base16Encode(str) {
@@ -99,6 +115,54 @@
             return result;
         }
 
+        // Base58编码函数
+        function base58Encode(str) {
+            const ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+            
+            // 将字符串转换为UTF-8字节
+            const encoder = new TextEncoder();
+            const bytes = encoder.encode(str);
+            
+            // 处理前导零字节（转换为'1'字符）
+            let leadingZeros = 0;
+            while (leadingZeros < bytes.length && bytes[leadingZeros] === 0) {
+                leadingZeros++;
+            }
+            
+            const digits = [0]; // 存储58进制数字
+            for (let i = 0; i < bytes.length; i++) {
+                let carry = bytes[i];
+                for (let j = 0; j < digits.length; j++) {
+                    carry += digits[j] * 256;
+                    digits[j] = carry % 58;
+                    carry = Math.floor(carry / 58);
+                }
+                while (carry > 0) {
+                    digits.push(carry % 58);
+                    carry = Math.floor(carry / 58);
+                }
+            }
+            
+            // 构建结果
+            let result = '';
+            for (let i = 0; i < leadingZeros; i++) {
+                result += '1'; // 添加前导'1'对应前导零字节
+            }
+            for (let i = digits.length - 1; i >= 0; i--) {
+                result += ALPHABET[digits[i]];
+            }
+            
+            return result;
+        }
+
+        // Base64url编码函数
+        function base64urlEncode(str) {
+            // 先进行Base64编码
+            const base64 = btoa(unescape(encodeURIComponent(str)));
+            
+            // 将Base64转换为Base64url：替换'+'为'-'，'/'为'_'，移除尾部的'='填充
+            return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+        }
 
 
         function convertEncoding() {
@@ -107,10 +171,14 @@
             if (text === "") {
                 base16Output.value = "";
                 base32Output.value = "";
+                base58Output.value = "";
                 base64Output.value = "";
+                base64urlOutput.value = "";
                 copyBase16.textContent = "复制";
                 copyBase32.textContent = "复制";
+                copyBase58.textContent = "复制";
                 copyBase64.textContent = "复制";
+                copyBase64url.textContent = "复制";
                 return;
             }
 
@@ -123,17 +191,29 @@
                 const base32 = base32Encode(text);
                 base32Output.value = base32;
 
+                // Base58编码
+                const base58 = base58Encode(text);
+                base58Output.value = base58;
+
                 // Base64编码
                 const base64 = btoa(unescape(encodeURIComponent(text)));
                 base64Output.value = base64;
+
+                // Base64url编码
+                const base64url = base64urlEncode(text);
+                base64urlOutput.value = base64url;
             } catch (error) {
                 console.error('编码转换时出错:', error);
                 base16Output.value = "编码出错：" + error.message;
                 base32Output.value = "编码出错：" + error.message;
+                base58Output.value = "编码出错：" + error.message;
                 base64Output.value = "编码出错：" + error.message;
+                base64urlOutput.value = "编码出错：" + error.message;
                 copyBase16.textContent = "复制";
                 copyBase32.textContent = "复制";
+                copyBase58.textContent = "复制";
                 copyBase64.textContent = "复制";
+                copyBase64url.textContent = "复制";
             }
         }
 
@@ -157,7 +237,9 @@
         // 添加复制按钮事件监听器
         copyBase16.addEventListener('click', () => copyText(base16Output, copyBase16));
         copyBase32.addEventListener('click', () => copyText(base32Output, copyBase32));
+        copyBase58.addEventListener('click', () => copyText(base58Output, copyBase58));
         copyBase64.addEventListener('click', () => copyText(base64Output, copyBase64));
+        copyBase64url.addEventListener('click', () => copyText(base64urlOutput, copyBase64url));
 
         inputText.addEventListener('input', convertEncoding);
 
