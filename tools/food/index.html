@@ -838,6 +838,12 @@
                     
                     tbody.appendChild(tr);
                 });
+                
+                // 将滚动条初始化到顶部
+                const tableBodyContainer = document.querySelector('.single-table-container');
+                if (tableBodyContainer) {
+                    tableBodyContainer.scrollTop = 0;
+                }
             }
         }
         
