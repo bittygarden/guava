@@ -216,6 +216,9 @@
             overflow: auto;
             height: 100%;
             border-radius: 12px;
+            /* 优化移动端滚动效果 */
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
         }
         
         /* 表格包装器样式 */
@@ -225,14 +228,10 @@
             overflow: hidden;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             height: 100%;
-            display: flex;
-            flex-direction: column;
+            display: block;
         }
         
-        /* 确保表格占满整个空间 */
-        .table-wrapper > .single-table-container {
-            flex: 1;
-        }
+
         
         /* 表格样式 */
         #nutrition-table {
@@ -443,12 +442,15 @@
             .table-container {
                 padding: 10px;
                 border-radius: 8px;
-                height: calc(100vh - 280px);
+                height: auto;
+                max-height: calc(100vh - 300px);
                 min-height: 300px;
             }
             
             .single-table-container {
-                max-height: 100%;
+                height: calc(100vh - 350px);
+                max-height: calc(100vh - 350px);
+                overflow: auto;
             }
             
             th, td {
