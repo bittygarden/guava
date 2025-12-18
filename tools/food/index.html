@@ -170,6 +170,7 @@
             z-index: 11; /* 更高的z-index，确保表头第一列显示在最上面 */
         }
         
+        /* 固定第一列表格数据样式 - 最多显示8个汉字 */
         .table-container table td:first-child {
             position: sticky;
             left: 0;
@@ -177,6 +178,19 @@
             color: #333;
             z-index: 5;
             border-right: 2px solid #e1e5e9;
+            width: 160px; /* 约8个汉字宽度 */
+            max-width: 160px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        /* 鼠标悬停时显示完整内容的样式 */
+        .table-container table td:first-child:hover {
+            overflow: visible;
+            background-color: white;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 15;
         }
         
         /* 表头样式 */
@@ -394,17 +408,31 @@
         @media (max-width: 768px) {
             .container {
                 padding: 10px;
+                height: auto;
+                min-height: 100vh;
             }
             
             h1 {
-                font-size: 2rem;
-                margin-bottom: 20px;
+                font-size: 1.5rem;
+                margin-bottom: 15px;
+                text-align: center;
             }
             
             .controls {
                 flex-direction: column;
                 align-items: stretch;
                 padding: 15px;
+                gap: 15px;
+            }
+            
+            .filter-search-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .category-selectors {
+                flex-direction: column;
+                gap: 10px;
             }
             
             .main-category-filter, .sub-category-filter, .search-box {
@@ -415,11 +443,31 @@
             .table-container {
                 padding: 10px;
                 border-radius: 8px;
+                height: calc(100vh - 280px);
+                min-height: 300px;
+            }
+            
+            .single-table-container {
+                max-height: 100%;
             }
             
             th, td {
-                padding: 10px 12px;
-                font-size: 13px;
+                padding: 8px 10px;
+                font-size: 12px;
+            }
+            
+            /* 优化固定列在移动端的显示 */
+            .table-container table th:first-child {
+                border-right: 1px solid rgba(255, 255, 255, 0.3);
+            }
+            
+            .table-container table td:first-child {
+                border-right: 1px solid #e1e5e9;
+            }
+            
+            /* 调整表头排序指示器大小 */
+            .sort-indicator {
+                font-size: 10px;
             }
         }
         
