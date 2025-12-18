@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>食物营养成分</title>
+    <style>
+        /* 基础样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* 全局样式 */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+            color: #333;
+            line-height: 1.6;
+            overflow: hidden;
+        }
+        
+        /* 容器样式 */
+        .container {
+            display: flex;
+            flex-direction: column;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            height: 100vh;
+        }
+        
+        /* 表格容器样式 */
+        .table-container {
+            overflow: auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            flex: 1;
+            min-height: 0;
+        }
+        
+        /* 标题样式 */
+        h1 {
+            text-align: center;
+            margin: 0 0 30px 0;
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            letter-spacing: -0.5px;
+        }
+        
+        /* 控制面板样式 */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 类别选择器容器 */
+        .category-selectors {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        /* 输入框和选择框通用样式 */
+        .main-category-filter, .sub-category-filter, .search-box {
+            padding: 12px 16px;
+            font-size: 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            outline: none;
+            background: white;
+            font-family: inherit;
+        }
+        
+        /* 选择框样式 */
+        .main-category-filter, .sub-category-filter {
+            min-width: 180px;
+            cursor: pointer;
+        }
+        
+        /* 搜索框样式 */
+        .search-box {
+            min-width: 250px;
+        }
+        
+        /* 交互元素悬停和聚焦效果 */
+        .main-category-filter:hover, .sub-category-filter:hover, .search-box:hover {
+            border-color: #4caf50;
+            box-shadow: 0 2px 8px rgba(76, 175, 80, 0.15);
+        }
+        
+        .main-category-filter:focus, .sub-category-filter:focus, .search-box:focus {
+            border-color: #4caf50;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+        }
+        
+        /* 表格容器样式 */
+        .table-container {
+            overflow-x: auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        
+        /* 表格样式 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        
+        /* 表头样式 */
+        th {
+            background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            user-select: none;
+            text-align: left;
+            padding: 14px 16px;
+            white-space: nowrap;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 表头悬停效果 */
+        th:hover {
+            background: linear-gradient(135deg, #45a049 0%, #276f2c 100%);
+        }
+        
+        /* 表头排序指示器 */
+        .sort-indicator {
+            margin-left: 8px;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        
+        /* 表格单元格样式 */
+        td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid #f0f2f5;
+            white-space: nowrap;
+            transition: background-color 0.2s ease;
+        }
+        
+        /* 表格行样式 */
+        tr {
+            transition: all 0.2s ease;
+        }
+        
+        /* 表格行悬停效果 */
+        tr:hover {
+            background-color: #f8f9fa;
+            transform: translateX(2px);
+        }
+        
+        /* 表格奇偶行样式 */
+        tr:nth-child(even) {
+            background-color: #fafbfc;
+        }
+        
+        /* 加载状态样式 */
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            font-size: 18px;
+            color: #666;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 加载状态动画 */
+        .loading::after {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-left: 10px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #4caf50;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* 无结果状态样式 */
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            font-size: 18px;
+            color: #666;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 20px;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 15px;
+            }
+            
+            .main-category-filter, .sub-category-filter, .search-box {
+                min-width: auto;
+                width: 100%;
+            }
+            
+            .table-container {
+                padding: 10px;
+                border-radius: 8px;
+            }
+            
+            th, td {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+        }
+        
+        /* 滚动条样式 */
+        .table-container::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .table-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        
+        .table-container::-webkit-scrollbar-thumb {
+            background: #4caf50;
+            border-radius: 4px;
+        }
+        
+        .table-container::-webkit-scrollbar-thumb:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>食物营养成分</h1>
+        
+        <div class="controls">
+            <div class="category-selectors">
+                <select class="main-category-filter">
+                    <option value="">所有主类别</option>
+                </select>
+                <select class="sub-category-filter">
+                    <option value="">所有子类别</option>
+                </select>
+            </div>
+            <input type="text" class="search-box" placeholder="搜索食物名称...">
+        </div>
+        
+        <div class="table-container">
+            <div class="loading">加载中...</div>
+            <table id="nutrition-table" style="display: none;">
+                <thead>
+                    <tr id="table-header"></tr>
+                </thead>
+                <tbody id="table-body"></tbody>
+            </table>
+            <div class="no-results" style="display: none;">没有找到匹配的结果</div>
+        </div>
+    </div>
+    
+    <script>
+        // CSV文件路径
+        const nutritionCsvPath = 'data/j_food_nutrition.csv';
+        const categoriesCsvPath = 'data/j_food_categories.csv';
+        
+        // 存储所有数据
+        let allData = [];
+        let categories = [];
+        let mainCategories = [];
+        let subCategories = [];
+        let categoryMap = new Map(); // 存储类别映射关系
+        
+        // 排序状态
+        let sortColumn = null;
+        let sortDirection = 'asc';
+        
+        // 搜索和过滤条件
+        let searchTerm = '';
+        let selectedMainCategory = '';
+        let selectedSubCategory = '';
+        
+        // 解析CSV数据
+        function parseCSV(csvText) {
+            const lines = csvText.split('\n');
+            const headers = lines[0].replace(/"/g, '').split(',');
+            
+            const data = [];
+            for (let i = 1; i < lines.length; i++) {
+                if (lines[i].trim() === '') continue;
+                
+                const values = lines[i].split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/).map(val => val.replace(/"/g, ''));
+                const row = {};
+                
+                headers.forEach((header, index) => {
+                    row[header] = values[index] || '';
+                });
+                
+                data.push(row);
+            }
+            
+            return { headers, data };
+        }
+        
+        // 加载营养数据
+        async function loadNutritionData() {
+            const response = await fetch(nutritionCsvPath);
+            const csvText = await response.text();
+            return parseCSV(csvText);
+        }
+        
+        // 加载类别数据
+        async function loadCategoriesData() {
+            const response = await fetch(categoriesCsvPath);
+            const csvText = await response.text();
+            return parseCSV(csvText);
+        }
+        
+        // 构建类别结构
+        function buildCategoryStructure(categoriesData) {
+            // 分离主类别和子类别
+            mainCategories = categoriesData.data.filter(cat => cat.is_subcategory === '0');
+            subCategories = categoriesData.data.filter(cat => cat.is_subcategory === '1');
+            
+            // 构建类别映射
+            categoriesData.data.forEach(cat => {
+                categoryMap.set(cat.cate_id, cat);
+            });
+        }
+        
+        // 加载所有数据
+        async function loadData() {
+            try {
+                // 并行加载营养数据和类别数据
+                const [nutritionResult, categoriesResult] = await Promise.all([
+                    loadNutritionData(),
+                    loadCategoriesData()
+                ]);
+                
+                allData = nutritionResult.data;
+                
+                // 构建类别结构
+                buildCategoryStructure(categoriesResult);
+                
+                // 渲染表格
+                renderTable(nutritionResult.headers, nutritionResult.data);
+                
+                // 填充主类别过滤器
+                populateMainCategoryFilter();
+                
+                // 绑定事件
+                bindEvents();
+                
+                document.querySelector('.loading').style.display = 'none';
+                document.getElementById('nutrition-table').style.display = 'table';
+            } catch (error) {
+                console.error('加载数据失败:', error);
+                document.querySelector('.loading').textContent = '加载数据失败，请刷新页面重试';
+            }
+        }
+        
+        // 定义固定的列顺序
+        const fixedColumnOrder = [
+            'food_name', 'cate_id', 'edible_part', 'water', 'energy', 
+            'protein', 'fat', 'cholesterol', 'ash', 'carbohydrate', 
+            'dietary_fiber', 'carotene', 'vitamin_a', 'vitamin_e', 
+            'thiamin', 'riboflavin', 'niacin', 'vitamin_c', 'calcium', 
+            'phosphorus', 'potassium', 'sodium', 'magnesium', 'iron', 
+            'zinc', 'selenium', 'copper', 'manganese', 'iodine', 
+            'sfa', 'mufa', 'pufa', 'fatty_acids_total'
+        ];
+        
+        // 渲染表格
+        function renderTable(headers, data) {
+            const headerRow = document.getElementById('table-header');
+            const tbody = document.getElementById('table-body');
+            
+            // 清空表格
+            headerRow.innerHTML = '';
+            tbody.innerHTML = '';
+            
+            // 渲染表头 - 使用固定列顺序
+            fixedColumnOrder.forEach(header => {
+                const th = document.createElement('th');
+                th.textContent = getHeaderDisplayName(header);
+                th.dataset.header = header;
+                th.innerHTML += '<span class="sort-indicator"></span>';
+                headerRow.appendChild(th);
+            });
+            
+            // 渲染数据行 - 使用固定列顺序
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                
+                fixedColumnOrder.forEach(header => {
+                    const td = document.createElement('td');
+                    
+                    if (header === 'cate_id') {
+                        // 显示类别中文名称
+                        const categoryInfo = categoryMap.get(row[header]);
+                        td.textContent = categoryInfo ? categoryInfo.title : '-';
+                    } else {
+                        // 显示原始数据
+                        td.textContent = row[header] || '-';
+                    }
+                    
+                    tr.appendChild(td);
+                });
+                
+                tbody.appendChild(tr);
+            });
+        }
+        
+        // 获取表头显示名称
+        function getHeaderDisplayName(header) {
+            const displayNames = {
+                'id': 'ID',
+                'cate_id': '类别',
+                'food_name': '食物名称',
+                'alias_name': '别名',
+                'english_name': '英文名称',
+                'edible_part': '可食用部分',
+                'water': '水分',
+                'energy': '能量',
+                'protein': '蛋白质',
+                'fat': '脂肪',
+                'cholesterol': '胆固醇',
+                'ash': '灰分',
+                'carbohydrate': '碳水化合物',
+                'dietary_fiber': '膳食纤维',
+                'carotene': '胡萝卜素',
+                'vitamin_a': '维生素A',
+                'vitamin_e': '维生素E',
+                'thiamin': '硫胺素',
+                'riboflavin': '核黄素',
+                'niacin': '烟酸',
+                'vitamin_c': '维生素C',
+                'calcium': '钙',
+                'phosphorus': '磷',
+                'potassium': '钾',
+                'sodium': '钠',
+                'magnesium': '镁',
+                'iron': '铁',
+                'zinc': '锌',
+                'selenium': '硒',
+                'copper': '铜',
+                'manganese': '锰',
+                'iodine': '碘',
+                'sfa': '饱和脂肪酸',
+                'mufa': '单不饱和脂肪酸',
+                'pufa': '多不饱和脂肪酸',
+                'fatty_acids_total': '总脂肪酸'
+            };
+            
+            return displayNames[header] || header;
+        }
+        
+        // 填充主类别过滤器
+        function populateMainCategoryFilter() {
+            const select = document.querySelector('.main-category-filter');
+            select.innerHTML = '<option value="">所有主类别</option>';
+            
+            mainCategories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category.id;
+                option.textContent = category.title;
+                select.appendChild(option);
+            });
+        }
+        
+        // 填充子类别过滤器
+        function populateSubCategoryFilter(selectedMainCategoryId = '') {
+            const select = document.querySelector('.sub-category-filter');
+            select.innerHTML = '<option value="">所有子类别</option>';
+            
+            // 如果选择了主类别，只显示该主类别下的子类别
+            let filteredSubCategories = subCategories;
+            if (selectedMainCategoryId) {
+                filteredSubCategories = subCategories.filter(sub => sub.parent_category_id === selectedMainCategoryId);
+            }
+            
+            filteredSubCategories.forEach(sub => {
+                const option = document.createElement('option');
+                option.value = sub.cate_id;
+                option.textContent = sub.title;
+                select.appendChild(option);
+            });
+        }
+        
+        // 绑定事件
+        function bindEvents() {
+            // 搜索事件
+            document.querySelector('.search-box').addEventListener('input', (e) => {
+                searchTerm = e.target.value.toLowerCase();
+                filterAndSortData();
+            });
+            
+            // 主类别选择事件
+            document.querySelector('.main-category-filter').addEventListener('change', (e) => {
+                selectedMainCategory = e.target.value;
+                selectedSubCategory = '';
+                
+                // 清空搜索框
+                const searchBox = document.querySelector('.search-box');
+                searchBox.value = '';
+                searchTerm = '';
+                
+                // 填充子类别过滤器
+                populateSubCategoryFilter(selectedMainCategory);
+                
+                // 过滤数据
+                filterAndSortData();
+            });
+            
+            // 子类别选择事件
+            document.querySelector('.sub-category-filter').addEventListener('change', (e) => {
+                selectedSubCategory = e.target.value;
+                
+                // 清空搜索框
+                const searchBox = document.querySelector('.search-box');
+                searchBox.value = '';
+                searchTerm = '';
+                
+                // 过滤数据
+                filterAndSortData();
+            });
+            
+            // 表头排序事件
+            document.querySelectorAll('th').forEach(th => {
+                th.addEventListener('click', () => {
+                    const header = th.dataset.header;
+                    sortData(header);
+                });
+            });
+        }
+        
+        // 过滤和排序数据
+        function filterAndSortData() {
+            let filteredData = allData;
+            
+            // 应用搜索过滤
+            if (searchTerm) {
+                filteredData = filteredData.filter(item => {
+                    return item.food_name.toLowerCase().includes(searchTerm);
+                });
+            }
+            
+            // 应用子类别过滤
+            if (selectedSubCategory) {
+                filteredData = filteredData.filter(item => {
+                    return item.cate_id === selectedSubCategory;
+                });
+            } 
+            // 应用主类别过滤（当没有选择子类别时）
+            else if (selectedMainCategory) {
+                // 获取该主类别下的所有子类别ID
+                const subCategoryIds = subCategories
+                    .filter(sub => sub.parent_category_id === selectedMainCategory)
+                    .map(sub => sub.cate_id);
+                
+                filteredData = filteredData.filter(item => {
+                    return subCategoryIds.includes(item.cate_id);
+                });
+            }
+            
+            // 应用排序
+            if (sortColumn) {
+                filteredData.sort((a, b) => {
+                    let aVal = a[sortColumn];
+                    let bVal = b[sortColumn];
+                    
+                    // 尝试将数值字符串转换为数字
+                    const aNum = parseFloat(aVal);
+                    const bNum = parseFloat(bVal);
+                    
+                    if (!isNaN(aNum) && !isNaN(bNum)) {
+                        aVal = aNum;
+                        bVal = bNum;
+                    }
+                    
+                    if (aVal < bVal) {
+                        return sortDirection === 'asc' ? -1 : 1;
+                    }
+                    if (aVal > bVal) {
+                        return sortDirection === 'asc' ? 1 : -1;
+                    }
+                    return 0;
+                });
+            }
+            
+            // 更新表格显示
+            updateTableDisplay(filteredData);
+        }
+        
+        // 排序数据
+        function sortData(column) {
+            // 重置所有排序指示器
+            document.querySelectorAll('.sort-indicator').forEach(indicator => {
+                indicator.textContent = '';
+            });
+            
+            // 设置排序方向
+            if (sortColumn === column) {
+                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortColumn = column;
+                sortDirection = 'asc';
+            }
+            
+            // 更新排序指示器
+            const indicator = document.querySelector(`th[data-header="${column}"] .sort-indicator`);
+            indicator.textContent = sortDirection === 'asc' ? '↑' : '↓';
+            
+            // 过滤和排序数据
+            filterAndSortData();
+        }
+        
+        // 更新表格显示
+        function updateTableDisplay(data) {
+            const table = document.getElementById('nutrition-table');
+            const noResults = document.querySelector('.no-results');
+            
+            if (data.length === 0) {
+                table.style.display = 'none';
+                noResults.style.display = 'block';
+            } else {
+                table.style.display = 'table';
+                noResults.style.display = 'none';
+                
+                // 重新渲染表格数据
+                const tbody = document.getElementById('table-body');
+                tbody.innerHTML = '';
+                
+                data.forEach(row => {
+                    const tr = document.createElement('tr');
+                    
+                    // 使用固定列顺序
+                    fixedColumnOrder.forEach(header => {
+                        const td = document.createElement('td');
+                        
+                        if (header === 'cate_id') {
+                            // 显示类别中文名称
+                            const categoryInfo = categoryMap.get(row[header]);
+                            td.textContent = categoryInfo ? categoryInfo.title : '-';
+                        } else {
+                            // 显示原始数据
+                            td.textContent = row[header] || '-';
+                        }
+                        
+                        tr.appendChild(td);
+                    });
+                    
+                    tbody.appendChild(tr);
+                });
+            }
+        }
+        
+        // 页面加载完成后加载数据
+        window.addEventListener('DOMContentLoaded', loadData);
+    </script>
+</body>
+</html>
