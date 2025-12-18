@@ -1,9 +1,22 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RFTZ7J5H90"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-RFTZ7J5H90');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>食物营养成分</title>
+    <meta name="description" content="一个免费的在线食物营养成分查询工具，提供全面的食物营养数据，包括热量、蛋白质、脂肪、碳水化合物、维生素和矿物质等信息，支持按类别筛选和搜索。">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <title>食物营养成分查询 - 全面的食物营养数据</title>
+    <link rel="stylesheet" href="../../styles/floating-button.css">
     <style>
         /* 基础样式重置 */
         * {
@@ -21,7 +34,7 @@
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+            background: linear-gradient(-225deg, #E3FDF5 0%, #FFE6FA 100%);
             color: #333;
             line-height: 1.6;
             overflow: hidden;
@@ -43,16 +56,17 @@
             background: white;
             border-radius: 12px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            padding: 20px;
+            padding: 0;
             flex: 1;
-            min-height: 0;
+            min-height: 300px;
+            max-height: calc(100vh - 250px);
         }
         
         /* 标题样式 */
         h1 {
             text-align: center;
             margin: 0 0 30px 0;
-            color: white;
+            color: #333;
             font-size: 2.5rem;
             font-weight: 700;
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -70,6 +84,87 @@
             padding: 20px;
             background: white;
             border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 表格样式 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            margin: 0;
+            table-layout: auto;
+        }
+        
+        /* 确保所有表格的列宽一致 */
+        .fixed-header-table,
+        #nutrition-table {
+            width: 100%;
+            border-spacing: 0;
+        }
+        
+        /* 表格头部样式 */
+        thead {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        /* 调整表格单元格间距 */
+        .table-container table th,
+        .table-container table td {
+            padding: 14px 16px;
+            text-align: left;
+            white-space: nowrap;
+        }
+        
+        /* 表头样式 */
+        th {
+            background: #57aa7f;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            user-select: none;
+            text-align: left;
+            padding: 14px 16px;
+            white-space: nowrap;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 表头悬停效果 */
+        th:hover {
+            background: #57aa7f;
+        }
+        
+        /* 单表格容器样式 - 用于实现固定表头 */
+        .single-table-container {
+            overflow: auto;
+            max-height: calc(100vh - 350px);
+            border-radius: 12px;
+        }
+        
+        /* 表格样式 */
+        #nutrition-table {
+            background: white;
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        /* 为表格添加内部间距 */
+        .table-container {
+            padding: 0;
+        }
+        
+        /* 确保表格在容器内正确显示 */
+        .table-container > div {
+            padding: 20px;
+        }
+        
+        /* 表格包装器样式 */
+        .table-wrapper {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
         
@@ -105,23 +200,16 @@
         
         /* 交互元素悬停和聚焦效果 */
         .main-category-filter:hover, .sub-category-filter:hover, .search-box:hover {
-            border-color: #4caf50;
-            box-shadow: 0 2px 8px rgba(76, 175, 80, 0.15);
+            border-color: #94b76c;
+            box-shadow: 0 2px 8px rgba(148, 183, 108, 0.15);
         }
         
         .main-category-filter:focus, .sub-category-filter:focus, .search-box:focus {
-            border-color: #4caf50;
-            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+            border-color: #57aa7f;
+            box-shadow: 0 0 0 3px rgba(87, 170, 127, 0.2);
         }
         
-        /* 表格容器样式 */
-        .table-container {
-            overflow-x: auto;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-        }
+
         
         /* 表格样式 */
         table {
@@ -132,7 +220,7 @@
         
         /* 表头样式 */
         th {
-            background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+            background: #57aa7f;
             color: white;
             font-weight: 600;
             cursor: pointer;
@@ -148,7 +236,7 @@
         
         /* 表头悬停效果 */
         th:hover {
-            background: linear-gradient(135deg, #45a049 0%, #276f2c 100%);
+            background: #57aa7f;
         }
         
         /* 表头排序指示器 */
@@ -202,7 +290,7 @@
             height: 20px;
             margin-left: 10px;
             border: 2px solid #f3f3f3;
-            border-top: 2px solid #4caf50;
+            border-top: 2px solid #94b76c;
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -267,12 +355,12 @@
         }
         
         .table-container::-webkit-scrollbar-thumb {
-            background: #4caf50;
+            background: #94b76c;
             border-radius: 4px;
         }
         
         .table-container::-webkit-scrollbar-thumb:hover {
-            background: #45a049;
+            background: #57aa7f;
         }
     </style>
 </head>
@@ -294,12 +382,16 @@
         
         <div class="table-container">
             <div class="loading">加载中...</div>
-            <table id="nutrition-table" style="display: none;">
-                <thead>
-                    <tr id="table-header"></tr>
-                </thead>
-                <tbody id="table-body"></tbody>
-            </table>
+            <div style="display: none;" class="table-wrapper">
+                <div class="single-table-container">
+                    <table id="nutrition-table">
+                        <thead>
+                            <tr id="table-header"></tr>
+                        </thead>
+                        <tbody id="table-body"></tbody>
+                    </table>
+                </div>
+            </div>
             <div class="no-results" style="display: none;">没有找到匹配的结果</div>
         </div>
     </div>
@@ -397,7 +489,7 @@
                 bindEvents();
                 
                 document.querySelector('.loading').style.display = 'none';
-                document.getElementById('nutrition-table').style.display = 'table';
+                document.querySelector('.table-wrapper').style.display = 'block';
             } catch (error) {
                 console.error('加载数据失败:', error);
                 document.querySelector('.loading').textContent = '加载数据失败，请刷新页面重试';
@@ -570,13 +662,26 @@
                 filterAndSortData();
             });
             
-            // 表头排序事件
-            document.querySelectorAll('th').forEach(th => {
-                th.addEventListener('click', () => {
-                    const header = th.dataset.header;
-                    sortData(header);
+            // 表头排序事件 - 绑定到表格的th元素
+            const bindSortEvents = () => {
+                document.querySelectorAll('#nutrition-table th').forEach(th => {
+                    // 移除已有的事件监听器，避免重复绑定
+                    th.replaceWith(th.cloneNode(true));
                 });
-            });
+                
+                // 重新绑定事件监听器
+                document.querySelectorAll('#nutrition-table th').forEach(th => {
+                    th.addEventListener('click', () => {
+                        const header = th.dataset.header;
+                        sortData(header);
+                    });
+                });
+            };
+            
+            bindSortEvents();
+            
+            // 保存绑定函数，以便在更新表格后重新绑定
+            window.bindSortEvents = bindSortEvents;
         }
         
         // 过滤和排序数据
@@ -662,14 +767,14 @@
         
         // 更新表格显示
         function updateTableDisplay(data) {
-            const table = document.getElementById('nutrition-table');
+            const tableWrapper = document.querySelector('.table-wrapper');
             const noResults = document.querySelector('.no-results');
             
             if (data.length === 0) {
-                table.style.display = 'none';
+                tableWrapper.style.display = 'none';
                 noResults.style.display = 'block';
             } else {
-                table.style.display = 'table';
+                tableWrapper.style.display = 'block';
                 noResults.style.display = 'none';
                 
                 // 重新渲染表格数据
@@ -703,5 +808,6 @@
         // 页面加载完成后加载数据
         window.addEventListener('DOMContentLoaded', loadData);
     </script>
+    <a href="/" class="back-to-home">🏠</a>
 </body>
 </html>
