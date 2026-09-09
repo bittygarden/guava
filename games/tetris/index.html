@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RFTZ7J5H90"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { window.dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-RFTZ7J5H90');
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#050b12" />
+    <meta name="description" content="在线体验环界方块：旋转透明圆柱、排列方块并完成整圈消除的 3D 俄罗斯方块游戏。" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="canonical" href="https://www.bittygarden.com/games/tetris/index.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="环界方块｜转动世界，拼出完整一环" />
+    <meta property="og:description" content="方块始终落在眼前，转动圆柱选择落点。让色彩首尾相接，完成整圈消除。" />
+    <meta property="og:url" content="https://www.bittygarden.com/games/tetris/index.html" />
+    <meta property="og:image" content="https://www.bittygarden.com/games/tetris/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="环界方块｜转动世界，拼出完整一环" />
+    <meta name="twitter:description" content="旋转圆柱，完成整圈消除。现在进入环界。" />
+    <meta name="twitter:image" content="https://www.bittygarden.com/games/tetris/og-image.png" />
+    <title>环界方块 - 在线 3D 俄罗斯方块游戏</title>
+    <script type="module" crossorigin src="./assets/index-CSkicw0e.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-Du3cYfn0.css">
+  </head>
+  <body>
+    <main id="app">
+      <section id="game-shell" aria-label="环界方块游戏区域">
+        <canvas id="game-canvas" aria-label="圆柱体俄罗斯方块三维场景"></canvas>
+
+        <header class="brand">
+          <span class="eyebrow">CYLINDRICAL TETRIS</span>
+          <h1>环界方块</h1>
+        </header>
+
+        <div class="audio-controls" aria-label="声音控制">
+          <button id="audio-master-toggle" type="button" aria-pressed="true">所有声音 <span>开</span></button>
+          <button id="music-toggle" type="button" aria-pressed="true">背景音乐 <span>开</span></button>
+          <button id="effects-toggle" type="button" aria-pressed="true">消除音效 <span>开</span></button>
+        </div>
+
+        <aside class="stats" aria-label="游戏状态">
+          <div><span>分数</span><strong id="score">000000</strong></div>
+          <div><span>环带</span><strong id="lines">00</strong></div>
+          <div><span>等级</span><strong id="level">01</strong></div>
+        </aside>
+
+        <aside class="next-panel">
+          <span>下一块</span>
+          <strong id="next-piece">T</strong>
+          <span class="hold-label">暂存</span>
+          <strong id="hold-piece">—</strong>
+        </aside>
+
+        <div class="hint" id="hint">转动圆柱 · 对准落点 · 填满整圈</div>
+
+        <div class="controls" aria-label="操作说明">
+          <span><kbd>A</kbd><kbd>D</kbd> 旋转圆柱</span>
+          <span><kbd>W</kbd> 旋转</span>
+          <span><kbd>S</kbd> 软降</span>
+          <span><kbd>Space</kbd> 硬降</span>
+          <span><kbd>C</kbd> 暂存</span>
+          <span><kbd>Esc</kbd> 暂停</span>
+        </div>
+
+        <div class="overlay" id="overlay">
+          <div class="overlay-card">
+            <span class="eyebrow">3D CYLINDRICAL PUZZLE</span>
+            <h2 id="overlay-title">转动世界，拼出完整一环</h2>
+            <p id="overlay-copy">方块始终落在眼前，转动圆柱选择落点。让色彩首尾相接，填满一整圈，释放连续消除。</p>
+            <button id="start-button" type="button">进入环界</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
